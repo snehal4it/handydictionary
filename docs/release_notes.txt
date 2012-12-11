@@ -1,0 +1,22 @@
+
+Handy Dictionary v0.3
+- support for link/anchor
+	Right click on any link and lookup words from context menu.
+- select any word/phrase then right click to lookup for the same.
+- dictionary selection
+	select any of five dictionary for lookup using preference menu.
+- suport iframe
+	Content from iframe can be selected
+- ui changes
+	- interface color/background changed.
+	- open in new tab
+		Opens dictionary website in seperate tab
+	- lookup manually
+		Manually perform lookup operation.
+	- escape button to close popup
+		Keyboard event is attached so that pressing the "escape" button will close inline popup.
+- localization support
+	- internally refactored to support additional locales in future.
+- fix iframe related issue in html response from dictionary
+- fix related with manual enable/disable
+- fix for webpage containning frameset

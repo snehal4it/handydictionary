@@ -1,0 +1,30 @@
+<!-- About -->
+<!ENTITY how_to_use_title "How to use?">
+<!ENTITY using_handy_dict "Using Handy Dictionary!">
+
+<!ENTITY how_to_use_lbl "How to use:">
+<!ENTITY how_to_use_txt1 "&quot;Double&quot; click on any word and inline popup is displayed,">
+<!ENTITY how_to_use_txt2 "Or right click on link to lookup words,">
+<!ENTITY how_to_use_txt3 "Or select any word/phrase manually and then right click.">
+<!ENTITY how_to_use_txt4 "Use &quot;escape&quot; key to close or click on &quot;X&quot; button">
+
+<!ENTITY how_to_use_desc1 "Note: Kindly take a note that this tool provides just interface, actual dictionary service">
+<!ENTITY how_to_use_desc2 "is provided by public interface of selected dictionary.">
+
+<!ENTITY turn_on_lbl "Turn On:">
+<!ENTITY turn_on_desc "Enables tool for current page in tab.">
+
+<!ENTITY turn_off_lbl "Turn Off:">
+<!ENTITY turn_off_desc "Disables tool for current page in tab.">
+
+<!ENTITY always_on_lbl "Always On:">
+<!ENTITY always_on_desc1 "Enables tool for all newly opened pages/urls.">
+<!ENTITY always_on_desc2 "Already opened pages are not affected.">
+
+<!ENTITY select_dict_lbl "Select Dictionary:">
+<!ENTITY select_dict_desc1 "Default dictionary is">
+<!ENTITY select_dict_desc2 " Cambridge Dictionary">
+<!ENTITY select_dict_desc3 ", select your favourite dictionary from list.">
+
+<!ENTITY pref_label "Preferences">
+<!ENTITY toolbar_label "Toolbar Menus">

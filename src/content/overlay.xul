@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE window SYSTEM "chrome://handy_dictionary_ext/locale/handy_dict.dtd">
+
+<overlay id="handy_dictionary_ext-browser-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<stringbundleset id="stringbundleset">
+        <stringbundle id="handy_dictionary_ext_bundle" src="chrome://handy_dictionary_ext/locale/handy_dict.properties"/>
+    </stringbundleset>
+
+	<script src="lib/common.js" />
+	<script src="lib/util.js" />
+	<script src="lib/contextmenu.js" />
+	<script src="lib/ui.js" />
+	<script src="handydict.js" />
+
+	<menupopup id="menu_ToolsPopup">
+		<menu id="handy_dictionary_ext_main_menu" label="&handy_dictionary_ext_label;" insertbefore="sanitizeSeparator">
+		<menupopup>
+			<menuitem id="handy_dictionary_ext_enable_submenu" label="&turnon_label;" oncommand="handy_dictionary_ext_ns_id123.changeStateManually(true);" hidden="false" />
+			<menuitem id="handy_dictionary_ext_disable_submenu" label="&turnoff_label;" oncommand="handy_dictionary_ext_ns_id123.changeStateManually(false);" hidden="true" />
+			<menuitem id="handy_dictionary_ext_pref_submenu" label="&pref_label;"
+				oncommand="window.openDialog('chrome://handy_dictionary_ext/content/preference.xul',
+					'handy_dictionary_ext_dialog_pref','chrome,centerscreen');" />
+			<menuitem id="handy_dictionary_ext_howto_submenu" label="&howto_label;"
+				oncommand="window.openDialog('chrome://handy_dictionary_ext/content/about.xul',
+					'handy_dictionary_ext_dialog_howto','chrome,centerscreen');" />
+		</menupopup>
+		</menu>
+	</menupopup>
+	
+	<popup id="contentAreaContextMenu">
+		<menu id="handy_dictionary_ext_context_menu_opt" label="&ext_short_label; &opt_label;" hidden="true">
+			<menupopup>
+				<menuitem label="&lookup_manual_label;" oncommand="handy_dictionary_ext_ns_id123.lookupManually(event);" />
+				<menuitem label="&pref_label;" oncommand="window.openDialog('chrome://handy_dictionary_ext/content/preference.xul',
+					'handy_dictionary_ext_dialog_pref','chrome,centerscreen');" />
+				<menuitem label="&howto_label;"	oncommand="window.openDialog('chrome://handy_dictionary_ext/content/about.xul',
+					'handy_dictionary_ext_dialog_howto','chrome,centerscreen');" />
+			</menupopup>
+		</menu>
+		<menu id="handy_dictionary_ext_context_menu_link" label="&ext_short_label; &lookup_label;" hidden="true" />
+		<menuitem id="handy_dictionary_ext_context_menu_link1" label="&ext_short_label; &lookup_label;" hidden="true" />
+	</popup>
+	
+	<popupset>
+		<tooltip id="handy_dictionary_ext_tooltip_on11"><label value="&turnon_tooltip;" /></tooltip>
+		<tooltip id="handy_dictionary_ext_tooltip_off22"><label value="&turnoff_tooltip;" /></tooltip>
+	</popupset>
+	
+	<statusbar id="status-bar">
+		<statusbarpanel id="handy_dictionary_ext_status_bar_on" label="&ext_short_label;&turnon_label;"
+			onclick="handy_dictionary_ext_ns_id123.changeStateManually(true);" hidden="false" tooltip="handy_dictionary_ext_tooltip_on11" />
+		<statusbarpanel id="handy_dictionary_ext_status_bar_off" label="&ext_short_label;&turnoff_label;"
+			onclick="handy_dictionary_ext_ns_id123.changeStateManually(false);" hidden="true" tooltip="handy_dictionary_ext_tooltip_off22" />
+	</statusbar>
+	
+</overlay>

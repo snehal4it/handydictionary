@@ -1,0 +1,8 @@
+content handy_dictionary_ext content/
+content handy_dictionary_ext content/ contentaccessible=yes
+
+overlay chrome://browser/content/browser.xul chrome://handy_dictionary_ext/content/overlay.xul
+
+skin   handy_dictionary_ext	classic/1.0	skin/
+locale handy_dictionary_ext en-US locale/en-US/
+

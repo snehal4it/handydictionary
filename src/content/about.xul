@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/"?>
+<!DOCTYPE window SYSTEM "chrome://handy_dictionary_ext/locale/about.dtd">
+
+<dialog id="handy_dictionary_ext_dialog_howto"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+    title="&how_to_use_title;" buttons="accept" buttonpack="center">
+	<label value="&using_handy_dict;" style="font-weight:bold;text-align:center;" />
+	<vbox align="left" style="margin-top:5px;">
+		<description style="font-weight:bold;">&how_to_use_lbl;</description>
+		<description>&how_to_use_txt1; &how_to_use_txt2;</description>
+		<description>&how_to_use_txt3;</description>
+		<description>&how_to_use_txt4;</description>
+		
+		<spacer flex="1" style="min-height: 5px;"/>
+		<groupbox>
+		<caption label="&toolbar_label;"/>
+		<hbox>
+			<description style="font-weight:bold;">&turn_on_lbl;</description>
+			<description>&turn_on_desc;</description>
+		</hbox>
+		<hbox>
+			<description style="font-weight:bold;">&turn_off_lbl;</description>
+			<description>&turn_off_desc;</description>
+		</hbox>
+		</groupbox>
+		<spacer flex="1" style="max-height: 5px;"/>
+		<groupbox>
+		<caption label="&pref_label;"/>
+		<hbox>
+			<description style="font-weight:bold;">&always_on_lbl;</description>
+			<description>&always_on_desc1;</description>
+			<description>&always_on_desc2;</description>
+		</hbox>
+		<hbox>
+			<description style="font-weight:bold;">&select_dict_lbl;</description>
+			<description>&select_dict_desc1;
+				<html:a href="http://dictionary.cambridge.org/dictionary/british/" target="_blank" style="color:blue;">&select_dict_desc2;</html:a>
+				&select_dict_desc3;
+			</description>
+		</hbox>
+		</groupbox>
+		
+		<spacer flex="1" style="min-height: 5px;"/>
+		<description>&how_to_use_desc1;</description>
+		<description>&how_to_use_desc2;</description>
+	</vbox>
+</dialog>
+	
+

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE window SYSTEM "chrome://handy_dictionary_ext/locale/handy_dict.dtd">
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<prefwindow id="handy_dictionary_ext_dialog_pref"
+     title="&pref_title;"
+	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	 xmlns:html="http://www.w3.org/1999/xhtml"
+	 buttons="accept,cancel" buttonpack="center">
+
+	<prefpane label="&pref_title;">
+		<preferences>
+			<preference id="handy_dictionary_ext_pref_autorun" name="extensions.handy_dictionary_ext.autorun" type="bool"/>
+			<preference id="handy_dictionary_ext_pref_dict" name="extensions.handy_dictionary_ext.dict" type="int" />
+		</preferences>
+
+		<groupbox>
+			<caption label="&settings_label;"/>
+			<grid>
+				<columns><column /><column /></columns>
+				<rows>
+					<row>
+						<label control="handy_dictionary_ext_cntrl_checkbox" value="&autorun_label;"/>
+						<checkbox id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" />
+					</row>
+					<hbox align="center" flex="1">
+						<description flex="1">&autorun_desc;</description>
+						<separator style="min-height:10px;"/>
+					</hbox>
+					<row>
+						<label control="handy_dictionary_ext_cntrl_select_dict" value="&select_dict_label;"/>
+						<radiogroup id="handy_dictionary_ext_cntrl_select_dict" orient="vertical" preference="handy_dictionary_ext_pref_dict">
+							<hbox>
+								<radio label="Cambridge Dictionary" value="0" />
+								<description style="padding-top:4px;">
+									<html:a href="http://dictionary.cambridge.org/" target="_blank" style="color:blue;">http://dictionary.cambridge.org/</html:a>
+								</description>
+							</hbox>
+							<hbox>
+								<radio label="Oxford Dictionary" value="1" />
+								<description style="padding-top:4px;">
+									<html:a href="http://oxforddictionaries.com/" target="_blank" style="color:blue;">http://oxforddictionaries.com/</html:a>
+								</description>
+							</hbox>
+							<hbox>
+								<radio label="Dictionary.com" value="2" />
+								<description style="padding-top:4px;">
+									<html:a href="http://dictionary.reference.com/" target="_blank" style="color:blue;">http://dictionary.reference.com/</html:a>
+								</description>
+							</hbox>
+							<hbox>
+								<radio label="Merriam-Webster Dictionary" value="3" />
+								<description style="padding-top:4px;">
+									<html:a href="http://www.merriam-webster.com/" target="_blank" style="color:blue;">http://www.merriam-webster.com/</html:a>
+								</description>
+							</hbox>
+							<hbox>
+								<radio label="The Free Dictionary" value="4" />
+								<description style="padding-top:4px;">
+									<html:a href="http://www.thefreedictionary.com/" target="_blank" style="color:blue;">http://www.thefreedictionary.com/</html:a>
+								</description>
+							</hbox>
+						</radiogroup>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</prefpane>
+
+</prefwindow>

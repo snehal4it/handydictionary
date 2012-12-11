@@ -1,0 +1,23 @@
+<!-- Overlay -->
+<!ENTITY handy_dictionary_ext_label "Handy Dictionary">
+<!ENTITY turnon_label "Turn On">
+<!ENTITY turnoff_label "Turn Off">
+<!ENTITY pref_label "Preferences">
+<!ENTITY howto_label "How to use?">
+
+<!ENTITY turnon_tooltip "Click to Enable">
+<!ENTITY turnoff_tooltip "Click to Disable">
+
+<!ENTITY ext_short_label "HandyDict:">
+<!ENTITY opt_label "Options">
+
+<!ENTITY lookup_manual_label "Lookup Manually">
+<!ENTITY lookup_label "Lookup">
+
+<!-- Preferences -->
+<!ENTITY pref_title "Handy Dictionary Preferences">
+<!ENTITY settings_label "Settings">
+<!ENTITY autorun_label "AutoRun">
+<!ENTITY autorun_desc "By default enable/disable Handy Dictionary when new page/url is opened">
+
+<!ENTITY select_dict_label "Select Dictionary">
