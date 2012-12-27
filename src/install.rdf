@@ -4,9 +4,10 @@
     <em:id>kbatu.patel@gmail.com</em:id>
     <em:type>2</em:type>
     <em:name>Handy Dictionary</em:name>
-    <em:version>0.3</em:version>
+    <em:version>0.4</em:version>
     <em:description>Handy Dictionary</em:description>
     <em:creator>Snehal Patel</em:creator>
+	<em:bootstrap>true</em:bootstrap>
 
 	<em:homepageURL>https://sites.google.com/site/kdevprj/handy_dictionary/</em:homepageURL>
 	<em:optionsURL>chrome://handy_dictionary_ext/content/preference.xul</em:optionsURL>

@@ -33,6 +33,16 @@ hd_alias.CNTX = new function() {
 		}
 	}
 	
+	// cleanup listeners and references
+	this.clean=function() {
+		self.maintainContextMenuReg(false);
+		
+		self.cntxmenu=null;
+		self.cntxmenuitem=null;
+		self.optmenu=null;
+		self.contextMenu=null;
+	}
+	
 	this.enable=function() {
 		self.optmenu.hidden=false;
 	}
@@ -50,8 +60,8 @@ hd_alias.CNTX = new function() {
 			self.contextMenu.addEventListener("popuphiding", self.clearContextMenuItems, false);
 			self.optmenu.hidden=false;
 		} else {
-			self.contextMenu.removeEventListener("popupshowing", self.initContextMenuItems);
-			self.contextMenu.removeEventListener("popuphiding", self.clearContextMenuItems);
+			self.contextMenu.removeEventListener("popupshowing", self.initContextMenuItems, false);
+			self.contextMenu.removeEventListener("popuphiding", self.clearContextMenuItems, false);
 			self.optmenu.hidden=true;
 			self.hideContextItems();
 		}
@@ -191,6 +201,14 @@ hd_alias.MENU = new function() {
 		
 		self.stOn.hidden=false;
 		self.stOff.hidden=true;
+	}
+	
+	// remove all references
+	this.clean=function(){
+		self.on=null;
+		self.off=null;
+		self.stOn=null;
+		self.stOff=null;
 	}
 	
 	// for each tab, status is maintained and accordingly

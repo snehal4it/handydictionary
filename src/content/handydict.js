@@ -12,33 +12,68 @@ var cntx=hd_alias.CNTX;
 var util=hd_alias.UTIL;
 var menu=hd_alias.MENU;
 
-hd_alias.handleWindowLoad=function() {
-	hd_alias.hdBundle=document.getElementById("handy_dictionary_ext_bundle");
-	
+hd_alias.gInit=function() {
 	cntx.init();
 	menu.init();
-	
-	gBrowser.addEventListener("DOMContentLoaded", function(eventObj) {
-		var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
-		if (autoRun) {
-			hd_alias.enableListener(eventObj);
-		} else {
-			hd_alias.disableListener(eventObj);
-		}
-		menu.updateStatus(autoRun);
-	}, false);
-	var container = gBrowser.tabContainer;
-	container.addEventListener("TabSelect", function(eventObj) {
-		// for each tab restore the status of extension
-		var on = util.isExtEnabled(content.document);
-		menu.updateStatus(on);
-		if (on) {
-			cntx.enable();
-		} else {
-			cntx.disable();
-		}
-	}, false);
+	gBrowser.addEventListener("DOMContentLoaded", hd_alias.domListener, false);
+	gBrowser.tabContainer.addEventListener("TabSelect", hd_alias.tabSelectListener, false);
 };
+
+hd_alias.gClean=function() {
+	cntx.clean();
+	menu.clean();
+	gBrowser.removeEventListener("DOMContentLoaded", hd_alias.domListener, false);
+	gBrowser.tabContainer.removeEventListener("TabSelect", hd_alias.tabSelectListener, false);
+};
+
+hd_alias.domListener=function(eventObj) {
+	var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
+	if (autoRun) {
+		hd_alias.enableListener(eventObj);
+	} else {
+		hd_alias.disableListener(eventObj);
+	}
+	menu.updateStatus(autoRun);
+};
+
+hd_alias.tabSelectListener=function(eventObj) {
+	// for each tab restore the status of extension
+	var on = util.isExtEnabled(content.document);
+	menu.updateStatus(on);
+	if (on) {
+		cntx.enable();
+	} else {
+		cntx.disable();
+	}
+};
+
+//hd_alias.handleWindowLoad=function() {
+//	hd_alias.hdBundle=document.getElementById("handy_dictionary_ext_bundle");
+//	
+//	cntx.init();
+//	menu.init();
+//	
+//	gBrowser.addEventListener("DOMContentLoaded", function(eventObj) {
+//		var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
+//		if (autoRun) {
+//			hd_alias.enableListener(eventObj);
+//		} else {
+//			hd_alias.disableListener(eventObj);
+//		}
+//		menu.updateStatus(autoRun);
+//	}, false);
+//	var container = gBrowser.tabContainer;
+//	container.addEventListener("TabSelect", function(eventObj) {
+//		// for each tab restore the status of extension
+//		var on = util.isExtEnabled(content.document);
+//		menu.updateStatus(on);
+//		if (on) {
+//			cntx.enable();
+//		} else {
+//			cntx.disable();
+//		}
+//	}, false);
+//};
 
 // eventObj may be null incase, enabled manually
 hd_alias.enableListener=function(eventObj) {
@@ -156,12 +191,12 @@ hd_alias.ajaxHandler=function(dictURL, popup) {
 };
 
 // handles internationalization
-hd_alias.str=function(key) {
-	if (!hd_alias.hdBundle) {
-		return "!!!" + key + "!!!";
-	}
-	return hd_alias.hdBundle.getString(key);
-};
-
-window.addEventListener("load", hd_alias.handleWindowLoad, false);
+//hd_alias.str=function(key) {
+	//if (!hd_alias.hdBundle) {
+	//	return "!!!" + key + "!!!";
+	//}
+	//return hd_alias.hdBundle.getString(key);
+//	return hd_alias.CustomLocale.str(key);
+//};
+//window.addEventListener("load", hd_alias.handleWindowLoad, false);
 })();

@@ -29,4 +29,38 @@ hd_alias.prefManager = Components.classes["@mozilla.org/preferences-service;1"].
 hd_alias.hdBundle=null;
 
 hd_alias.userDataKey="handy_dict_ext_doc_key987";
+
+//-- start-- Locale handler
+hd_alias.CustomLocale = new function() {
+	var self=this;
+	self.xul="chrome://handy_dictionary_ext/locale/bsui.properties";
+	self.hd="chrome://handy_dictionary_ext/locale/handy_dict.properties";
+	self.sb=null;
+	self.categoryManager=Cc["@mozilla.org/categorymanager;1"].getService(Ci.nsICategoryManager);
+	
+	this.init=function() {
+		self.categoryManager.addCategoryEntry("handy_dictionary_ext_bundle", self.xul, "", false, true);
+		self.categoryManager.addCategoryEntry("handy_dictionary_ext_bundle", self.hd, "", false, true);
+		self.sb=Services.strings.createExtensibleBundle("handy_dictionary_ext_bundle");
+	}
+	
+	this.clean=function() {
+		self.categoryManager.deleteCategoryEntry("handy_dictionary_ext_bundle", self.xul, false);
+		self.categoryManager.deleteCategoryEntry("handy_dictionary_ext_bundle", self.hd, false);
+		
+		self.categoryManager=null;
+	}
+	
+	this.str=function(key) {
+		var result = "!!!" + key + "!!!";
+		try {
+			result = self.sb.GetStringFromName(key);
+		} catch (e) {}
+		return result;
+	}
+};
+//-- end-- Locale handler
+
+// handles internationalization
+hd_alias.str=hd_alias.CustomLocale.str;
 })();
