@@ -34,12 +34,12 @@ hd_alias.UTIL=new function(){
 			}
 		}
 		return result;
-	}
+	};
 	
 	// unused can be removed
 	this.getDictionaryServiceURL=function(selectedText){
 		return hd_alias.defaultDictURL + selectedText;
-	}
+	};
 	
 	// retrieves current dictionary
 	this.getDictionary=function(){
@@ -51,25 +51,25 @@ hd_alias.UTIL=new function(){
 			dict_id=0;
 		}
 		return hd_alias.dicts[dict_id];
-	}
+	};
 	
 	this.getAbsoluteLocations=function(eventObj){
 		var currentX = eventObj.clientX + content.pageXOffset + 5;
 		var currentY = eventObj.clientY + content.pageYOffset + 20;
 		return new Array(currentX, currentY);
-	}
+	};
 	
 	// For frame clientX,Y is relative to frame not parent window
 	this.getFrameAbsLocations=function(eventObj){
 		var currentX = eventObj.mozMovementX + content.pageXOffset + 5;
 		var currentY = eventObj.mozMovementY + content.pageYOffset + 20;
 		return new Array(currentX, currentY);
-	}
+	};
 	
 	// store location incase of context menu event
 	this.updateContextMenuPos=function(eventObj){
 		hd_alias.contextMenuPos=self.getAbsoluteLocations(eventObj);
-	}
+	};
 	
 	this.getSelectedText=function(){
 		//var text = content.getSelection().toString();
@@ -78,7 +78,7 @@ hd_alias.UTIL=new function(){
 		//return text;
 		return document.commandDispatcher.focusedWindow.
 				getSelection().toString().replace(/(\n|\r|\t)+/g, " ").trim();
-	}
+	};
 	
 	// mark document, whether for current tab tool is enabled
 	this.markDocument=function(doc, flag){
@@ -89,7 +89,7 @@ hd_alias.UTIL=new function(){
 				doc.setUserData(hd_alias.userDataKey, null, null);
 			}
 		}
-	}
+	};
 	
 	// check document and return true if marked
 	this.isExtEnabled=function(doc){
@@ -98,7 +98,7 @@ hd_alias.UTIL=new function(){
 			if(flag==true){return true;}
 		}
 		return false;
-	}
+	};
 	
 	/**
 	 * copied from
@@ -118,7 +118,7 @@ hd_alias.UTIL=new function(){
 		return Components.classes["@mozilla.org/feed-unescapehtml;1"]
 						 .getService(Components.interfaces.nsIScriptableUnescapeHTML)
 						 .parseFragment(html, !!isXML, baseURI, doc.documentElement);
-	}
+	};
 };
 
 // dictionaries
@@ -133,7 +133,7 @@ hd_alias.dicts=[
 		
 		this.getURL=function(text) {
 			return self.url+text;
-		}
+		};
 		this.applyFix=function(elem) {
 			if (elem.nodeName.toUpperCase() == 'DIV') {
 				//fix:iframe can t be displayed, so display hidden content
@@ -147,7 +147,7 @@ hd_alias.dicts=[
 					elem.setAttribute("style", "margin:0px;");
 				}
 			}
-		}
+		};
 		// remove margins from head word and fix the content for result entries
 		this._fixHeadAndLists=function(elem) {
 			var refElem=elem.querySelector("div.posblock_b > div.gwblock");
@@ -178,7 +178,7 @@ hd_alias.dicts=[
 					entries[i].setAttribute("style", "float:left;");
 				}
 			}
-		}
+		};
 	},
 	new function(){
 		// 1 Oxford
@@ -190,7 +190,7 @@ hd_alias.dicts=[
 		
 		this.getURL=function(text) {
 			return self.url+text;
-		}
+		};
 		this.applyFix=function(elem) {
 			if (elem.nodeName.toUpperCase() == 'HEADER' && elem.querySelector) {
 				var headTitleElem=elem.querySelector("h1.pageTitle");
@@ -204,7 +204,7 @@ hd_alias.dicts=[
 				}
 				self._fixList(elem);
 			}
-		}
+		};
 		// fix result entries spacing and bullet
 		this._fixList=function(elem) {
 			if(!elem.querySelectorAll) { return;}
@@ -228,7 +228,7 @@ hd_alias.dicts=[
 				}
 			}
 			}
-		}
+		};
 	},
 	new function(){
 		// 2 dictionary.reference.com
@@ -237,7 +237,7 @@ hd_alias.dicts=[
 		this.resultId="contentResults";
 		this.getURL=function(text) {
 			return self.url+text;
-		}
+		};
 		this.applyFix=function(elem) {
 			if (elem.nodeName.toUpperCase() == 'DIV') {
 				var divId=elem.getAttribute("id");
@@ -255,7 +255,7 @@ hd_alias.dicts=[
 					}
 				}
 			}
-		}
+		};
 	},
 	new function(){
 		// 3 Merriam-Webster
@@ -265,7 +265,7 @@ hd_alias.dicts=[
 		
 		this.getURL=function(text) {
 			return self.url+text;
-		}
+		};
 		
 		this.applyFix=function(elem) {
 			if (elem.nodeName.toUpperCase() == 'DIV' && elem.querySelector) {
@@ -279,7 +279,7 @@ hd_alias.dicts=[
 					defHeaderElem.setAttribute("style", "margin:0px;");
 				}
 			}
-		}
+		};
 	},
 	new function(){
 		// 4 The Free Dictionary
@@ -289,8 +289,8 @@ hd_alias.dicts=[
 		
 		this.getURL=function(text) {
 			return self.url+text;
-		}
-		this.applyFix=function(elem) {}
+		};
+		this.applyFix=function(elem) {};
 	}
 ];
 

@@ -15,7 +15,7 @@ hd_alias.OverlayBuilder=new function() {
 		hd_alias.ContextMenuBuilder.init();
 		hd_alias.ToolbarMenuBuilder.init();
 		hd_alias.StatusbarMenuBuilder.init();
-	}
+	};
 	
 	this.clean=function() {
 		hd_alias.ContextMenuBuilder.clean();
@@ -23,7 +23,7 @@ hd_alias.OverlayBuilder=new function() {
 		hd_alias.StatusbarMenuBuilder.clean();
 		
 		hd_alias.CustomLocale.clean();
-	}
+	};
 };
 
 //----- Start UI-----
@@ -86,7 +86,7 @@ hd_alias.ContextMenuBuilder = new function() {
 		contextMenu.appendChild(options);
 		contextMenu.appendChild(linkOptions);
 		contextMenu.appendChild(wordLookup);
-	}
+	};
 	
 	this.clean=function() {
 		var contextMenu = document.getElementById("contentAreaContextMenu");
@@ -100,7 +100,7 @@ hd_alias.ContextMenuBuilder = new function() {
 		
 		var wordLookup = contextMenu.querySelector("#handy_dictionary_ext_context_menu_link1");
 		contextMenu.removeChild(wordLookup);
-	}
+	};
 };
 
 hd_alias.ToolbarMenuBuilder = new function() {
@@ -159,7 +159,7 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		
 		// all appended child to be removed in cleanup
 		toolbar.appendChild(mainMenu);
-	}
+	};
 	
 	this.clean=function() {
 		var toolbar = document.getElementById("menu_ToolsPopup");
@@ -167,7 +167,7 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		
 		var mainMenu = toolbar.querySelector("#handy_dictionary_ext_main_menu");
 		toolbar.removeChild(mainMenu);
-	}
+	};
 };
 
 hd_alias.StatusbarMenuBuilder = new function() {
@@ -198,7 +198,7 @@ hd_alias.StatusbarMenuBuilder = new function() {
 		// all appended child to be removed in cleanup
 		statusbar.appendChild(onBtn);
 		statusbar.appendChild(offBtn);
-	}
+	};
 	
 	this.clean=function() {
 		var statusbar = document.getElementById("status-bar");
@@ -209,7 +209,7 @@ hd_alias.StatusbarMenuBuilder = new function() {
 		
 		var offBtn = statusbar.querySelector("#handy_dictionary_ext_status_bar_off");
 		statusbar.removeChild(offBtn);
-	}
+	};
 };
 //----- End UI-----
 })();

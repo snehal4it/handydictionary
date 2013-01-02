@@ -31,7 +31,7 @@ hd_alias.CNTX = new function() {
 			self.optmenu.hidden=true;
 			self.hideContextItems();
 		}
-	}
+	};
 	
 	// cleanup listeners and references
 	this.clean=function() {
@@ -41,16 +41,16 @@ hd_alias.CNTX = new function() {
 		self.cntxmenuitem=null;
 		self.optmenu=null;
 		self.contextMenu=null;
-	}
+	};
 	
 	this.enable=function() {
 		self.optmenu.hidden=false;
-	}
+	};
 	
 	this.disable=function() {
 		self.optmenu.hidden=true;
 		self.hideContextItems();
-	}
+	};
 
 	// register/deregister listeners
 	this.maintainContextMenuReg=function(flag) {
@@ -65,7 +65,7 @@ hd_alias.CNTX = new function() {
 			self.optmenu.hidden=true;
 			self.hideContextItems();
 		}
-	}
+	};
 	
 	this.hideContextItems=function() {
 		self.cntxmenuitem.hidden=true;
@@ -73,7 +73,7 @@ hd_alias.CNTX = new function() {
 		
 		// cleanup listeners
 		self._removeListeners(self.cntxmenuitem);
-	}
+	};
 	
 	// if extension is enabled display context menus
 	this.initContextMenuItems=function(eventObj) {
@@ -104,7 +104,7 @@ hd_alias.CNTX = new function() {
 			menuItem.setAttribute("label", words[i]);
 			menupopup.appendChild(menuItem);
 		}
-	}
+	};
 	
 	// remove context menus
 	this.clearContextMenuItems = function(eventObj) {
@@ -114,19 +114,19 @@ hd_alias.CNTX = new function() {
 			self.cntxmenu.removeChild(menupopup);
 		}
 		self.hideContextItems();
-	}
+	};
 	
 	// add listeners for menuitem in context menu
 	this._addListeners=function(menuitem,text) {
 		menuitem.addEventListener("click",self.onContextMenuCommands,false);
 		menuitem.setUserData(self.menuItemDataKey, text, null);
-	}
+	};
 	
 	// remove listeners for menuitem in context menu
 	this._removeListeners=function(menuitem) {
 		menuitem.removeEventListener("click",self.onContextMenuCommands,false);
 		menuitem.setUserData(self.menuItemDataKey, null, null);
-	}
+	};
 	
 	this.onContextMenuCommands = function(eventObj) {
 		var menuItem=eventObj.currentTarget;
@@ -138,7 +138,7 @@ hd_alias.CNTX = new function() {
 				hd_alias.displayHandyDict(new Array(x, y), text);
 			}
 		}
-	}
+	};
 	
 	// based on context retrieve words
 	this.getLookupText = function() {
@@ -165,7 +165,7 @@ hd_alias.CNTX = new function() {
 			}
 		}
 		return result;
-	}
+	};
 	
 	this.lookupManually=function(eventObj) {
 		var x = hd_alias.contextMenuPos[0];
@@ -178,7 +178,7 @@ hd_alias.CNTX = new function() {
 			return;
 		}
 		popup.toggleSearchDisplay(null);
-	}
+	};
 };
 
 hd_alias.MENU = new function() {
@@ -201,7 +201,7 @@ hd_alias.MENU = new function() {
 		
 		self.stOn.hidden=false;
 		self.stOff.hidden=true;
-	}
+	};
 	
 	// remove all references
 	this.clean=function(){
@@ -209,7 +209,7 @@ hd_alias.MENU = new function() {
 		self.off=null;
 		self.stOn=null;
 		self.stOff=null;
-	}
+	};
 	
 	// for each tab, status is maintained and accordingly
 	// display on/off menu
@@ -219,6 +219,6 @@ hd_alias.MENU = new function() {
 		
 		self.stOn.hidden=flag;
 		self.stOff.hidden=!flag;
-	}
+	};
 };
 })();

@@ -70,7 +70,7 @@ hd_alias.popupHandler = function() {
 		titleContainer.appendChild(titlediv);
 		
 		return titleContainer;
-	}
+	};
 	
 	this._getPopupBody = function() {
 		var popupbody = content.document.createElement("div");
@@ -100,7 +100,7 @@ hd_alias.popupHandler = function() {
 		popupbody.appendChild(self.searchdiv);
 		popupbody.appendChild(self.contentdiv);
 		return popupbody;
-	}
+	};
 	
 	this._initSearchControls = function() {
 		var searchCtrl=content.document.createElement("div");
@@ -126,13 +126,13 @@ hd_alias.popupHandler = function() {
 		
 		self.searchdiv.appendChild(searchCtrl);
 		self.searchcontroldiv = searchCtrl;
-	}
+	};
 	
 	this.handleCR=function(eventObj) {
 		if (eventObj.keyCode == 13) {
 			self.handleSearch(eventObj);
 		}
-	}
+	};
 	
 	this.handleSearch=function(eventObj) {
 		var selectedText=self.inputCtrl.value;
@@ -149,7 +149,7 @@ hd_alias.popupHandler = function() {
 		self.moreoptlink.setAttribute("href", dictURL);
 		self.display(hd_alias.str("ajax_loading"));
 		hd_alias.ajaxHandler(dictURL, self);
-	}
+	};
 	
 	// toggle display of search manual option
 	this.toggleSearchDisplay = function(eventObj) {
@@ -168,7 +168,7 @@ hd_alias.popupHandler = function() {
 			} catch(e) {}
 		}
 		self.searchcontroldisplayed=!self.searchcontroldisplayed;
-	}
+	};
 	
 	this.checkAndStorePos = function(updateX, updateY) {
 		if (updateX != null && updateX > 0) {
@@ -178,7 +178,7 @@ hd_alias.popupHandler = function() {
 		if (updateY != null && updateY > 0) {
 			self.currentY = updateY;
 		}
-	}
+	};
 	
 	// returns true if ui created
 	this.init = function(posArr, dictURL, dict) {
@@ -216,7 +216,7 @@ hd_alias.popupHandler = function() {
 		self.dragdropref = new hd_alias.dragDropHandler();
 		self.dragdropref.init(titleContainer, self.outerdiv);
 		return true;
-	}
+	};
 	
 	// top level element to contain popup
 	this._getRootElement = function() {
@@ -231,7 +231,7 @@ hd_alias.popupHandler = function() {
 			body=content.document.getElementsByTagName("html")[0];
 		}
 		return body;
-	}
+	};
 	
 	// display temporary messages
 	this.display = function(displayStr) {
@@ -241,7 +241,7 @@ hd_alias.popupHandler = function() {
 		var msgtxt = content.document.createTextNode(displayStr);
 		msgElem.appendChild(msgtxt);
 		self.contentdiv.appendChild(msgElem);
-	}
+	};
 	
 	// clear content/messages from content window
 	this.clearContentNode = function() {
@@ -256,7 +256,7 @@ hd_alias.popupHandler = function() {
 				self.contentdiv.removeChild(tempArray[i]);
 			}
 		}
-	}
+	};
 	
 	// display result in content block
 	this.updateresult = function(docFragment) {
@@ -294,7 +294,7 @@ hd_alias.popupHandler = function() {
 				}
 			}
 		}
-	}
+	};
 	
 	this.checkCloseEvent=function(eventObj) {
 		if (eventObj.keyCode == 27) {
@@ -302,7 +302,7 @@ hd_alias.popupHandler = function() {
 			self.close();
 		}
 		return false;
-	}
+	};
 	
 	// remove listeners and references on close
 	this.close = function() {
@@ -333,7 +333,7 @@ hd_alias.popupHandler = function() {
 		self.inputCtrl=null;
 		self.btnCtrl=null;
 		self=null;
-	}
+	};
 };
 
 // enables drag/move functionality
@@ -354,7 +354,7 @@ hd_alias.dragDropHandler=function() {
 		self.sourceElem.addEventListener("mousedown",self.startdrag,false);
 		content.document.addEventListener("mouseup",self.stopdrag,false);
 		content.document.addEventListener("mousemove",self.ondrag,false);
-	}
+	};
 	
 	this.startdrag = function(mouseE) {
 		self.startflag=true;
@@ -363,12 +363,12 @@ hd_alias.dragDropHandler=function() {
 		self.startleft=parseInt(self.popupwinElem.style.left);
 		self.starttop=parseInt(self.popupwinElem.style.top);
 		self.popupwinElem.style.cursor="move";
-	}
+	};
 	
 	this.stopdrag = function(mouseE) {
 		self.startflag=false;
 		self.popupwinElem.style.cursor="auto";
-	}
+	};
 	
 	this.ondrag = function(mouseE) {
 		if (self.startflag != true) { return;}
@@ -382,7 +382,7 @@ hd_alias.dragDropHandler=function() {
 
 		self.popupwinElem.style.left=currentx + "px";
 		self.popupwinElem.style.top=currenty + "px";
-	}
+	};
 	
 	// clear listeners/references
 	this.close = function() {
@@ -393,7 +393,7 @@ hd_alias.dragDropHandler=function() {
 		self.sourceElem=null;
 		self.popupwinElem=null;
 		self=null;
-	}
+	};
 };
 
 })();

@@ -168,7 +168,7 @@ var CustomPref=new function() {
 		}
 		} catch(e) {}
 	}
-}
+};
 //-- end - pref
 
 function doLog(aMessage) {

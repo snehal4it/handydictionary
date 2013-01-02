@@ -39,7 +39,7 @@ hd_alias.CustomLocale = new function() {
 		self.categoryManager.addCategoryEntry("handy_dictionary_ext_bundle", self.xul, "", false, true);
 		self.categoryManager.addCategoryEntry("handy_dictionary_ext_bundle", self.hd, "", false, true);
 		self.sb=Services.strings.createExtensibleBundle("handy_dictionary_ext_bundle");
-	}
+	};
 	
 	// delete category and flush bundles
 	this.clean=function() {
@@ -49,7 +49,7 @@ hd_alias.CustomLocale = new function() {
 		Services.strings.flushBundles();
 		self.sb=null;
 		self.categoryManager=null;
-	}
+	};
 	
 	this.str=function(key) {
 		var result = "!" + key + "!";
@@ -57,7 +57,7 @@ hd_alias.CustomLocale = new function() {
 			result = self.sb.GetStringFromName(key);
 		} catch (e) {}
 		return result;
-	}
+	};
 };
 //-- end-- Locale handler
 
