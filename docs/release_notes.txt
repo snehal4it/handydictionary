@@ -1,4 +1,8 @@
 
+Handy Dictionary v0.4
+- Restartless
+	- From next time there will be no restart required to receive updates
+
 Handy Dictionary v0.3
 - support for link/anchor
 	Right click on any link and lookup words from context menu.

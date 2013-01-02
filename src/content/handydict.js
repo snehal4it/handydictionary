@@ -26,6 +26,35 @@ hd_alias.gClean=function() {
 	gBrowser.tabContainer.removeEventListener("TabSelect", hd_alias.tabSelectListener, false);
 };
 
+// updates status of already opened tab based on user preferences
+// flag: enable or cleanup
+hd_alias.updateOpenedTab=function(flag){
+	var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
+	// incase of cleanup, no need to check autorun
+	if (flag && !autoRun) {
+		return;
+	}
+	//var numTabs = gBrowser.browsers.length;
+	var numTabs = gBrowser.tabContainer.childNodes.length;
+	for (var i = 0; i < numTabs; i++) {
+		var currentTab = gBrowser.tabContainer.childNodes[i];
+		if (gBrowser.selectedTab == currentTab) {
+			hd_alias.changeStateManually(flag);
+		} else {
+			var currentBrowser = gBrowser.getBrowserForTab(currentTab);
+			var doc=currentBrowser.contentDocument;
+			if (flag) {
+				hd_alias.enableListener({originalTarget:doc});
+			} else {
+				hd_alias.disableListener({originalTarget:doc});
+			}
+			
+			// apply on frames if any
+			hd_alias.enableForFrames(doc, flag);
+		}	
+	}
+};
+
 hd_alias.domListener=function(eventObj) {
 	var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
 	if (autoRun) {
@@ -46,34 +75,6 @@ hd_alias.tabSelectListener=function(eventObj) {
 		cntx.disable();
 	}
 };
-
-//hd_alias.handleWindowLoad=function() {
-//	hd_alias.hdBundle=document.getElementById("handy_dictionary_ext_bundle");
-//	
-//	cntx.init();
-//	menu.init();
-//	
-//	gBrowser.addEventListener("DOMContentLoaded", function(eventObj) {
-//		var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
-//		if (autoRun) {
-//			hd_alias.enableListener(eventObj);
-//		} else {
-//			hd_alias.disableListener(eventObj);
-//		}
-//		menu.updateStatus(autoRun);
-//	}, false);
-//	var container = gBrowser.tabContainer;
-//	container.addEventListener("TabSelect", function(eventObj) {
-//		// for each tab restore the status of extension
-//		var on = util.isExtEnabled(content.document);
-//		menu.updateStatus(on);
-//		if (on) {
-//			cntx.enable();
-//		} else {
-//			cntx.disable();
-//		}
-//	}, false);
-//};
 
 // eventObj may be null incase, enabled manually
 hd_alias.enableListener=function(eventObj) {
@@ -108,13 +109,17 @@ hd_alias.changeStateManually=function(flag) {
 	}
 	
 	// apply on frames if any
-	var frames = content.document.getElementsByTagName("frame");
-	hd_alias.enableForFrames(frames, flag);
-	var iframes = content.document.getElementsByTagName("iframe");
-	hd_alias.enableForFrames(iframes, flag);
+	hd_alias.enableForFrames(content.document, flag);
 };
 
-hd_alias.enableForFrames=function(frm, flag) {
+hd_alias.enableForFrames=function(doc, flag) {
+	var frames = doc.getElementsByTagName("frame");
+	hd_alias.handleFrames(frames, flag);
+	var iframes = doc.getElementsByTagName("iframe");
+	hd_alias.handleFrames(iframes, flag);
+};
+
+hd_alias.handleFrames=function(frm, flag) {
 	if(frm != null && frm.length > 0) {
 		for(var i = 0; i < frm.length; i++) {
 			if(flag){
@@ -189,14 +194,4 @@ hd_alias.ajaxHandler=function(dictURL, popup) {
 	xhr.open("GET",dictURL,true);
 	xhr.send();
 };
-
-// handles internationalization
-//hd_alias.str=function(key) {
-	//if (!hd_alias.hdBundle) {
-	//	return "!!!" + key + "!!!";
-	//}
-	//return hd_alias.hdBundle.getString(key);
-//	return hd_alias.CustomLocale.str(key);
-//};
-//window.addEventListener("load", hd_alias.handleWindowLoad, false);
 })();
