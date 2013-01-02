@@ -10,6 +10,8 @@ var hd_alias=handy_dictionary_ext_ns_id123;
 // maintain life cycle of inline poup
 hd_alias.popupHandler = function() {
 	var self=this;
+	this.width=490;
+	this.height=286;
 	this.contentdiv = null;
 	this.outerdiv = null;
 	this.closebtndiv = null;
@@ -178,6 +180,11 @@ hd_alias.popupHandler = function() {
 		if (updateY != null && updateY > 0) {
 			self.currentY = updateY;
 		}
+		
+		var updatedPos = util.adjustAbsoluteLocations(
+			self.currentX, self.currentY, self.width, self.height);
+		self.currentX=updatedPos[0];
+		self.currentY=updatedPos[1];
 	};
 	
 	// returns true if ui created
@@ -190,7 +197,8 @@ hd_alias.popupHandler = function() {
 		var styleVal1 = "display:block;position:absolute;overflow:hidden;";
 		styleVal1 += "left:" + self.currentX + "px;top:" + self.currentY + "px;" ;
 		styleVal1 += "border:solid 1px #aaaaaa;background-color:#e6e6e6;";
-		styleVal1 += "text-align:justify;font-size:12px;width:490px;height:286px;z-index:100;";
+		styleVal1 += "text-align:justify;font-size:12px;width:"+self.width;
+		styleVal1 += "px;height:"+self.height+"px;z-index:100;";
 		styleVal1 += "padding-top:5px;padding-bottom:5px;border-radius:6px;";
 		self.outerdiv.setAttribute("style", styleVal1);
 		

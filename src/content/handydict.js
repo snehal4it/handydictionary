@@ -144,8 +144,8 @@ hd_alias.handleDoubleClick=function(eventObj) {
 	if (posArr==null) {
 		posArr = util.getAbsoluteLocations(eventObj);
 	}
-
-	var selectedText = util.getSelectedText();
+	
+	var selectedText = util.getSelectedText(eventObj);
 	hd_alias.displayHandyDict(posArr, selectedText);
 };
 

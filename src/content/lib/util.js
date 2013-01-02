@@ -59,6 +59,42 @@ hd_alias.UTIL=new function(){
 		return new Array(currentX, currentY);
 	};
 	
+	/**
+	 * x,y - absolute location for pop-up
+	 * width, height - dimension for pop-up
+	 * @return updated x,y position array 
+	 */
+	this.adjustAbsoluteLocations=function(x, y, width, height){
+		// only update if content area more than pop-up
+		if (content.innerHeight < height
+				|| content.innerWidth < width) {
+			return;
+		}
+		
+		var right = x + width;
+		var bottom = y + height;
+		// update dimension based on scrolling
+		var offsetWidth = content.innerWidth + content.pageXOffset;
+		var offsetHeight = content.innerHeight + content.pageYOffset;
+		
+		var updatedX = x;
+		if (right > offsetWidth) {
+			updatedX = (x - (right - offsetWidth))-25;
+			if (updatedX < 0) {
+				updatedX = x;
+			}
+		}
+		
+		var updatedY = y;
+		if (bottom > offsetHeight) {
+			updatedY = (y - (bottom - offsetHeight))-15;
+			if (updatedY < 0) {
+				updatedY = y;
+			}
+		}
+		return new Array(updatedX, updatedY);
+	};
+	
 	// For frame clientX,Y is relative to frame not parent window
 	this.getFrameAbsLocations=function(eventObj){
 		var currentX = eventObj.mozMovementX + content.pageXOffset + 5;
@@ -71,11 +107,25 @@ hd_alias.UTIL=new function(){
 		hd_alias.contextMenuPos=self.getAbsoluteLocations(eventObj);
 	};
 	
-	this.getSelectedText=function(){
+	// eventObj can be null, if present then text from
+	// input/text-area if selected will be returned
+	this.getSelectedText=function(eventObj){
 		//var text = content.getSelection().toString();
 		//text = text.replace(/[\.\*\?;!()\+,\[:\]<>^_`\[\]{}~\\\/\"\'=]/g, " ");
 		//text = text.replace(/\s+/g, " ");
 		//return text;
+		if (eventObj && eventObj.explicitOriginalTarget) {
+			var elem = eventObj.explicitOriginalTarget;
+			var nodeName = elem.nodeName.toUpperCase();
+			if ((nodeName == "INPUT" || nodeName == "TEXTAREA")
+					&& elem.value && elem.value != ""
+						&& elem.selectionStart != null && elem.selectionEnd != null) {
+				var selText = elem.value.substring(elem.selectionStart, elem.selectionEnd);
+				if (selText != null && selText.replace(/\s/g, "").length > 0) {
+					return selText;
+				}
+			}
+		}
 		return document.commandDispatcher.focusedWindow.
 				getSelection().toString().replace(/(\n|\r|\t)+/g, " ").trim();
 	};

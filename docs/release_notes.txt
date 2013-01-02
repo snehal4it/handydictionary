@@ -1,7 +1,14 @@
-
+-----------------------
 Handy Dictionary v0.4
-- Restartless
+-----------------------
+- Restart-less
 	- From next time there will be no restart required to receive updates
+- Enable tool for form elements
+	- double click on words to lookup inside input-box/text-area OR
+	- right click on input-box/text-area and perform lookup
+- Fix, positioning of pop-up when click near right/bottom edge.
+
+------------------------------------------------------------------------------------------------
 
 Handy Dictionary v0.3
 - support for link/anchor

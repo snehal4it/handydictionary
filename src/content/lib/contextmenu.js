@@ -159,11 +159,15 @@ hd_alias.CNTX = new function() {
 			
 			return util.filterLookupText(elem.textContent);
 		} else if (gContextMenu.isContentSelected) {
-			var selection = util.getSelectedText();
+			var selection = util.getSelectedText(null);
 			if (selection != "") {
 				result[0] = selection;
 			}
+		} else if (gContextMenu.onTextInput && elem && elem.value) {
+			// input, textarea
+			return util.filterLookupText(elem.value);
 		}
+		
 		return result;
 	};
 	
