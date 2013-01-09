@@ -208,7 +208,7 @@ hd_alias.popupHandler = function() {
 		self.outerdiv.appendChild(titleContainer);
 		self.outerdiv.appendChild(popupbody);
 		
-		var body = self._getRootElement();
+		var body = util.getRootElement();
 		if (!body) { return false; }
 		body.appendChild(self.outerdiv);
 		
@@ -227,19 +227,19 @@ hd_alias.popupHandler = function() {
 	};
 	
 	// top level element to contain popup
-	this._getRootElement = function() {
-		if (content.document.body && content.document.body.nodeName
-			&& content.document.body.nodeName.toUpperCase()=="BODY") {
-			// for frameset it returns frameset instead of body tag
-			return content.document.body;
-		}
-		var body = content.document.getElementsByTagName("body")[0];
-		if (!body) {
-			// fix for frameset
-			body=content.document.getElementsByTagName("html")[0];
-		}
-		return body;
-	};
+	//this._getRootElement = function() {
+	//	if (content.document.body && content.document.body.nodeName
+	//		&& content.document.body.nodeName.toUpperCase()=="BODY") {
+	//		// for frameset it returns frameset instead of body tag
+	//		return content.document.body;
+	//	}
+	//	var body = content.document.getElementsByTagName("body")[0];
+	//	if (!body) {
+	//		// fix for frameset
+	//		body=content.document.getElementsByTagName("html")[0];
+	//	}
+	//	return body;
+	//};
 	
 	// display temporary messages
 	this.display = function(displayStr) {
@@ -328,7 +328,7 @@ hd_alias.popupHandler = function() {
 		self.dragdropref.close();
 		self.dragdropref=null;
 		
-		var body = self._getRootElement();
+		var body = util.getRootElement();
 		if(!body) {return;}
 		body.removeChild(self.outerdiv);
 		
@@ -354,14 +354,20 @@ hd_alias.dragDropHandler=function() {
 	this.starty=0;
 	this.startleft=0;
 	this.starttop=0;
+	this.temp=null;
 	
 	this.init = function(elem, elemWin) {
 		if (elem == null || elemWin == null) {return;}
 		self.sourceElem = elem;
 		self.popupwinElem = elemWin;
 		self.sourceElem.addEventListener("mousedown",self.startdrag,false);
+		if (self.temp != null) {
+			self.temp.addEventListener("mouseup",self.stopdrag,false);
+			self.temp.addEventListener("mousemove",self.ondrag,false);
+		} else {
 		content.document.addEventListener("mouseup",self.stopdrag,false);
 		content.document.addEventListener("mousemove",self.ondrag,false);
+		}
 	};
 	
 	this.startdrag = function(mouseE) {
@@ -370,12 +376,20 @@ hd_alias.dragDropHandler=function() {
 		self.starty=mouseE.clientY;
 		self.startleft=parseInt(self.popupwinElem.style.left);
 		self.starttop=parseInt(self.popupwinElem.style.top);
-		self.popupwinElem.style.cursor="move";
+		if (self.temp != null) {
+			self.popupwinElem.contentDocument.body.style.cursor="move";
+		} else {
+			self.popupwinElem.style.cursor="move";
+		}
 	};
 	
 	this.stopdrag = function(mouseE) {
 		self.startflag=false;
-		self.popupwinElem.style.cursor="auto";
+		if (self.temp != null) {
+			self.popupwinElem.contentDocument.body.style.cursor="auto";
+		} else {
+			self.popupwinElem.style.cursor="auto";
+		}
 	};
 	
 	this.ondrag = function(mouseE) {
@@ -395,13 +409,246 @@ hd_alias.dragDropHandler=function() {
 	// clear listeners/references
 	this.close = function() {
 		self.sourceElem.removeEventListener("mousedown",self.startdrag,false);
+		if (self.temp != null) {
+			self.temp.removeEventListener("mouseup",self.stopdrag,false);
+			self.temp.removeEventListener("mousemove",self.ondrag,false);
+		} else {
 		content.document.removeEventListener("mouseup",self.stopdrag,false);
 		content.document.removeEventListener("mousemove",self.ondrag,false);
-		
+		}
 		self.sourceElem=null;
 		self.popupwinElem=null;
 		self=null;
 	};
 };
 
+// Display result in compact mode
+hd_alias.compactPopup=function() {
+	var self=this;
+	this.width=490;
+	this.height=94;
+	this.currentX = 200;
+	this.currentY = 250;
+	this.frm=null;
+	this.doc=null;
+	this.titlebar=null;
+	this.moreoptlink=null;
+	this.closebtndiv = null;
+	this.contentdiv=null;
+	this.dict=null;
+	this.dictURL=null;
+	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
+	
+	var util=hd_alias.UTIL;
+	
+	this.checkAndStorePos = function(updateX, updateY) {
+		if (updateX != null && updateX > 0) {
+			self.currentX = updateX;
+		}
+		
+		if (updateY != null && updateY > 0) {
+			self.currentY = updateY;
+		}
+		
+		var updatedPos = util.adjustAbsoluteLocations(
+			self.currentX, self.currentY, self.width, self.height);
+		self.currentX=updatedPos[0];
+		self.currentY=updatedPos[1];
+	};
+	
+	this._getTitleContainer = function(dictURL) {
+		var titleContainer = self.doc.createElement("div");
+		var titleContainerStyle="position:absolute;left:400px;top:2px;font-size:12px;height:24px;cursor:move;width:90px;"+self.fontFamily;
+		titleContainer.setAttribute("style", titleContainerStyle);
+		
+		var moreoptdiv = self.doc.createElement("div");
+		var moreoptdivStyle = "width:40px;float:right;text-align:center;";
+		moreoptdivStyle += "margin-right:5px;line-height:17px;";
+		moreoptdiv.setAttribute("style", moreoptdivStyle);
+		self.moreoptlink = self.doc.createElement("a");
+		self.moreoptlink.setAttribute("href", dictURL);
+		var moreoptlinkStyle = "text-decoration:underline;color:#555555;";
+		moreoptlinkStyle += "cursor:pointer;" + self.fontFamily;
+		self.moreoptlink.setAttribute("style", moreoptlinkStyle);
+		self.moreoptlink.setAttribute("target", "_blank");
+		var moreoptlinktxt = self.doc.createTextNode(hd_alias.str("ui_more"));
+		self.moreoptlink.appendChild(moreoptlinktxt);
+		moreoptdiv.appendChild(self.moreoptlink);
+		
+		self.closebtndiv = self.doc.createElement("div");
+		var styleVar2 = "border:solid 1px #555555;width:30px;float:right;color:#555555;";
+		styleVar2 += "text-align:center;font-size:14px;background-color:#cccccc;";
+		styleVar2 += "cursor:pointer;margin-right:5px;border-radius:4px;";
+		self.closebtndiv.setAttribute("style", styleVar2);
+		self.closebtndiv.addEventListener("click", self.close, false);
+		var closebtntxt = self.doc.createTextNode("X");
+		self.closebtndiv.appendChild(closebtntxt);
+		
+		titleContainer.appendChild(self.closebtndiv);
+		titleContainer.appendChild(moreoptdiv);
+				
+		return titleContainer;
+	};
+	
+	this._getPopupBody = function() {
+		var popupdiv = self.doc.createElement("div");
+		popupdiv.setAttribute("style", "height:89px;display:table-cell;vertical-align:middle;");
+		
+		self.contentdiv = self.doc.createElement("div");
+		var width = self.width - 10;
+		self.contentdiv.setAttribute("style", "width:"+width+"px;margin-left:10px;"+self.fontFamily);
+		
+		popupdiv.appendChild(self.contentdiv);
+		return popupdiv;
+	};
+	
+	this.buildUI=function(eventObj) {
+		//var doc = eventObj.originalTarget;
+		self.doc=self.frm.contentDocument;
+        var body=self.frm.contentDocument.body;
+        body.setAttribute("style", "margin:0px;");
+        
+        self.titlebar = self._getTitleContainer(self.dictURL);
+        var popupbody = self._getPopupBody();
+        
+        body.appendChild(self.titlebar);
+        body.appendChild(popupbody);
+        // fix for iframe where parent document loses focus
+		// and stop receiving keyboard events
+		if(content.document.activeElement && content.document.activeElement.blur) {
+			content.document.activeElement.blur();
+		}
+
+		content.document.addEventListener("keypress", self.checkCloseEvent, false);
+		self.frm.contentDocument.addEventListener("keypress", self.checkCloseEvent, false);
+		
+		// enable drag/move for inline popup
+		self.dragdropref = new hd_alias.dragDropHandler();
+		//todo: fix temp var
+		self.dragdropref.temp=self.doc;
+		self.dragdropref.init(self.titlebar, self.frm);
+		
+		//todo: fix async issue
+		self.display(hd_alias.str("ajax_loading"));
+		hd_alias.ajaxHandler(self.dictURL, self);
+	};
+	
+	this.init = function(posArr, dictURL, dict) {
+		self.dict=dict;
+		self.dictURL=dictURL;
+		self.checkAndStorePos(posArr[0], posArr[1]);
+		
+		// generates inline popup content using iframe
+		self.frm = content.document.createElement("iframe");
+		self.frm.setAttribute("type", "content");
+		self.frm.setAttribute("collapsed", "true");
+		var styleVal1 = "display:block;position:absolute;overflow:hidden;";
+		styleVal1 += "left:" + self.currentX + "px;top:" + self.currentY + "px;" ;
+		styleVal1 += "border:solid 1px #aaaaaa;background-color:#eeeeee;";
+		styleVal1 += "text-align:justify;font-size:12px;width:"+self.width;
+		styleVal1 += "px;height:"+self.height+"px;z-index:100;";
+		styleVal1 += "padding-top:2px;padding-bottom:2px;border-radius:6px;";
+		self.frm.setAttribute("style", styleVal1);
+        
+		var body = util.getRootElement();
+		if (!body) { return false; }
+		body.appendChild(self.frm);
+		
+		//self.doc=self.frm.contentDocument;
+		self.frm.addEventListener("load", self.buildUI, false);
+		self.frm.contentDocument.location.href = "about:blank";
+		
+		return true;
+	};
+	
+	// display result in content block
+	this.updateresult = function(docFragment) {
+		self.clearContentNode();
+		
+		var result = self.dict.getCompactResult(docFragment);
+		if (result.length == 1) {
+			self.display(result[0]);
+			return;
+		}
+				
+		var titleDiv = self.doc.createElement("div");
+		titleDiv.setAttribute("style", "width:400px;font-size:12px;overflow:hidden;");
+		var titleAr = result[0];
+		for (var i = 0; i < titleAr.length; i++) {
+			if (titleAr[i] == null) { continue; }
+			if (i == 0) {
+				titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;");
+			}
+			titleDiv.appendChild(titleAr[i]);
+		}
+		
+		var defDiv = self.doc.createElement("div");
+		defDiv.setAttribute("style", "margin-left:10px;font-size:14px;");
+		var defAr = result[1];
+		for (var i = 0; i < defAr.length; i++) {
+			if (defAr[i] == null) { continue; }
+			defDiv.appendChild(defAr[i]);
+		}
+		
+		self.contentdiv.appendChild(titleDiv);
+		self.contentdiv.appendChild(defDiv);
+		
+		// display scroll if content is more
+		if (self.contentdiv.getBoundingClientRect().height > 89) {
+			self.contentdiv.style.height="89px";
+			self.contentdiv.style.overflow="auto";
+			self.titlebar.style.left="387px";
+		}
+	};
+	
+	
+	// display temporary messages
+	this.display = function(displayStr) {
+		self.clearContentNode();
+		
+		var msgElem = self.doc.createElement("h1");
+		var msgtxt = self.doc.createTextNode(displayStr);
+		msgElem.appendChild(msgtxt);
+		self.contentdiv.appendChild(msgElem);
+	};
+	
+	// clear content/messages from content window
+	this.clearContentNode = function() {
+		var childNodes = self.contentdiv.childNodes;
+		if (childNodes && childNodes.length > 0) {			
+			var tempArray = new Array();
+			for (var i = 0; i < childNodes.length; i++) {
+				tempArray[i] = childNodes.item(i);
+			}
+			
+			for (var i = 0; i < tempArray.length; i++) {
+				self.contentdiv.removeChild(tempArray[i]);
+			}
+		}
+	};
+	
+	this.checkCloseEvent=function(eventObj) {
+		if (eventObj.keyCode == 27) {
+			eventObj.stopImmediatePropagation();
+			self.close();
+		}
+		return false;
+	};
+	
+	// remove listeners and references on close
+	this.close = function() {
+		self.frm.contentDocument.removeEventListener("keypress",self.checkCloseEvent,false);
+		content.document.removeEventListener("keypress",self.checkCloseEvent,false);
+		
+		var body = util.getRootElement();
+		if(!body) {return;}
+		body.removeChild(self.frm);
+		
+		self.frm=null;
+		
+		// fix where focus is lost and events no longer fired
+		// which prevents other pop-ups from closing
+		content.focus();
+	};
+};
 })();

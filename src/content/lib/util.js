@@ -150,6 +150,21 @@ hd_alias.UTIL=new function(){
 		return false;
 	};
 	
+	// top level element to contain popup
+	this.getRootElement = function() {
+		if (content.document.body && content.document.body.nodeName
+			&& content.document.body.nodeName.toUpperCase()=="BODY") {
+			// for frameset it returns frameset instead of body tag
+			return content.document.body;
+		}
+		var body = content.document.getElementsByTagName("body")[0];
+		if (!body) {
+			// fix for frameset
+			body=content.document.getElementsByTagName("html")[0];
+		}
+		return body;
+	};
+	
 	/**
 	 * copied from
 	 * https://developer.mozilla.org/en-US/docs/XUL_School/DOM_Building_and_HTML_Insertion
@@ -228,6 +243,35 @@ hd_alias.dicts=[
 					entries[i].setAttribute("style", "float:left;");
 				}
 			}
+		};
+		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
+		// returns array with length 1 in-case of error
+		this.getCompactResult=function(docFragment) {
+			var dictResultElem=docFragment.querySelector("#"+self.resultId);
+			if (dictResultElem == null) {
+				return new Array("Result not found");
+			}
+			
+			var result = new Array();
+			var titleAr = new Array();
+			titleAr[0] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.hw");
+			titleAr[1] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.pos");
+			titleAr[2] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.prons");
+			if (titleAr[2] != null) {
+				titleAr[2].setAttribute("style", "margin-left:2px;margin-right:2px;");
+			}
+			titleAr[3] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.grams");
+			
+			var defAr = new Array();
+			defAr[0] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_b > div.sense > span");
+			if (defAr[0] == null) {
+				defAr[0] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_b div.sense > span");
+			}
+			
+			result[0] = titleAr;
+			result[1] = defAr;
+			
+			return result;
 		};
 	},
 	new function(){

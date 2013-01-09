@@ -159,7 +159,12 @@ hd_alias.displayHandyDict=function(posArr, selectedText) {
 		//var dictURL = util.getDictionaryServiceURL(selectedText);
 		var dict=util.getDictionary();
 		var dictURL=dict.getURL(selectedText);
-		var popup = new hd_alias.popupHandler();
+		
+		// todo: compact mode, ajax call handled internally
+		var popup = new hd_alias.compactPopup();
+		var flag = popup.init(posArr, dictURL, dict);
+		
+		/*var popup = new hd_alias.popupHandler();
 		var flag = popup.init(posArr, dictURL, dict);
 		if (!flag) {
 			alert(hd_alias.str("display.error1")+'\n'+hd_alias.str("display.error2"));
@@ -168,6 +173,7 @@ hd_alias.displayHandyDict=function(posArr, selectedText) {
 		popup.display(hd_alias.str("ajax_loading"));
 		
 		hd_alias.ajaxHandler(dictURL, popup);
+		*/
 	}
 };
 
