@@ -425,8 +425,8 @@ hd_alias.dragDropHandler=function() {
 // Display result in compact mode
 hd_alias.compactPopup=function() {
 	var self=this;
-	this.width=490;
-	this.height=94;
+	this.width=350;
+	this.height=121;
 	this.currentX = 200;
 	this.currentY = 250;
 	this.frm=null;
@@ -437,8 +437,9 @@ hd_alias.compactPopup=function() {
 	this.contentdiv=null;
 	this.dict=null;
 	this.dictURL=null;
-	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
+	this.fontFamily="font-family:Georgia,verdana,arial,helvetica,sans-serif;";
 	
+	this.titleContainerLeft=0;
 	var util=hd_alias.UTIL;
 	
 	this.checkAndStorePos = function(updateX, updateY) {
@@ -457,8 +458,11 @@ hd_alias.compactPopup=function() {
 	};
 	
 	this._getTitleContainer = function(dictURL) {
+		var titleContainerWidth = 90;
+		self.titleContainerLeft = self.width - titleContainerWidth;
 		var titleContainer = self.doc.createElement("div");
-		var titleContainerStyle="position:absolute;left:400px;top:2px;font-size:12px;height:24px;cursor:move;width:90px;"+self.fontFamily;
+		var titleContainerStyle="position:absolute;font-size:12px;height:24px;cursor:move;"+self.fontFamily;
+		titleContainerStyle += "left:"+self.titleContainerLeft+"px;top:2px;width:"+titleContainerWidth+"px";
 		titleContainer.setAttribute("style", titleContainerStyle);
 		
 		var moreoptdiv = self.doc.createElement("div");
@@ -492,11 +496,12 @@ hd_alias.compactPopup=function() {
 	
 	this._getPopupBody = function() {
 		var popupdiv = self.doc.createElement("div");
-		popupdiv.setAttribute("style", "height:89px;display:table-cell;vertical-align:middle;");
+		popupdiv.setAttribute("style", "height:"+self.height+"px;display:table-cell;vertical-align:middle;");
 		
 		self.contentdiv = self.doc.createElement("div");
-		var width = self.width - 10;
-		self.contentdiv.setAttribute("style", "width:"+width+"px;margin-left:10px;"+self.fontFamily);
+		var leftMargin=10;
+		var width = self.width - leftMargin;
+		self.contentdiv.setAttribute("style", "width:"+width+"px;margin-left:"+leftMargin+"px;"+self.fontFamily);
 		
 		popupdiv.appendChild(self.contentdiv);
 		return popupdiv;
@@ -544,10 +549,10 @@ hd_alias.compactPopup=function() {
 		self.frm.setAttribute("collapsed", "true");
 		var styleVal1 = "display:block;position:absolute;overflow:hidden;";
 		styleVal1 += "left:" + self.currentX + "px;top:" + self.currentY + "px;" ;
-		styleVal1 += "border:solid 1px #aaaaaa;background-color:#eeeeee;";
+		styleVal1 += "border:solid 1px #bcaab4;background-color:#ffffe8;";
 		styleVal1 += "text-align:justify;font-size:12px;width:"+self.width;
 		styleVal1 += "px;height:"+self.height+"px;z-index:100;";
-		styleVal1 += "padding-top:2px;padding-bottom:2px;border-radius:6px;";
+		styleVal1 += "border-radius:6px;";
 		self.frm.setAttribute("style", styleVal1);
         
 		var body = util.getRootElement();
@@ -572,13 +577,14 @@ hd_alias.compactPopup=function() {
 		}
 				
 		var titleDiv = self.doc.createElement("div");
-		titleDiv.setAttribute("style", "width:400px;font-size:12px;overflow:hidden;");
+		titleDiv.setAttribute("style", "width:"+self.titleContainerLeft+"px;font-size:12px;overflow:hidden;");
 		var titleAr = result[0];
 		for (var i = 0; i < titleAr.length; i++) {
 			if (titleAr[i] == null) { continue; }
 			if (i == 0) {
 				titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;");
 			}
+			titleAr[i].style.display="inline";
 			titleDiv.appendChild(titleAr[i]);
 		}
 		
@@ -594,10 +600,10 @@ hd_alias.compactPopup=function() {
 		self.contentdiv.appendChild(defDiv);
 		
 		// display scroll if content is more
-		if (self.contentdiv.getBoundingClientRect().height > 89) {
-			self.contentdiv.style.height="89px";
+		if (self.contentdiv.getBoundingClientRect().height > self.height) {
+			self.contentdiv.style.height=self.height+"px";
 			self.contentdiv.style.overflow="auto";
-			self.titlebar.style.left="387px";
+			self.titlebar.style.left=(self.titleContainerLeft-13)+"px";
 		}
 	};
 	
@@ -644,6 +650,13 @@ hd_alias.compactPopup=function() {
 		if(!body) {return;}
 		body.removeChild(self.frm);
 		
+		//self.dict=null;
+		//self.dictURL=null;
+		self.closebtndiv=null;
+		self.moreoptlink=null;
+		self.titlebar=null;
+		self.doc=null;
+		self.contentdiv=null;
 		self.frm=null;
 		
 		// fix where focus is lost and events no longer fired
