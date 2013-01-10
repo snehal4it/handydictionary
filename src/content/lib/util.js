@@ -323,6 +323,35 @@ hd_alias.dicts=[
 			}
 			}
 		};
+		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
+		// returns array with length 1 in-case of error
+		this.getCompactResult=function(docFragment) {
+			var dictResultElem=docFragment.querySelector("#"+self.resultId);
+			if (dictResultElem == null) {
+				return new Array("Result not found");
+			}
+			
+			var result = new Array();
+			var titleAr = new Array();
+			titleAr[0] = dictResultElem.querySelector("header > h1.pageTitle");
+			titleAr[1] = dictResultElem.querySelector("header > div.entryPronunciation > a");
+			if (titleAr[1] == null) {
+				titleAr[1] = dictResultElem.querySelector("div#entryPageContent > div > section.senseGroup > div.entryPronunciation > a");
+			}
+			if (titleAr[1] != null) {
+				titleAr[1].setAttribute("style", "margin-right:3px;");
+			}
+			titleAr[2] = dictResultElem.querySelector("div#entryPageContent > div > section.senseGroup > h3.partOfSpeech > span.partOfSpeech");
+			titleAr[3] = dictResultElem.querySelector("div#entryPageContent > div > section.senseGroup > em");
+			
+			var defAr = new Array();
+			defAr[0] = dictResultElem.querySelector("div#entryPageContent > div > section.senseGroup > ul.sense-entry > li.sense > div.senseInnerWrapper > span.definition");
+			
+			result[0] = titleAr;
+			result[1] = defAr;
+			
+			return result;
+		};
 	},
 	new function(){
 		// 2 dictionary.reference.com
@@ -350,6 +379,34 @@ hd_alias.dicts=[
 				}
 			}
 		};
+		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
+		// returns array with length 1 in-case of error
+		this.getCompactResult=function(docFragment) {
+			var dictResultElem=docFragment.querySelector("#"+self.resultId);
+			if (dictResultElem == null) {
+				return new Array("Result not found");
+			}
+			
+			var result = new Array();
+			var titleAr = new Array();
+			titleAr[0] = dictResultElem.querySelector("div#Headserp > span > span > h1#query_h1");
+			titleAr[1] = dictResultElem.querySelector("div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.header > span.pronset > span.show_spellpr > span.pron");
+			if (titleAr[1] != null) {
+				titleAr[1].setAttribute("style", "margin-left:2px;margin-right:2px;");
+			}
+			titleAr[2] = dictResultElem.querySelector("div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > span.pg");
+									
+			var defAr = new Array();
+			defAr[0] = dictResultElem.querySelector("div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > div.luna-Ent > div.dndata");
+			if (defAr[0] == null) {
+				defAr[0] = dictResultElem.querySelector("div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > div.luna-Ent");
+			}
+
+			result[0] = titleAr;
+			result[1] = defAr;
+			
+			return result;
+		};
 	},
 	new function(){
 		// 3 Merriam-Webster
@@ -374,6 +431,35 @@ hd_alias.dicts=[
 				}
 			}
 		};
+		
+		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
+		// returns array with length 1 in-case of error
+		this.getCompactResult=function(docFragment) {
+			var dictResultElem=docFragment.querySelector("#"+self.resultId);
+			if (dictResultElem == null) {
+				return new Array("Result not found");
+			}
+			
+			var result = new Array();
+			var titleAr = new Array();
+			titleAr[0] = dictResultElem.querySelector("#mwEntryData > div#headword > h2");
+			titleAr[1] = dictResultElem.querySelector("#mwEntryData > div#headword > span.main-fl");
+			if (titleAr[1] != null) {
+				titleAr[1].setAttribute("style", "margin-left:2px;margin-right:2px;");
+			}
+			titleAr[2] = dictResultElem.querySelector("#mwEntryData > div#headword > span.pr");
+									
+			var defAr = new Array();
+			defAr[0] = dictResultElem.querySelector("#mwEntryData > div.d > div.sblk > div.scnt");
+			if (defAr[0] == null) {
+				defAr[0] = dictResultElem.querySelector("#mwEntryData > div.d > div.sense-block-one > div.scnt");
+			}
+
+			result[0] = titleAr;
+			result[1] = defAr;
+			
+			return result;
+		};
 	},
 	new function(){
 		// 4 The Free Dictionary
@@ -385,6 +471,34 @@ hd_alias.dicts=[
 			return self.url+text;
 		};
 		this.applyFix=function(elem) {};
+		
+		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
+		// returns array with length 1 in-case of error
+		this.getCompactResult=function(docFragment) {
+			var dictResultElem=docFragment.querySelector("#"+self.resultId);
+			if (dictResultElem == null) {
+				return new Array("Result not found");
+			}
+			
+			var result = new Array();
+			var titleAr = new Array();
+			titleAr[0] = dictResultElem.querySelector("table td > span.hw");
+			titleAr[1] = dictResultElem.querySelector("table td > span.pron");
+			if (titleAr[1] != null) {
+				titleAr[1].setAttribute("style", "margin-left:2px;margin-right:2px;");
+			}
+									
+			var defAr = new Array();
+			defAr[0] = dictResultElem.querySelector("table td > div.pseg > div.ds-list");
+			if (defAr[0] == null) {
+				defAr[0] = dictResultElem.querySelector("table td > div.pseg > div.ds-single");
+			}
+
+			result[0] = titleAr;
+			result[1] = defAr;
+			
+			return result;
+		};
 	}
 ];
 
