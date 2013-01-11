@@ -174,9 +174,8 @@ hd_alias.CNTX = new function() {
 	this.lookupManually=function(eventObj) {
 		var x = hd_alias.contextMenuPos[0];
 		var y = hd_alias.contextMenuPos[1];
-		var dict=util.getDictionary();
 		var popup = new hd_alias.popupHandler();
-		var flag=popup.init(new Array(x,y), "", dict);
+		var flag=popup.init(new Array(x,y), "", true);
 		if (!flag) {
 			alert(hd_alias.str("display.error1")+'\n'+hd_alias.str("display.error2"));
 			return;

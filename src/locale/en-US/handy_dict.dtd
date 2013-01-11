@@ -21,3 +21,6 @@
 <!ENTITY autorun_desc "By default enable/disable Handy Dictionary when new page/url is opened">
 
 <!ENTITY select_dict_label "Select Dictionary">
+<!ENTITY select_mode_label "Select Display Mode">
+<!ENTITY classic_mode_label "Classic Mode">
+<!ENTITY compact_mode_label "Compact Mode">

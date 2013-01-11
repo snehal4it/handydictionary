@@ -13,6 +13,7 @@
 		<preferences>
 			<preference id="handy_dictionary_ext_pref_autorun" name="extensions.handy_dictionary_ext.autorun" type="bool"/>
 			<preference id="handy_dictionary_ext_pref_dict" name="extensions.handy_dictionary_ext.dict" type="int" />
+			<preference id="handy_dictionary_ext_pref_mode" name="extensions.handy_dictionary_ext.mode" type="int" />
 		</preferences>
 
 		<groupbox>
@@ -22,12 +23,12 @@
 				<rows>
 					<row>
 						<label control="handy_dictionary_ext_cntrl_checkbox" value="&autorun_label;"/>
-						<checkbox id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" />
+						<hbox flex="1">
+							<checkbox style="margin:0px;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" />
+							<description flex="1" style="margin-top:5px;margin-left:0px;padding-left:0px;">&autorun_desc;</description>
+						</hbox>
 					</row>
-					<hbox align="center" flex="1">
-						<description flex="1">&autorun_desc;</description>
-						<separator style="min-height:10px;"/>
-					</hbox>
+					<spacer flex="1" style="min-height:10px;"/>
 					<row>
 						<label control="handy_dictionary_ext_cntrl_select_dict" value="&select_dict_label;"/>
 						<radiogroup id="handy_dictionary_ext_cntrl_select_dict" orient="vertical" preference="handy_dictionary_ext_pref_dict">
@@ -63,6 +64,20 @@
 							</hbox>
 						</radiogroup>
 					</row>
+					<spacer flex="1" style="min-height:10px;"/>
+					<row>
+						<label control="handy_dictionary_ext_cntrl_select_mode" value="&select_mode_label;"/>
+						<radiogroup id="handy_dictionary_ext_cntrl_select_mode" orient="vertical" preference="handy_dictionary_ext_pref_mode">
+							<hbox>
+								<radio label="&classic_mode_label;" value="0" />
+								<description style="padding-top:4px;">Detailed Definition</description>
+							</hbox>
+							<hbox>
+								<radio label="&compact_mode_label;" value="1" />
+								<description style="padding-top:4px;">Simple Definition</description>
+							</hbox>
+						</radiogroup>
+					</row>					
 				</rows>
 			</grid>
 		</groupbox>

@@ -156,24 +156,12 @@ hd_alias.lookupManually=function(eventObj) {
 
 hd_alias.displayHandyDict=function(posArr, selectedText) {
 	if (selectedText != null && selectedText.replace(/\s/g, "").length > 0) {
-		//var dictURL = util.getDictionaryServiceURL(selectedText);
-		var dict=util.getDictionary();
-		var dictURL=dict.getURL(selectedText);
-		
-		// todo: compact mode, ajax call handled internally
-		var popup = new hd_alias.compactPopup();
-		var flag = popup.init(posArr, dictURL, dict);
-		
-		/*var popup = new hd_alias.popupHandler();
-		var flag = popup.init(posArr, dictURL, dict);
+		var popup = util.getPopup();
+		var flag = popup.init(posArr, selectedText);
 		if (!flag) {
 			alert(hd_alias.str("display.error1")+'\n'+hd_alias.str("display.error2"));
 			return;
 		}
-		popup.display(hd_alias.str("ajax_loading"));
-		
-		hd_alias.ajaxHandler(dictURL, popup);
-		*/
 	}
 };
 

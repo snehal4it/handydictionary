@@ -27,6 +27,7 @@ hd_alias.popupHandler = function() {
 	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
 	
 	this.dict=null;
+	this.dictURL=null;
 	var util=hd_alias.UTIL;
 	
 	this._getTitleContainer = function(dictURL) {
@@ -187,9 +188,19 @@ hd_alias.popupHandler = function() {
 		self.currentY=updatedPos[1];
 	};
 	
+	this._loadContent = function() {
+		self.display(hd_alias.str("ajax_loading"));
+		hd_alias.ajaxHandler(self.dictURL, self);
+	};
+	
+	this.init = function(posArr, selectedText) {
+		return self.init(posArr, selectedText, false);
+	};
+	
 	// returns true if ui created
-	this.init = function(posArr, dictURL, dict) {
-		self.dict=dict;
+	this.init = function(posArr, selectedText, manualLookup) {
+		self.dict=util.getDictionary();
+		self.dictURL=self.dict.getURL(selectedText);
 		self.checkAndStorePos(posArr[0], posArr[1]);
 		
 		// generates inline popup content using div
@@ -202,7 +213,7 @@ hd_alias.popupHandler = function() {
 		styleVal1 += "padding-top:5px;padding-bottom:5px;border-radius:6px;";
 		self.outerdiv.setAttribute("style", styleVal1);
 		
-		var titleContainer = this._getTitleContainer(dictURL);
+		var titleContainer = this._getTitleContainer(self.dictURL);
 		var popupbody = this._getPopupBody();
 		
 		self.outerdiv.appendChild(titleContainer);
@@ -223,6 +234,10 @@ hd_alias.popupHandler = function() {
 		// enable drag/move for inline popup
 		self.dragdropref = new hd_alias.dragDropHandler();
 		self.dragdropref.init(titleContainer, self.outerdiv);
+		
+		if (!manualLookup) {
+			self._loadContent();
+		}
 		return true;
 	};
 	
@@ -371,16 +386,19 @@ hd_alias.dragDropHandler=function() {
 	};
 	
 	this.startdrag = function(mouseE) {
-		self.startflag=true;
-		self.startx=mouseE.clientX;
-		self.starty=mouseE.clientY;
 		self.startleft=parseInt(self.popupwinElem.style.left);
 		self.starttop=parseInt(self.popupwinElem.style.top);
 		if (self.temp != null) {
+			// fix for iframe
 			self.popupwinElem.contentDocument.body.style.cursor="move";
+			self.startx=mouseE.screenX;
+			self.starty=mouseE.screenY;
 		} else {
 			self.popupwinElem.style.cursor="move";
+			self.startx=mouseE.clientX;
+			self.starty=mouseE.clientY;
 		}
+		self.startflag=true;
 	};
 	
 	this.stopdrag = function(mouseE) {
@@ -394,8 +412,8 @@ hd_alias.dragDropHandler=function() {
 	
 	this.ondrag = function(mouseE) {
 		if (self.startflag != true) { return;}
-		var deltax = mouseE.clientX - self.startx;
-		var deltay = mouseE.clientY - self.starty;
+		var deltax = ((self.temp != null ? mouseE.screenX : mouseE.clientX)) - self.startx;
+		var deltay = ((self.temp != null ? mouseE.screenY : mouseE.clientY)) - self.starty;
 		var currentx = self.startleft + deltax;
 		var currenty = self.starttop + deltay;
 		
@@ -531,16 +549,19 @@ hd_alias.compactPopup=function() {
 		self.dragdropref = new hd_alias.dragDropHandler();
 		//todo: fix temp var
 		self.dragdropref.temp=self.doc;
-		self.dragdropref.init(self.titlebar, self.frm);
+		self.dragdropref.init(body, self.frm);
 		
-		//todo: fix async issue
+		self._loadContent();
+	};
+	
+	this._loadContent = function() {
 		self.display(hd_alias.str("ajax_loading"));
 		hd_alias.ajaxHandler(self.dictURL, self);
 	};
 	
-	this.init = function(posArr, dictURL, dict) {
-		self.dict=dict;
-		self.dictURL=dictURL;
+	this.init = function(posArr, selectedText) {
+		self.dict=util.getDictionary();
+		self.dictURL=self.dict.getURL(selectedText);
 		self.checkAndStorePos(posArr[0], posArr[1]);
 		
 		// generates inline popup content using iframe

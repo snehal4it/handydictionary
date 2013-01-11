@@ -53,6 +53,23 @@ hd_alias.UTIL=new function(){
 		return hd_alias.dicts[dict_id];
 	};
 	
+	// retrieves pop-up based on display mode
+	this.getPopup=function(){
+		var mode = 0;
+		try {
+			mode=hd_alias.prefManager.getIntPref("extensions.handy_dictionary_ext.mode");
+		} catch(e) {}
+		
+		var popup = null;
+		if (mode==1) {
+			popup = new hd_alias.compactPopup();
+		} else {
+			popup = new hd_alias.popupHandler();
+		}
+		
+		return popup;
+	};
+	
 	this.getAbsoluteLocations=function(eventObj){
 		var currentX = eventObj.clientX + content.pageXOffset + 5;
 		var currentY = eventObj.clientY + content.pageYOffset + 20;
