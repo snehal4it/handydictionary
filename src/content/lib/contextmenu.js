@@ -175,12 +175,12 @@ hd_alias.CNTX = new function() {
 		var x = hd_alias.contextMenuPos[0];
 		var y = hd_alias.contextMenuPos[1];
 		var popup = new hd_alias.popupHandler();
-		var flag=popup.init(new Array(x,y), "", true);
+		var flag=popup.init(new Array(x,y), "");
 		if (!flag) {
 			alert(hd_alias.str("display.error1")+'\n'+hd_alias.str("display.error2"));
 			return;
 		}
-		popup.toggleSearchDisplay(null);
+		//popup.toggleSearchDisplay(null);
 	};
 };
 
