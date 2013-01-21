@@ -166,7 +166,7 @@ hd_alias.popupHandler = function() {
 	this.inputCtrl=null;
 	this.btnCtrl=null;
 	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
-	
+		
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
 		return self.commonInit(posArr, selectedText, self.buildUI);
@@ -261,18 +261,27 @@ hd_alias.popupHandler = function() {
 		if (dictResultElem != null) {
 			var childNodes = dictResultElem.childNodes;
 			self.clearContentNode();
-			if (childNodes && childNodes.length > 0) {
-				var tempArray = new Array();
-				for (var i = 0; i < childNodes.length; i++) {
-					tempArray[i] = childNodes.item(i);
-				}
-				
-				for (var i = 0; i < tempArray.length; i++) {
-					var elem = tempArray[i];
-					self.dict.applyFix(elem);
-					self.contentdiv.appendChild(elem);
-				}
+			
+			var cssAr = self.dict.css;
+			var linkVar = null;
+			for (var i = 0; i < cssAr.length; i++) {
+				linkVar = self.doc.createElement("link");
+				linkVar.setAttribute("type", "text/css");
+				linkVar.setAttribute("rel", "stylesheet");
+				linkVar.setAttribute("href", cssAr[i]);
+				self.contentdiv.appendChild(linkVar);
 			}
+			
+			var styleContainer = self.doc.createElement("style");
+			self.contentdiv.appendChild(styleContainer);
+			var styleRef = self.doc.styleSheets[self.doc.styleSheets.length-1];
+			
+			var cssRulesAr = self.dict.cssRules;
+			for (var i = 0; i < cssRulesAr.length; i++) {
+				styleRef.insertRule(cssRulesAr[i], styleRef.cssRules.length);
+			}
+			
+			self.contentdiv.appendChild(dictResultElem);
 		}
 	};
 	
@@ -361,7 +370,7 @@ hd_alias.popupHandler = function() {
 		self.contentdiv = self.doc.createElement("div");
 		var styleVal = "border:solid 1px #aaaaaa;padding:5px;background-color:#ffffff;";
 		styleVal += "text-align:justify;font-size:12px;width:470px;height:230px;";
-		styleVal += "overflow:scroll;margin:auto;font-size:12.8px;color:black;";
+		styleVal += "overflow:auto;margin:auto;font-size:12.8px;color:black;";
 		styleVal += "font-family:'Arial','Helvetica','Nimbus Sans L','FreeSans',";
 		styleVal += "'Liberation Sans','Microsoft Sans Serif','Arial Unicode MS',sans-serif;";
 		self.contentdiv.setAttribute("style", styleVal);

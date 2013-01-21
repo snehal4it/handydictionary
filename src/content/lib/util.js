@@ -210,57 +210,16 @@ hd_alias.dicts=[
 		var self=this;
 		this.url=hd_alias.defaultDictURL;
 		this.resultId="entryContent";
-		this.titleStyle='display:block;font-size:28px;margin-bottom:9px;';
-		this.titleStyle+='font-family:"Hoefler Text","Linux Libertine","Georgia","Century Schoolbook L",serif;';
+		this.css=["http://dictionary.cambridge.org/styles/interface.css?version=2013-01-08-1449",
+		          "http://dictionary.cambridge.org/styles/ddr_entry.css?version=2013-01-08-1449",
+		          "http://dictionary.cambridge.org/styles/cald3_entry.css?version=2013-01-08-1449"];
+		this.cssRules=["#" + self.resultId + " > div {display:block;}",
+		               "#" + self.resultId + " > p {margin:0px;}" ];
 		
 		this.getURL=function(text) {
 			return self.url+text;
 		};
-		this.applyFix=function(elem) {
-			if (elem.nodeName.toUpperCase() == 'DIV') {
-				//fix:iframe can t be displayed, so display hidden content
-				if (elem.style && elem.style.display && elem.style.display.toLowerCase() == "none") {
-					elem.style.display="block";
-				} else if (elem.querySelector) {
-					self._fixHeadAndLists(elem);
-				}
-			} else if (elem.nodeName.toUpperCase() == 'P') {
-				if (elem.getAttribute("id")) {
-					elem.setAttribute("style", "margin:0px;");
-				}
-			}
-		};
-		// remove margins from head word and fix the content for result entries
-		this._fixHeadAndLists=function(elem) {
-			var refElem=elem.querySelector("div.posblock_b > div.gwblock");
-			if(refElem && refElem.querySelector) {
-				var headTitleElem=refElem.querySelector("div.gwblock_h > h1.header");
-				if(headTitleElem && headTitleElem.querySelector) {
-					headTitleElem.setAttribute("style", "margin:0px;font-size:15px;display:inline;font-weight:normal;");
-					var spanTitleElem=headTitleElem.querySelector("span.hw > span.BASE");
-					if(spanTitleElem) {
-						spanTitleElem.setAttribute("style", self.titleStyle);
-					}
-				}
-				
-				var additionalHead=refElem.querySelector("div.gwblock_h > div.additional_header");
-				if(additionalHead){
-					additionalHead.setAttribute("style", "display:inline;");
-				}
-				
-				var headTitleElem2=refElem.querySelector("div#cdo-definition-head > h2#definition-title");
-				if(headTitleElem2) {
-					headTitleElem2.setAttribute("style", "margin:0px;");
-				}
-				
-				if (!refElem.querySelectorAll) {return;}
-				var entries=refElem.querySelectorAll("div.gwblock_b > div.sense > div.sense-bullet");
-				if (entries == null || entries.length == 0) { return;}
-				for (var i=0;i<entries.length;i++){
-					entries[i].setAttribute("style", "float:left;");
-				}
-			}
-		};
+		
 		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
 		// returns array with length 1 in-case of error
 		this.getCompactResult=function(docFragment) {
@@ -296,50 +255,18 @@ hd_alias.dicts=[
 		var self=this;
 		this.url="http://oxforddictionaries.com/search/english/?direct=1&multi=1&q=";
 		this.resultId="mainContent";
-		this.bgImgRef='background:url("http://oxforddictionaries.com/external/images/bullet_gray.png?version=2012-11-29-1457")';
-		this.bgImgRef+=' no-repeat scroll 0px 5px transparent;';
+		this.css=["http://oxforddictionaries.com/common.css?version=2013-01-17-1637"];
+
+		// header, headTitleElem, translateElem, defElem
+		this.cssRules=["#" + self.resultId + " > header h1.pageTitle {margin:0px;line-height:1em;}",
+		    "#" + self.resultId + " > div div > section.senseGroup > h3.partOfSpeech {margin:0px;}",
+		    "#" + self.resultId + " > div div > span.TranslationCrossLinks {display:none;}",
+		    "#" + self.resultId + " > div div > div.entryType {display:none;}"];
 		
 		this.getURL=function(text) {
 			return self.url+text;
 		};
-		this.applyFix=function(elem) {
-			if (elem.nodeName.toUpperCase() == 'HEADER' && elem.querySelector) {
-				var headTitleElem=elem.querySelector("h1.pageTitle");
-				if (headTitleElem) {
-					headTitleElem.setAttribute("style", "margin:0px;");
-				}
-			} else if (elem.nodeName.toUpperCase() == 'DIV'	&& elem.querySelector) {
-				var headTitleElem=elem.querySelector("div > section.senseGroup > h3.partOfSpeech");
-				if (headTitleElem) {
-					headTitleElem.setAttribute("style", "margin:0px;");
-				}
-				self._fixList(elem);
-			}
-		};
-		// fix result entries spacing and bullet
-		this._fixList=function(elem) {
-			if(!elem.querySelectorAll) { return;}
-			var ulElems=elem.querySelectorAll("div > section.senseGroup > ul.sense-entry");
-			if(ulElems == null || ulElems.length == 0) { return;}
-			for (var j=0; j < ulElems.length; j++) {
-			var ulElem=ulElems[j];
-			if (ulElem && ulElem.querySelectorAll) {
-				ulElem.setAttribute("style", "padding:0px;");
-				var lists=ulElem.querySelectorAll("li");
-				if(lists && lists.length > 0) {
-					for(var i = 0; i < lists.length; i++) {
-						lists[i].setAttribute("style", "padding-left:10px;list-style:none outside none;" + self.bgImgRef);
-						if(lists[i].querySelector){
-							var exElem=lists[i].querySelector("div span.exampleGroup");
-							if(exElem) {
-								exElem.setAttribute("style", "display:block;");
-							}
-						}
-					}
-				}
-			}
-			}
-		};
+		
 		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
 		// returns array with length 1 in-case of error
 		this.getCompactResult=function(docFragment) {
@@ -375,27 +302,16 @@ hd_alias.dicts=[
 		var self=this;
 		this.url="http://dictionary.reference.com/dic?q=";
 		this.resultId="contentResults";
+		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90146.css"];
+		// title space, searched text, remove adds
+		this.cssRules=["#" + self.resultId + " > div#dcomad_728x90_0 {display:none;}",
+		               "#" + self.resultId + " > div#headserp {display:none;}",
+		               "#" + self.resultId + " #top {display:none;}"];
+		
 		this.getURL=function(text) {
 			return self.url+text;
 		};
-		this.applyFix=function(elem) {
-			if (elem.nodeName.toUpperCase() == 'DIV') {
-				var divId=elem.getAttribute("id");
-				if (divId) {
-					divId=divId.toLowerCase();
-					if(divId=="headserp"){
-						//hide heading containing searched text
-						elem.setAttribute("style", "display:none;");
-					}else if (elem.querySelector){
-						// remove adds
-						var topElem=elem.querySelector("#top");
-						if(topElem){
-							topElem.setAttribute("style", "display:none;");
-						}
-					}
-				}
-			}
-		};
+		
 		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
 		// returns array with length 1 in-case of error
 		this.getCompactResult=function(docFragment) {
@@ -430,23 +346,13 @@ hd_alias.dicts=[
 		var self=this;
 		this.url="http://www.merriam-webster.com/dictionary/";
 		this.resultId="wordclick";
+		this.css=["http://www.merriam-webster.com/styles/default/mw-ref.css"];
+		// headTitleElem, defHeaderElem
+		this.cssRules=["#" + self.resultId + " > div div#mwEntryData > div#headword > h2 {margin:0px;}",
+		               "#" + self.resultId + " > div div#mwEntryData > div.d > h2.def-header {margin:0px;}"];
 		
 		this.getURL=function(text) {
 			return self.url+text;
-		};
-		
-		this.applyFix=function(elem) {
-			if (elem.nodeName.toUpperCase() == 'DIV' && elem.querySelector) {
-				var headTitleElem=elem.querySelector("div#mwEntryData > div#headword > h2");
-				if (headTitleElem) {
-					headTitleElem.setAttribute("style", "margin:0px;");
-				}
-				
-				var defHeaderElem=elem.querySelector("div#mwEntryData > div.d > h2.def-header");
-				if (defHeaderElem) {
-					defHeaderElem.setAttribute("style", "margin:0px;");
-				}
-			}
 		};
 		
 		// returns array, 0 - Title Elements Array, 1 - Definition Elements Array
@@ -483,6 +389,8 @@ hd_alias.dicts=[
 		var self=this;
 		this.url="http://www.thefreedictionary.com/";
 		this.resultId="MainTxt";
+		this.css=["http://img.tfd.com/t.css?e"];
+		this.cssRules=["TD{font-size:10pt;}"];
 		
 		this.getURL=function(text) {
 			return self.url+text;
