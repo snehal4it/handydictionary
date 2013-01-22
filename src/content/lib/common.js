@@ -9,6 +9,7 @@ if ("undefined" == typeof(handy_dictionary_ext_ns_id123)) {
 (function() {
 // Constants, shared variables
 var hd_alias = handy_dictionary_ext_ns_id123;
+hd_alias.varname="handy_dictionary_ext_ns_id123";
 
 // common words to be filtered
 hd_alias.filterTextArr = ['a','an','the','as','at','be','on','in','to','from','of','for','by',
