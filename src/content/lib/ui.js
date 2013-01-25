@@ -153,6 +153,17 @@ popupbase.prototype.loadContent = function() {
 	this.display(hd_alias.str("ajax_loading"));
 	hd_alias.ajaxHandler(this.dictURL, this);
 };
+
+// updates all links to be opened in new window
+popupbase.prototype.commonUpdateResult = function(element) {
+	if (element == null || !element.querySelectorAll) { return; }
+	var links = element.querySelectorAll("a");
+	if (links != null && links.length > 0) {
+		for (var i = 0; i < links.length; i++) {
+			links[i].setAttribute("target", "_blank");
+		}
+	}
+};
 //-- end ----------- popupbase------------
 
 //--start---classic mode------------------
@@ -259,6 +270,9 @@ hd_alias.popupHandler = function() {
 		
 		// if result block is present, then display only that content
 		if (dictResultElem != null) {
+			// update links
+			self.commonUpdateResult(dictResultElem);
+			
 			var childNodes = dictResultElem.childNodes;
 			self.clearContentNode();
 			
@@ -282,6 +296,9 @@ hd_alias.popupHandler = function() {
 			}
 			
 			self.contentdiv.appendChild(dictResultElem);
+		} else {
+			// update links
+			self.commonUpdateResult(self.contentdiv);
 		}
 	};
 	

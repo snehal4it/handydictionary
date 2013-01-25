@@ -14,34 +14,126 @@
 		<description>&how_to_use_txt4;</description>
 		
 		<spacer flex="1" style="min-height: 5px;"/>
-		<groupbox>
-		<caption label="&toolbar_label;"/>
-		<hbox>
-			<description style="font-weight:bold;">&turn_on_lbl;</description>
-			<description>&turn_on_desc;</description>
-		</hbox>
-		<hbox>
-			<description style="font-weight:bold;">&turn_off_lbl;</description>
-			<description>&turn_off_desc;</description>
-		</hbox>
-		</groupbox>
-		<spacer flex="1" style="max-height: 5px;"/>
-		<groupbox>
-		<caption label="&pref_label;"/>
-		<hbox>
-			<description style="font-weight:bold;">&always_on_lbl;</description>
-			<description>&always_on_desc1;</description>
-			<description>&always_on_desc2;</description>
-		</hbox>
-		<hbox>
-			<description style="font-weight:bold;">&select_dict_lbl;</description>
-			<description>&select_dict_desc1;
-				<html:a href="http://dictionary.cambridge.org/dictionary/british/" target="_blank" style="color:blue;">&select_dict_desc2;</html:a>
-				&select_dict_desc3;
-			</description>
-		</hbox>
-		</groupbox>
-		
+
+		<tabbox id="handy_dictionary_ext_cust_tabbox_id">
+			<tabs>
+				<tab label="&toolbar_label;" accesskey="T"/>
+				<tab label="Context Menus" accesskey="C"/>
+				<tab label="&pref_label;" accesskey="P"/>
+				<tab label="Shortcut Keys" accesskey="S"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<vbox align="left" style="margin-top:5px;">
+					<hbox>
+						<description style="font-weight:bold;">&turn_on_lbl;</description>
+						<description>&turn_on_desc;</description>
+					</hbox>
+					<hbox>
+						<description style="font-weight:bold;">&turn_off_lbl;</description>
+						<description>&turn_off_desc;</description>
+					</hbox>
+					<hbox>
+						<description style="font-weight:bold;">Preferences:</description>
+						<description>
+							<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">Go to "Preferences" tab for more details</html:a>
+						</description>
+					</hbox>
+					</vbox>
+				</tabpanel>
+				<tabpanel>
+					<vbox align="left">
+						<groupbox><caption style="font-weight:bold;" label="HandyDict:Options" />
+						<vbox style="margin-left:15px;">
+							<vbox>
+								<hbox>
+								<description style="font-weight:bold;">Lookup Manually:</description>
+								<description>Allows user to enter word in textbox manually for lookup</description>
+								</hbox>
+								<description>incase desired word cannot be clicked or not present on current page.</description>
+							</vbox>
+							<hbox>
+								<description style="font-weight:bold;">Preferences:</description>
+								<description>
+									<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">Go to "Preferences" tab for more details</html:a>
+								</description>
+							</hbox>
+						</vbox>
+						</groupbox>
+						<spacer flex="1" style="min-height: 5px;"/>
+						<groupbox><caption style="font-weight:bold;" label="HandyDict:Lookup" />
+						<vbox style="margin-left:15px;">
+						<description>When you right click on any link this option gets enabled automatically</description>
+						<description> and sub-menu contains list of words to lookup from link</description>
+						</vbox>
+						</groupbox>
+						
+						<spacer flex="1" style="min-height: 5px;"/>
+						<groupbox><caption style="font-weight:bold;" label='HandyDict:Lookup "&lt;selected word&gt;"' />
+						<vbox style="margin-left:15px;">
+						<description>Manually select the word for lookup and right click. Context menu will display</description>
+						<description> word to lookup. This is useful incase double click is not working.</description>
+						</vbox>
+						</groupbox>
+					</vbox>
+				</tabpanel>
+				<tabpanel>
+					<vbox align="left" style="margin-top:5px;">
+					<hbox>
+						<description style="font-weight:bold;">&always_on_lbl;</description>
+						<description>&always_on_desc1;</description>
+						<description>&always_on_desc2;</description>
+					</hbox>
+					<hbox>
+						<description style="font-weight:bold;">&select_dict_lbl;</description>
+						<description>&select_dict_desc1;
+							<html:a href="http://dictionary.cambridge.org/dictionary/british/" target="_blank" style="color:blue;">&select_dict_desc2;</html:a>
+							&select_dict_desc3;
+						</description>
+					</hbox>
+					
+					<groupbox><caption style="font-weight:bold;" label="Select Display Mode" />
+					<hbox>
+					<description style="font-weight:bold;">Classic Mode:</description>
+					<description>Default option, displays word definition with full details.</description>
+					</hbox>
+					<spacer flex="1" style="min-height: 5px;"/>
+					<hbox>
+					<description style="font-weight:bold;">Compact Mode:</description>
+					<description>Displays simple definition of the word in compact view.</description>
+					</hbox>
+					</groupbox>
+					
+					</vbox>
+				</tabpanel>
+				<tabpanel>
+					<vbox align="left" style="margin-top:5px;">
+					<html:table border="1" style="border-collapse:collapse;width:100%;">
+						<html:thead>
+						<html:tr>
+							<html:th style="width:250px;">Command</html:th><html:th>Key Sequence</html:th>
+						</html:tr>
+						</html:thead>
+						<html:tbody>
+						<html:tr><html:td>Lookup Manually</html:td><html:td>Ctrl + M</html:td></html:tr>
+						<html:tr><html:td>Preferences</html:td><html:td>Ctrl + Q</html:td></html:tr>
+						<html:tr><html:td>Display Help</html:td><html:td>Ctrl + F1</html:td></html:tr>
+						<html:tr>
+							<html:td>
+							<vbox>
+								<description>Toggle State</description>
+								<description>Enable/Disable tool for current page</description>
+							</vbox>
+							</html:td>
+							<html:td>Alt + O</html:td>
+						</html:tr>
+						</html:tbody>
+					</html:table>
+					</vbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+
 		<spacer flex="1" style="min-height: 5px;"/>
 		<description>&how_to_use_desc1;</description>
 		<description>&how_to_use_desc2;</description>
