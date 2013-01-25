@@ -9,10 +9,14 @@ Handy Dictionary v0.4
 - Fix, positioning of pop-up when click near right/bottom edge.
 - Compact Mode
 	- For advance user quick lookup (only simple definition/description) in compact mode.
+- Native look for existing interface
+	- Existing interface is changed to display definition in native look/style
+- Keyboard shortcuts
+	- Advance user can access menus/preferences using shortcuts 
 
 ------------------------------------------------------------------------------------------------
 
-Handy Dictionary v0.3
+Handy Dictionary v0.3 (6-Dec-2012)
 - support for link/anchor
 	Right click on any link and lookup words from context menu.
 - select any word/phrase then right click to lookup for the same.

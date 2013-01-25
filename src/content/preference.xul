@@ -24,7 +24,7 @@
 					<row>
 						<label control="handy_dictionary_ext_cntrl_checkbox" value="&autorun_label;"/>
 						<hbox flex="1">
-							<checkbox style="margin:0px;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" />
+							<checkbox style="margin:0px;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" accesskey="a" />
 							<description flex="1" style="margin-top:5px;margin-left:0px;padding-left:0px;">&autorun_desc;</description>
 						</hbox>
 					</row>
@@ -33,31 +33,31 @@
 						<label control="handy_dictionary_ext_cntrl_select_dict" value="&select_dict_label;"/>
 						<radiogroup id="handy_dictionary_ext_cntrl_select_dict" orient="vertical" preference="handy_dictionary_ext_pref_dict">
 							<hbox>
-								<radio label="Cambridge Dictionary" value="0" />
+								<radio label="Cambridge Dictionary" value="0" accesskey="C" />
 								<description style="padding-top:4px;">
 									<html:a href="http://dictionary.cambridge.org/" target="_blank" style="color:blue;">http://dictionary.cambridge.org/</html:a>
 								</description>
 							</hbox>
 							<hbox>
-								<radio label="Oxford Dictionary" value="1" />
+								<radio label="Oxford Dictionary" value="1" accesskey="O" />
 								<description style="padding-top:4px;">
 									<html:a href="http://oxforddictionaries.com/" target="_blank" style="color:blue;">http://oxforddictionaries.com/</html:a>
 								</description>
 							</hbox>
 							<hbox>
-								<radio label="Dictionary.com" value="2" />
+								<radio label="Dictionary.com" value="2" accesskey="D"/>
 								<description style="padding-top:4px;">
 									<html:a href="http://dictionary.reference.com/" target="_blank" style="color:blue;">http://dictionary.reference.com/</html:a>
 								</description>
 							</hbox>
 							<hbox>
-								<radio label="Merriam-Webster Dictionary" value="3" />
+								<radio label="Merriam-Webster Dictionary" value="3" accesskey="M" />
 								<description style="padding-top:4px;">
 									<html:a href="http://www.merriam-webster.com/" target="_blank" style="color:blue;">http://www.merriam-webster.com/</html:a>
 								</description>
 							</hbox>
 							<hbox>
-								<radio label="The Free Dictionary" value="4" />
+								<radio label="The Free Dictionary" value="4" accesskey="T"/>
 								<description style="padding-top:4px;">
 									<html:a href="http://www.thefreedictionary.com/" target="_blank" style="color:blue;">http://www.thefreedictionary.com/</html:a>
 								</description>
@@ -69,11 +69,11 @@
 						<label control="handy_dictionary_ext_cntrl_select_mode" value="&select_mode_label;"/>
 						<radiogroup id="handy_dictionary_ext_cntrl_select_mode" orient="vertical" preference="handy_dictionary_ext_pref_mode">
 							<hbox>
-								<radio label="&classic_mode_label;" value="0" />
+								<radio label="&classic_mode_label;" value="0" accesskey="i"/>
 								<description style="padding-top:4px;">Detailed Definition</description>
 							</hbox>
 							<hbox>
-								<radio label="&compact_mode_label;" value="1" />
+								<radio label="&compact_mode_label;" value="1" accesskey="p" />
 								<description style="padding-top:4px;">Simple Definition</description>
 							</hbox>
 						</radiogroup>

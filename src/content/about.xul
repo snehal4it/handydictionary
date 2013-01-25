@@ -5,25 +5,27 @@
 <dialog id="handy_dictionary_ext_dialog_howto"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
-    title="&how_to_use_title;" buttons="accept" buttonpack="center">
+    title="&how_to_use_title;" buttons="accept" buttonlabelaccept="&dialog_accept_btn_label;"
+    buttonaccesskeyaccept="K" buttonpack="center">
 	<label value="&using_handy_dict;" style="font-weight:bold;text-align:center;" />
 	<vbox align="left" style="margin-top:5px;">
 		<description style="font-weight:bold;">&how_to_use_lbl;</description>
 		<description>&how_to_use_txt1; &how_to_use_txt2;</description>
 		<description>&how_to_use_txt3;</description>
 		<description>&how_to_use_txt4;</description>
-		
+		<description><html:a href="http://sourceforge.net/p/handydictionary/wiki/Home/" target="_blank" style="color:blue;">&handy_dict_more_details_desc1;</html:a></description>
 		<spacer flex="1" style="min-height: 5px;"/>
 
 		<tabbox id="handy_dictionary_ext_cust_tabbox_id">
 			<tabs>
 				<tab label="&toolbar_label;" accesskey="T"/>
-				<tab label="Context Menus" accesskey="C"/>
+				<tab label="&cntx_menu_label;" accesskey="C"/>
 				<tab label="&pref_label;" accesskey="P"/>
-				<tab label="Shortcut Keys" accesskey="S"/>
+				<tab label="&shortcut_key_label;" accesskey="S"/>
 			</tabs>
 			<tabpanels>
 				<tabpanel>
+					<!-- Toolbar -->
 					<vbox align="left" style="margin-top:5px;">
 					<hbox>
 						<description style="font-weight:bold;">&turn_on_lbl;</description>
@@ -34,50 +36,52 @@
 						<description>&turn_off_desc;</description>
 					</hbox>
 					<hbox>
-						<description style="font-weight:bold;">Preferences:</description>
+						<description style="font-weight:bold;">&pref_label;:</description>
 						<description>
-							<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">Go to "Preferences" tab for more details</html:a>
+							<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">&goto_pref_desc;</html:a>
 						</description>
 					</hbox>
 					</vbox>
 				</tabpanel>
 				<tabpanel>
+					<!-- Context Menu -->
 					<vbox align="left">
-						<groupbox><caption style="font-weight:bold;" label="HandyDict:Options" />
+						<groupbox><caption style="font-weight:bold;" label="&handydict_opt_label;" />
 						<vbox style="margin-left:15px;">
 							<vbox>
 								<hbox>
-								<description style="font-weight:bold;">Lookup Manually:</description>
-								<description>Allows user to enter word in textbox manually for lookup</description>
+								<description style="font-weight:bold;">&lookup_manual_label;:</description>
+								<description>&lookup_manual_desc1;</description>
 								</hbox>
-								<description>incase desired word cannot be clicked or not present on current page.</description>
+								<description>&lookup_manual_desc2;</description>
 							</vbox>
 							<hbox>
-								<description style="font-weight:bold;">Preferences:</description>
+								<description style="font-weight:bold;">&pref_label;:</description>
 								<description>
-									<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">Go to "Preferences" tab for more details</html:a>
+									<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">&goto_pref_desc;</html:a>
 								</description>
 							</hbox>
 						</vbox>
 						</groupbox>
 						<spacer flex="1" style="min-height: 5px;"/>
-						<groupbox><caption style="font-weight:bold;" label="HandyDict:Lookup" />
+						<groupbox><caption style="font-weight:bold;" label="&handydict_lookup_label;" />
 						<vbox style="margin-left:15px;">
-						<description>When you right click on any link this option gets enabled automatically</description>
-						<description> and sub-menu contains list of words to lookup from link</description>
+						<description>&handydict_lookup_desc1;</description>
+						<description>&handydict_lookup_desc2;</description>
 						</vbox>
 						</groupbox>
 						
 						<spacer flex="1" style="min-height: 5px;"/>
-						<groupbox><caption style="font-weight:bold;" label='HandyDict:Lookup "&lt;selected word&gt;"' />
+						<groupbox><caption style="font-weight:bold;" label="&handydict_lookup_sel_label;" />
 						<vbox style="margin-left:15px;">
-						<description>Manually select the word for lookup and right click. Context menu will display</description>
-						<description> word to lookup. This is useful incase double click is not working.</description>
+						<description>&handydict_lookup_sel_desc1;</description>
+						<description>&handydict_lookup_sel_desc2;</description>
 						</vbox>
 						</groupbox>
 					</vbox>
 				</tabpanel>
 				<tabpanel>
+					<!-- Preferences -->
 					<vbox align="left" style="margin-top:5px;">
 					<hbox>
 						<description style="font-weight:bold;">&always_on_lbl;</description>
@@ -92,41 +96,43 @@
 						</description>
 					</hbox>
 					
-					<groupbox><caption style="font-weight:bold;" label="Select Display Mode" />
+					<groupbox><caption style="font-weight:bold;" label="&display_mode_label;" />
 					<hbox>
-					<description style="font-weight:bold;">Classic Mode:</description>
-					<description>Default option, displays word definition with full details.</description>
+					<description style="font-weight:bold;">&classic_mode_label;:</description>
+					<description>&classic_mode_desc1;</description>
 					</hbox>
 					<spacer flex="1" style="min-height: 5px;"/>
 					<hbox>
-					<description style="font-weight:bold;">Compact Mode:</description>
-					<description>Displays simple definition of the word in compact view.</description>
+					<description style="font-weight:bold;">&compact_mode_label;:</description>
+					<description>&compact_mode_desc1;</description>
 					</hbox>
 					</groupbox>
 					
 					</vbox>
 				</tabpanel>
 				<tabpanel>
+					<!-- Shortcuts -->
 					<vbox align="left" style="margin-top:5px;">
 					<html:table border="1" style="border-collapse:collapse;width:100%;">
 						<html:thead>
 						<html:tr>
-							<html:th style="width:250px;">Command</html:th><html:th>Key Sequence</html:th>
+							<html:th style="width:250px;">&kb_command_label;</html:th><html:th>&kb_key_seq_label;</html:th>
 						</html:tr>
 						</html:thead>
 						<html:tbody>
-						<html:tr><html:td>Lookup Manually</html:td><html:td>Ctrl + M</html:td></html:tr>
-						<html:tr><html:td>Preferences</html:td><html:td>Ctrl + Q</html:td></html:tr>
-						<html:tr><html:td>Display Help</html:td><html:td>Ctrl + F1</html:td></html:tr>
+						<html:tr><html:td>&lookup_manual_label;</html:td><html:td>Ctrl + M</html:td></html:tr>
+						<html:tr><html:td>&pref_label;</html:td><html:td>Ctrl + Q</html:td></html:tr>
+						<html:tr><html:td>&kb_disp_help_label;</html:td><html:td>Ctrl + F1</html:td></html:tr>
 						<html:tr>
 							<html:td>
 							<vbox>
-								<description>Toggle State</description>
-								<description>Enable/Disable tool for current page</description>
+								<description>&kb_toggle_state_label;</description>
+								<description>&kb_toggle_state_desc1;</description>
 							</vbox>
 							</html:td>
 							<html:td>Alt + O</html:td>
 						</html:tr>
+						<html:tr><html:td>&kb_close_popup_label;</html:td><html:td>Escape</html:td></html:tr>
 						</html:tbody>
 					</html:table>
 					</vbox>

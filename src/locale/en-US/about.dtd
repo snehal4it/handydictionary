@@ -28,3 +28,35 @@
 
 <!ENTITY pref_label "Preferences">
 <!ENTITY toolbar_label "Toolbar Menus">
+
+<!-- 20130125 -->
+<!ENTITY cntx_menu_label "Context Menus">
+<!ENTITY shortcut_key_label "Shortcut Keys">
+<!ENTITY lookup_manual_label "Lookup Manually">
+<!ENTITY handydict_opt_label "HandyDict:Options">
+<!ENTITY handydict_lookup_label "HandyDict:Lookup">
+<!ENTITY handydict_lookup_sel_label "HandyDict:Lookup &quot;&lt;selected word&gt;&quot;">
+<!ENTITY display_mode_label "Select Display Mode">
+<!ENTITY classic_mode_label "Classic Mode">
+<!ENTITY compact_mode_label "Compact Mode">
+<!ENTITY kb_command_label "Command">
+<!ENTITY kb_key_seq_label "Key Sequence">
+<!ENTITY kb_disp_help_label "Display Help">
+<!ENTITY kb_toggle_state_label "Toggle State">
+<!ENTITY kb_close_popup_label "Close dictionary popup">
+<!ENTITY dialog_accept_btn_label "OK">
+
+<!ENTITY goto_pref_desc "Go to &quot;Preferences&quot; tab for more details">
+<!ENTITY lookup_manual_desc1 "Allows user to enter word in textbox manually for lookup">
+<!ENTITY lookup_manual_desc2 "incase desired word cannot be clicked or not present on current page.">
+<!ENTITY handydict_lookup_desc1 "When you right click on any link this option gets enabled automatically">
+<!ENTITY handydict_lookup_desc2 "and sub-menu contains list of words to lookup from link">
+<!ENTITY handydict_lookup_sel_desc1 "Manually select the word or phrase for lookup and right click. Context menu will display">
+<!ENTITY handydict_lookup_sel_desc2 "word to lookup. This is useful incase double click is not working.">
+<!ENTITY classic_mode_desc1 "Default option, displays word definition with full details.">
+<!ENTITY compact_mode_desc1 "Displays simple definition of the word in compact view.">
+<!ENTITY kb_toggle_state_desc1 "Enable/Disable tool for current page">
+
+<!ENTITY handy_dict_more_details_desc1 "Visit home page for more details.">
+
+
