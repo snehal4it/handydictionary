@@ -20,18 +20,16 @@ var hdURL = "chrome://handy_dictionary_ext/content/";
 
 // --- Start life cycle methods ---
 function startup(data, reason) {
-	doLog("start:"+data.installPath + "::" + data.resourceURI);
+	//doLog("start:"+data.installPath + "::" + data.resourceURI);
 	
 	//preferences
 	CustomPref.init(data.installPath);
 	
-	// load scripts into all window
+	// load sub-scripts into all window
 	var enumerator = Services.wm.getEnumerator("navigator:browser");
     while (enumerator.hasMoreElements()) {
-		doLog("Existing Window:");
 		var win=enumerator.getNext();
 		doStartup(win);
-		doLog("count:" + win.gBrowser.browsers.length);
 		
 		// enable dom listeners for already opened tabs
 		updateOpenedTab(win, true);
@@ -56,7 +54,7 @@ function shutdown(data, reason) {
 	// preferences
 	CustomPref.clean();
 	
-	doLog("Cleanup Completed");
+	//doLog("Cleanup Completed");
 }
 
 function install(data, reason) { }
@@ -64,6 +62,8 @@ function install(data, reason) { }
 function uninstall(data, reason) { }
 // --- End life cycle methods ---
 
+//---------------Custom Methods-------------
+//handle startup for window
 function doStartup(windowObj) {
 	// create/clear existing global object
 	windowObj.handy_dictionary_ext_ns_id123 = {};
@@ -82,6 +82,7 @@ function updateOpenedTab(windowObj, flag) {
 	} catch (e) {}
 }
 
+// handle shutdown for window
 function doShutdown(windowObj) {
 	try {
 		if (!windowObj.handy_dictionary_ext_ns_id123) {	return;	}
@@ -113,7 +114,7 @@ var windowListener =
     }
 };
 
-//-- start - pref
+//-- start - preferences
 var CustomPref=new function() {
 	var self=this;
 	this.prefix="extensions.handy_dictionary_ext.";
@@ -134,7 +135,7 @@ var CustomPref=new function() {
 		
 		Services.scriptloader.loadSubScript(uri, CustomPref);
 		//Services.prefs.savePrefFile(null);
-		doLog("Pref:Init");
+		//doLog("Pref:Init");
 	}
 	
 	this.clean=function() {
@@ -145,7 +146,7 @@ var CustomPref=new function() {
 			pb.deleteBranch(name);
 		}
 		self.branch=null;
-		doLog("Pref:Cleanup");
+		//doLog("Pref:Cleanup");
 	}
 	
 	this.pref=function(name, value) {
@@ -169,10 +170,10 @@ var CustomPref=new function() {
 		} catch(e) {}
 	}
 };
-//-- end - pref
+//-- end - preferences
 
-function doLog(aMessage) {
-  var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
-                                 .getService(Components.interfaces.nsIConsoleService);
-  consoleService.logStringMessage("HandyDict: " + aMessage);
-}
+//function doLog(aMessage) {
+//  var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
+//                                 .getService(Components.interfaces.nsIConsoleService);
+//  consoleService.logStringMessage("HandyDict: " + aMessage);
+//}

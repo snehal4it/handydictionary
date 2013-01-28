@@ -7,6 +7,7 @@ Handy Dictionary v0.4
 	- double click on words to lookup inside input-box/text-area OR
 	- right click on input-box/text-area and perform lookup
 - Fix, positioning of pop-up when click near right/bottom edge.
+	- Pop-up will be always displayed in visible window, no mater where you click 
 - Compact Mode
 	- For advance user quick lookup (only simple definition/description) in compact mode.
 - Native look for existing interface

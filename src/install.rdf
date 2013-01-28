@@ -9,14 +9,14 @@
     <em:creator>Snehal Patel</em:creator>
 	<em:bootstrap>true</em:bootstrap>
 
-	<em:homepageURL>https://sites.google.com/site/kdevprj/handy_dictionary/</em:homepageURL>
+	<em:homepageURL>http://sourceforge.net/p/handydictionary/wiki/Home/</em:homepageURL>
 	<em:optionsURL>chrome://handy_dictionary_ext/content/preference.xul</em:optionsURL>
 
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>15.0</em:minVersion>
-        <em:maxVersion>19.*</em:maxVersion>
+        <em:maxVersion>20.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>

@@ -20,6 +20,8 @@ var cmd_about = hd_alias.varname+".kbh.handleAboutDialog(event);";
 var cmd_manualLookup = hd_alias.varname+".kbh.lookupManually(event);";
 var cmd_manualLookup_cntx = hd_alias.varname+".lookupManually(event);";
 
+// single object to handle init and cleanup
+// for all overlay elements
 hd_alias.OverlayBuilder=new function() {
 	this.init=function() {
 		hd_alias.CustomLocale.init();
@@ -66,7 +68,7 @@ hd_alias.ContextMenuBuilder = new function() {
 		lookup.setAttribute("oncommand", cmd_manualLookup_cntx);
 		lookup.setAttribute("accesskey", "m");
 		
-		// Preferrences
+		// Preferences
 		var pref = document.createElement("menuitem");
 		pref.setAttribute("label", hd_alias.str("pref_label"));
 		pref.setAttribute("key", kb_pref_id);
@@ -235,6 +237,7 @@ hd_alias.StatusbarMenuBuilder = new function() {
 	};
 };
 
+// keyboard shortcuts
 hd_alias.kbh = new function() {
 	var self=this;
 	this.init=function() {
@@ -250,15 +253,15 @@ hd_alias.kbh = new function() {
 		
 		var prefKey = document.createElement("key");
 		prefKey.setAttribute("id", kb_pref_id);
-		prefKey.setAttribute("modifiers", "accel");
+		prefKey.setAttribute("modifiers", "alt");
 		prefKey.setAttribute("key", "q");
 		prefKey.setAttribute("oncommand", cmd_pref);
 		keyset.appendChild(prefKey);
 		
 		var aboutKey = document.createElement("key");
 		aboutKey.setAttribute("id", kb_about_id);
-		aboutKey.setAttribute("modifiers", "accel");
-		aboutKey.setAttribute("keycode", "VK_F1");
+		aboutKey.setAttribute("modifiers", "alt,accel");
+		aboutKey.setAttribute("keycode", "h");
 		aboutKey.setAttribute("oncommand", cmd_about);
 		keyset.appendChild(aboutKey);
 		
@@ -268,6 +271,9 @@ hd_alias.kbh = new function() {
 		toggleStateKey.setAttribute("key", "o");
 		toggleStateKey.setAttribute("oncommand", cmd_toggleState);
 		keyset.appendChild(toggleStateKey);
+		
+		// fix to apply changes without restart
+		keyset.parentNode.insertBefore(keyset, keyset.nextSibling);
 	};
 	
 	this.clean=function() {

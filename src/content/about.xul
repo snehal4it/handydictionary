@@ -14,6 +14,7 @@
 		<description>&how_to_use_txt3;</description>
 		<description>&how_to_use_txt4;</description>
 		<description><html:a href="http://sourceforge.net/p/handydictionary/wiki/Home/" target="_blank" style="color:blue;">&handy_dict_more_details_desc1;</html:a></description>
+		<description><html:a href="mailto:kbatu.patel@gmail.com" target="_blank" style="color:blue;">&handy_dict_more_details_desc2;</html:a></description>
 		<spacer flex="1" style="min-height: 5px;"/>
 
 		<tabbox id="handy_dictionary_ext_cust_tabbox_id">
@@ -121,8 +122,8 @@
 						</html:thead>
 						<html:tbody>
 						<html:tr><html:td>&lookup_manual_label;</html:td><html:td>Ctrl + M</html:td></html:tr>
-						<html:tr><html:td>&pref_label;</html:td><html:td>Ctrl + Q</html:td></html:tr>
-						<html:tr><html:td>&kb_disp_help_label;</html:td><html:td>Ctrl + F1</html:td></html:tr>
+						<html:tr><html:td>&pref_label;</html:td><html:td>ALT + Q</html:td></html:tr>
+						<html:tr><html:td>&kb_disp_help_label;</html:td><html:td>ALT + Ctrl + H</html:td></html:tr>
 						<html:tr>
 							<html:td>
 							<vbox>
