@@ -13,12 +13,23 @@ public class FreeDictionary extends Dictionary {
 	// messages
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
 	
+	private static final String[] css = new String[] {"http://img.tfd.com/t.css?e"};
+	
+	private static final String[] titleAr = new String[] {
+		"table td > span.hw",
+		"table td > span.pron"
+	};
+	
+	private static final String[] defAr = new String[] {"table td > div.pseg > div.ds-list"};
+	
 	public FreeDictionary(WebDriver driver) {
-		super(driver, resultId, url+searchTxt);
+		super(driver, resultId, url+searchTxt, css);
 	}
 	
 	protected void testother(WebElement resultElem) {
 		// check word in the result
 		assertText(resultElem, txtLocation, txt2, searchTxt);
+		
+		testCompactMode(resultElem, titleAr, defAr);
 	}
 }

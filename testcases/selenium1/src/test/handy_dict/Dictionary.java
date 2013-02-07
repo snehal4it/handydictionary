@@ -17,12 +17,17 @@ public class Dictionary {
 	
 	private String url;
 	
+	private String[] css;
+	
 	protected Result result = new Result();
 	
-	public Dictionary(WebDriver driver, String resultId, String url) {
+	private static final String infoTxtCommon = "Looking for:";
+	
+	public Dictionary(WebDriver driver, String resultId, String url, String[] css) {
 		this.driver=driver;
 		this.resultId=resultId;
 		this.url=url;
+		this.css=css;
 	}
 	
 	public Result test() {
@@ -40,7 +45,50 @@ public class Dictionary {
 		
 		testother(resultElem);
 		
+		testCSS();
+		
 		return result;
+	}
+	
+	protected void testCSS() {
+		result.info("------------------CSS File test------------------");
+		if (css == null || css.length == 0) {
+			result.info("No file to test------------------------------");
+			return;
+		}
+		
+		List<WebElement> elems = driver.findElements(By.tagName("link"));
+		for (int i =  0; i < css.length; i++) {
+			result.info("Checking file:" + css[i]);
+			boolean flag = false;
+			for (WebElement elem: elems) {
+				String href = elem.getAttribute("href");
+				if (css[i].equalsIgnoreCase(href)) {
+					flag = true;
+					break;
+				}
+			}
+			
+			if (flag) {
+				result.info("File found");
+			} else {
+				result.warn("File not found");
+			}
+		}
+		result.info("------------------CSS File test------------------");
+	}
+	
+	protected void testCompactMode(WebElement resultElem, String[] titleAr, String[] defAr) {
+		result.info("------------------COMPACT MODE: CHECK------------------");
+		result.info("---Title Ar----");
+		for (String titleElem: titleAr) {
+			verify(resultElem, titleElem, infoTxtCommon + titleElem);
+		}
+		
+		result.info("---Def Ar----");
+		for (String defElem: defAr) {
+			verify(resultElem, defElem, infoTxtCommon + defElem);
+		}
 	}
 	
 	protected void testother(WebElement resultElem) {}

@@ -20,8 +20,18 @@ public class DictionaryDotCom extends Dictionary {
 	
 	//private static final String topElemSelInfo = "Looking for top element, remove adds:" +  topElemSel;
 	
+	private static final String[] css = new String[] {"http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90146.css"};
+	
+	private static final String[] titleAr = new String[] {
+		"div#Headserp > span > span > h1#query_h1",
+		"div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.header > span.pronset > span.show_spellpr > span.pron",
+		"div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > span.pg"
+	};
+	
+	private static final String[] defAr = new String[] {"div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > div.luna-Ent > div.dndata"};
+	
 	public DictionaryDotCom(WebDriver driver) {
-		super(driver, resultId, url+searchTxt);
+		super(driver, resultId, url+searchTxt, css);
 	}
 	
 	protected void testother(WebElement resultElem) {
@@ -33,24 +43,7 @@ public class DictionaryDotCom extends Dictionary {
 			result.warn("Result Element content is empty");
 			return;
 		}
-		
-		boolean headerFlag = false;
-		for (WebElement elem : elems) {
-			String tagName = elem.getTagName().toUpperCase();
-			if ("DIV".equals(tagName)) {
-				String divId = elem.getAttribute("id");
-				if (divId != null && divId.equals("Headserp")) {
-					headerFlag = true;
-					result.info("Header found and will be hidden");
-				}
-				//else {
-				//	verify(elem, topElemSel, topElemSelInfo);
-				//}
-			}
-		}
-		
-		if (!headerFlag) {
-			result.warn("Header element not found in resultElement");
-		}
+	
+		testCompactMode(resultElem, titleAr, defAr);
 	}
 }

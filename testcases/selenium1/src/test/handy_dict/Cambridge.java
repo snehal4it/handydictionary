@@ -12,29 +12,30 @@ public class Cambridge extends Dictionary {
 	
 	private static final String refElement = "div div.posblock_b > div.gwblock";
 	private static final String txtLocation = "div.gwblock_h";
-	private static final String headTitleElemSel = "div.gwblock_h > h1.header";
-	private static final String spanTitleElemSel =  "span.hw > span.BASE";
-	private static final String additionalHeaderSel = "div.gwblock_h > div.additional_header";
-	private static final String headTitleElem2Sel = "div#cdo-definition-head > h2#definition-title";
-	private static final String entries = "div.gwblock_b > div.sense > div.sense-bullet";
 	
 	// messages
 	private static final String txt1 = "Looking for Ref Element:" + refElement;
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
 	
-	private static final String infoTxt1 = "Looking for internal element that contains word for CSS:" + refElement + SPACE + headTitleElemSel;
-	private static final String infoTxt2 = "Looking for span element for CSS:" + refElement + SPACE +  headTitleElemSel + SPACE + spanTitleElemSel;
-	private static final String infoTxt3 = "Looking additionalHead for CSS:" + refElement + SPACE + additionalHeaderSel;
-	private static final String infoTxt4 = "Looking headTitleElem2 for CSS:" + refElement + SPACE + headTitleElem2Sel;
-	private static final String infoTxt5 = "Looking entries for CSS:" + refElement + SPACE + entries;
+	private static final String[] css = new String[] {"http://dictionary.cambridge.org/styles/interface.css?version=2013-01-08-1449",
+	          "http://dictionary.cambridge.org/styles/ddr_entry.css?version=2013-01-08-1449",
+	          "http://dictionary.cambridge.org/styles/cald3_entry.css?version=2013-01-08-1449"};
 	
+	private static final String[] titleAr = new String[] {
+		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.hw",
+		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.pos",
+		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.prons",
+		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.grams"
+	};
+	
+	private static final String[] defAr = new String[] {"div.posblock > div.posblock_b > div.gwblock > div.gwblock_b > div.sense > span"};
 	
 	public Cambridge(WebDriver driver) {
-		super(driver, resultId, url+searchTxt);
+		super(driver, resultId, url+searchTxt, css);
 	}
 	
 	public Cambridge(WebDriver driver, String str) {
-		super(driver, resultId, url+str);
+		super(driver, resultId, url+str, css);
 	}
 	
 	protected void testother(WebElement resultElem) {
@@ -51,15 +52,7 @@ public class Cambridge extends Dictionary {
 		// check word in the result
 		assertText(refElem, txtLocation, txt2, searchTxt);
 		
-		WebElement headTitleElem = verify(refElem, headTitleElemSel, infoTxt1);
-		if (headTitleElem != null) {
-			verify(headTitleElem, spanTitleElemSel, infoTxt2);
-		}
-		
-		verify(refElem, additionalHeaderSel, infoTxt3);
-		verify(refElem, headTitleElem2Sel, infoTxt4);		
-		verifyAll(refElem, entries, infoTxt5);
-		
+		testCompactMode(resultElem, titleAr, defAr);
 	}
 	
 }
