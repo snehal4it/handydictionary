@@ -210,9 +210,8 @@ hd_alias.dicts=[
 		var self=this;
 		this.url=hd_alias.defaultDictURL;
 		this.resultId="entryContent";
-		this.css=["http://dictionary.cambridge.org/styles/interface.css?version=2013-01-08-1449",
-		          "http://dictionary.cambridge.org/styles/ddr_entry.css?version=2013-01-08-1449",
-		          "http://dictionary.cambridge.org/styles/cald3_entry.css?version=2013-01-08-1449"];
+		this.css=["http://dictionary.cambridge.org/common.css?version=2013-03-13-1203"];
+		
 		this.cssRules=["#" + self.resultId + " > div {display:block;}",
 		               "#" + self.resultId + " > p {margin:0px;}" ];
 		
@@ -230,18 +229,45 @@ hd_alias.dicts=[
 			
 			var result = new Array();
 			var titleAr = new Array();
-			titleAr[0] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.hw");
-			titleAr[1] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.pos");
-			titleAr[2] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.prons");
+			titleAr[0] = dictResultElem.querySelector("div.di > div.di-head > h1 > span.hw");
+			if (titleAr[0] == null) {
+				// word: relying
+				titleAr[0] = dictResultElem.querySelector("div.di > div.di-head > h1 > span");
+			}
+			titleAr[1] = dictResultElem.querySelector("div.di > div.di-head > span.di-info > span.posgram > span.pos");
+			if (titleAr[1] == null) {
+				// word: relying
+				titleAr[1] = dictResultElem.querySelector("div.di > div.di-head > span.di-info span.pos");
+			}
+			// mar2013: yet to fix multiple line display: word: speculation 
+			//titleAr[2] = dictResultElem.querySelector("div.di > div.di-head > span.di-info > span.posgram > span.gram span.gcs");
+			//if (titleAr[2] != null) {
+			//	titleAr[2].setAttribute("style", "margin-left:2px;margin-right:2px;display:inline;");
+			//}
+			//todo: multiple pronunciation word: scroll
+			titleAr[2] = dictResultElem.querySelector("div.di > div.di-head > span.di-info > span.pron");
+			if (titleAr[2] == null) {
+				titleAr[2] = dictResultElem.querySelector("div.di > div.di-head > span.di-info span.pron");
+			}
 			if (titleAr[2] != null) {
 				titleAr[2].setAttribute("style", "margin-left:2px;margin-right:2px;");
 			}
-			titleAr[3] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.grams");
+			// mar2013:moved to index2
+			//titleAr[3] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.grams");
 			
 			var defAr = new Array();
-			defAr[0] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_b > div.sense > span");
+			defAr[0] = dictResultElem.querySelector("div.di > div.di-body > div.sense-block > span.sense-body > span.def-block > span.def-head > span.def");
 			if (defAr[0] == null) {
-				defAr[0] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_b div.sense > span");
+				// word: remainder
+				defAr[0] = dictResultElem.querySelector("div.di > div.di-body > div.sense-block > span.sense-body > span.phrase-block > span.phrase-head > span.phrase-title > span.phrase");
+				if (defAr[0] != null) {
+					defAr[1] = dictResultElem.querySelector("div.di > div.di-body > div.sense-block > span.sense-body > span.phrase-block > span.phrase-body > span.def-block > span.def-head > span.def");
+				}
+			}
+			
+			if (defAr[0] == null) {
+				// word: implementation
+				defAr[0] = dictResultElem.querySelector("div.di > div.di-body span.sense-block > span.sense-body > span.def-block > span.def-head > span.def");
 			}
 			
 			result[0] = titleAr;
@@ -255,7 +281,7 @@ hd_alias.dicts=[
 		var self=this;
 		this.url="http://oxforddictionaries.com/search/english/?direct=1&multi=1&q=";
 		this.resultId="mainContent";
-		this.css=["http://oxforddictionaries.com/common.css?version=2013-01-17-1637"];
+		this.css=["http://oxforddictionaries.com/common.css?version=2013-03-14-1205"];
 
 		// header, headTitleElem, translateElem, defElem
 		this.cssRules=["#" + self.resultId + " > header h1.pageTitle {margin:0px;line-height:1em;}",
@@ -302,9 +328,9 @@ hd_alias.dicts=[
 		var self=this;
 		this.url="http://dictionary.reference.com/dic?q=";
 		this.resultId="contentResults";
-		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90146.css"];
+		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90443.css"];
 		// title space, searched text, remove adds
-		this.cssRules=["#" + self.resultId + " > div#dcomad_728x90_0 {display:none;}",
+		this.cssRules=["#" + self.resultId + " > div#Dash_1 {display:none;}",
 		               "#" + self.resultId + " > div#headserp {display:none;}",
 		               "#" + self.resultId + " #top {display:none;}"];
 		
@@ -389,7 +415,7 @@ hd_alias.dicts=[
 		var self=this;
 		this.url="http://www.thefreedictionary.com/";
 		this.resultId="MainTxt";
-		this.css=["http://img.tfd.com/t.css?e"];
+		this.css=["http://img.tfd.com/t.css?f"];
 		this.cssRules=["TD{font-size:10pt;}"];
 		
 		this.getURL=function(text) {

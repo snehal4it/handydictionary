@@ -1,3 +1,12 @@
+---------------------------------
+Handy Dictionary v0.5 16-Mar-2013
+---------------------------------
+- fix for cambridge dictionary compact mode
+	- Compact mode was not displaying details from cambridge dictionary after website interface changed
+- CSS updated for classic mode
+	- several dictionary websites changed styles/interface, so latest css to be used for classic dictionary updated
+------------------------------------------------------------------------------------------------
+
 -----------------------
 Handy Dictionary v0.4
 -----------------------
