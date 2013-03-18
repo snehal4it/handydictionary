@@ -10,25 +10,23 @@ public class Cambridge extends Dictionary {
 	private static final String url = "http://dictionary.cambridge.org/search/british/direct/?q=";
 	private static final String searchTxt = "flay";
 	
-	private static final String refElement = "div div.posblock_b > div.gwblock";
-	private static final String txtLocation = "div.gwblock_h";
+	//TODO:
+	private static final String refElement = "div.di > div.di-head > h1";
+	private static final String txtLocation = "span.hw";
 	
 	// messages
 	private static final String txt1 = "Looking for Ref Element:" + refElement;
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
 	
-	private static final String[] css = new String[] {"http://dictionary.cambridge.org/styles/interface.css?version=2013-01-08-1449",
-	          "http://dictionary.cambridge.org/styles/ddr_entry.css?version=2013-01-08-1449",
-	          "http://dictionary.cambridge.org/styles/cald3_entry.css?version=2013-01-08-1449"};
+	private static final String[] css = new String[] {"http://dictionary.cambridge.org/common.css?version=2013-03-13-1203"};
 	
 	private static final String[] titleAr = new String[] {
-		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.hw",
-		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > h1.header > span.pos",
-		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.prons",
-		"div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.grams"
+		"div.di > div.di-head > h1 > span.hw",
+		"div.di > div.di-head > span.di-info > span.posgram > span.pos",
+		"div.di > div.di-head > span.di-info > span.pron"
 	};
 	
-	private static final String[] defAr = new String[] {"div.posblock > div.posblock_b > div.gwblock > div.gwblock_b > div.sense > span"};
+	private static final String[] defAr = new String[] {"div.di > div.di-body > div.sense-block > span.sense-body > span.def-block > span.def-head > span.def"};
 	
 	public Cambridge(WebDriver driver) {
 		super(driver, resultId, url+searchTxt, css);

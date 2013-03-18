@@ -35,6 +35,12 @@ public class Dictionary {
 		
 		driver.get(url);
 		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		result.info("Finding result element:" + resultId);
 		WebElement resultElem = findElement(driver, By.id(resultId));
 		if (resultElem == null) {

@@ -13,7 +13,7 @@ public class FreeDictionary extends Dictionary {
 	// messages
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
 	
-	private static final String[] css = new String[] {"http://img.tfd.com/t.css?e"};
+	private static final String[] css = new String[] {"http://img.tfd.com/t.css?f"};
 	
 	private static final String[] titleAr = new String[] {
 		"table td > span.hw",

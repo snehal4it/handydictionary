@@ -16,7 +16,7 @@ public class Oxford extends Dictionary {
 	// messages
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
 	
-	private static final String[] css = new String[] {"http://oxforddictionaries.com/common.css?version=2013-01-17-1637"};
+	private static final String[] css = new String[] {"http://oxforddictionaries.com/common.css?version=2013-03-14-1205"};
 	
 	private static final String[] titleAr = new String[] {
 		"header > h1.pageTitle",

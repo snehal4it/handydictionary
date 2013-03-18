@@ -20,7 +20,7 @@ public class DictionaryDotCom extends Dictionary {
 	
 	//private static final String topElemSelInfo = "Looking for top element, remove adds:" +  topElemSel;
 	
-	private static final String[] css = new String[] {"http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90146.css"};
+	private static final String[] css = new String[] {"http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90443.css"};
 	
 	private static final String[] titleAr = new String[] {
 		"div#Headserp > span > span > h1#query_h1",
