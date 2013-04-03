@@ -30,6 +30,8 @@ var popupbase = function() {
 	
 	this.titleContainerLeft=0;
 	this.selectedText="";
+	// css to be extracted or not
+	this.dynaCSS=false;
 };
 popupbase.prototype.checkAndStorePos=function(updateX, updateY){
 	if (updateX != null && updateX > 0) {
@@ -177,7 +179,8 @@ hd_alias.popupHandler = function() {
 	this.inputCtrl=null;
 	this.btnCtrl=null;
 	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
-		
+	this.dynaCSS=true;
+	
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
 		return self.commonInit(posArr, selectedText, self.buildUI);
@@ -250,7 +253,7 @@ hd_alias.popupHandler = function() {
 	};
 	
 	// display result in content block
-	this.updateresult = function(docFragment) {
+	this.updateresult = function(docFragment, dynaCSSAr) {
 		self.clearContentNode();
 
 		var result_id=self.dict.resultId;
@@ -276,7 +279,8 @@ hd_alias.popupHandler = function() {
 			var childNodes = dictResultElem.childNodes;
 			self.clearContentNode();
 			
-			var cssAr = self.dict.css;
+			//var cssAr = self.dict.css;
+			var cssAr = util.getRefinedCSSList(dynaCSSAr, self.dict);
 			var linkVar = null;
 			for (var i = 0; i < cssAr.length; i++) {
 				linkVar = self.doc.createElement("link");
@@ -524,7 +528,7 @@ hd_alias.compactPopup=function() {
 	};
 	
 	// display result in content block
-	this.updateresult = function(docFragment) {
+	this.updateresult = function(docFragment, dynaCSSAr) {
 		self.clearContentNode();
 		
 		var result = self.dict.getCompactResult(docFragment);

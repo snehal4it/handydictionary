@@ -201,6 +201,105 @@ hd_alias.UTIL=new function(){
 						 .getService(Components.interfaces.nsIScriptableUnescapeHTML)
 						 .parseFragment(html, !!isXML, baseURI, doc.documentElement);
 	};
+	
+	/** retrieves css href from head tag */
+	this.extractCSS=function(html) {
+		var links = new Array();
+		if (html == null || html == "") {
+			return links;
+		}
+		
+		try {
+			var start = html.search(/<head>/i);
+			if (start == -1) {
+				start = 0;
+			}
+			var end = html.search(/<\/head>/i);
+			if (end == -1) {
+				end = html.search(/<body/i);
+			}
+			
+			if (end == -1) {
+				end = html.length;
+			}
+			
+			var head = html.substring(start, end);
+			var result = head.match(/(<link)(.|\s)*?>/ig);
+			if (result != null) {
+				var linkIndex=0;
+				for (var i = 0; i < result.length; i++) {
+					if (result[i].search(/rel=["'\s]?stylesheet["'\s]/i) != -1) {
+						var hrefAr = result[i].match(/href=["'\s]?(?:.|\s)*?["'\s]/i);
+						if (hrefAr != null && hrefAr.length > 0 && hrefAr[0].length > 5) {
+							links[linkIndex++]=hrefAr[0].substr(5).replace(/("|')+/g, "");
+						}
+					}
+				}
+			}
+		} catch (e) {}
+		return links;
+	};
+	
+	/**
+	 * from the input css list and static list maintained
+	 * returns appropriate css
+	 */
+	this.getRefinedCSSList=function(cssAr, dict) {
+		if (cssAr == null || cssAr.length == 0) {
+			return dict.css;
+		}
+		
+		var excludeCss = dict.excludeCSS;
+		var resultCssAr = new Array();
+		var resultIndex = 0;
+		for (var i = 0; i < cssAr.length; i++) {
+			var cssLink = cssAr[i];
+			if (cssLink == null) {
+				continue;
+			}
+			
+			var exclude = false;
+			if (excludeCss != null) {
+				for (var j = 0; j < excludeCss.length; j++) {
+					if (cssLink.search(excludeCss[j]) != -1) {
+						exclude = true;
+						break;
+					}
+				}
+			}
+			
+			if (exclude) { continue; }
+			
+			var pos = cssLink.search(/http/i);
+			if (pos != 0) {
+				if (cssLink.indexOf("/") == 0) {
+					cssLink = dict.baseURL + cssLink;
+				} else {
+					var tempURL = dict.url;
+					try {
+						var qIndex = tempURL.indexOf("?");
+						if (qIndex != -1) {
+							tempURL = tempURL.substring(0, qIndex);
+						}
+						var q1Index = tempURL.indexOf("/")+1;
+						qIndex = tempURL.lastIndexOf("/");
+						if (qIndex != -1 && qIndex != tempURL.length -1 && qIndex > q1Index) {
+							tempURL = tempURL.substring(0, qIndex+1);
+						}
+					} catch(e) {}
+					cssLink = tempURL + cssLink;
+				}
+			}
+			resultCssAr[resultIndex]=cssLink;
+			resultIndex++;
+		}
+		
+		if (resultCssAr.length == 0) {
+			return dict.css;
+		}
+		
+		return resultCssAr;
+	};
 };
 
 // dictionaries
@@ -208,10 +307,11 @@ hd_alias.dicts=[
 	new function(){
 		// 0 dictionary.cambridge.org
 		var self=this;
+		this.baseURL="http://dictionary.cambridge.org/";
 		this.url=hd_alias.defaultDictURL;
 		this.resultId="entryContent";
-		this.css=["http://dictionary.cambridge.org/common.css?version=2013-03-13-1203"];
-		
+		this.css=["http://dictionary.cambridge.org/common.css?version=2013-03-20-1149"];
+		this.excludeCSS=[];
 		this.cssRules=["#" + self.resultId + " > div {display:block;}",
 		               "#" + self.resultId + " > p {margin:0px;}" ];
 		
@@ -279,10 +379,11 @@ hd_alias.dicts=[
 	new function(){
 		// 1 Oxford
 		var self=this;
-		this.url="http://oxforddictionaries.com/search/english/?direct=1&multi=1&q=";
+		this.baseURL="http://oxforddictionaries.com/";
+		this.url=self.baseURL+"search/english/?direct=1&multi=1&q=";
 		this.resultId="mainContent";
-		this.css=["http://oxforddictionaries.com/common.css?version=2013-03-14-1205"];
-
+		this.css=["http://oxforddictionaries.com/common.css?version=2013-03-28-1205"];
+		this.excludeCSS=[];
 		// header, headTitleElem, translateElem, defElem
 		this.cssRules=["#" + self.resultId + " > header h1.pageTitle {margin:0px;line-height:1em;}",
 		    "#" + self.resultId + " > div div > section.senseGroup > h3.partOfSpeech {margin:0px;}",
@@ -326,9 +427,12 @@ hd_alias.dicts=[
 	new function(){
 		// 2 dictionary.reference.com
 		var self=this;
-		this.url="http://dictionary.reference.com/dic?q=";
+		this.baseURL="http://dictionary.reference.com/";
+		this.url=self.baseURL+"dic?q=";
 		this.resultId="contentResults";
-		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90443.css"];
+		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90586.css"];
+		// remove css from dynamically generated css array
+		this.excludeCSS=[/http(.|\s)*?static\.sfdict\.com(.|\s)*?responsive\.css/i];
 		// title space, searched text, remove adds
 		this.cssRules=["#" + self.resultId + " > div#Dash_1 {display:none;}",
 		               "#" + self.resultId + " > div#headserp {display:none;}",
@@ -370,9 +474,12 @@ hd_alias.dicts=[
 	new function(){
 		// 3 Merriam-Webster
 		var self=this;
-		this.url="http://www.merriam-webster.com/dictionary/";
+		this.baseURL="http://www.merriam-webster.com/";
+		this.url=self.baseURL+"dictionary/";
 		this.resultId="wordclick";
 		this.css=["http://www.merriam-webster.com/styles/default/mw-ref.css"];
+		// remove css from dynamically generated css array
+		this.excludeCSS=[/styles\/default\/interface\.css/i];
 		// headTitleElem, defHeaderElem
 		this.cssRules=["#" + self.resultId + " > div div#mwEntryData > div#headword > h2 {margin:0px;}",
 		               "#" + self.resultId + " > div div#mwEntryData > div.d > h2.def-header {margin:0px;}"];
@@ -413,11 +520,12 @@ hd_alias.dicts=[
 	new function(){
 		// 4 The Free Dictionary
 		var self=this;
-		this.url="http://www.thefreedictionary.com/";
+		this.baseURL="http://www.thefreedictionary.com/";
+		this.url=self.baseURL;
 		this.resultId="MainTxt";
-		this.css=["http://img.tfd.com/t.css?f"];
+		this.css=["http://img.tfd.com/t.css?g"];
 		this.cssRules=["TD{font-size:10pt;}"];
-		
+		this.excludeCSS=[];
 		this.getURL=function(text) {
 			return self.url+text;
 		};
