@@ -329,45 +329,20 @@ hd_alias.dicts=[
 			
 			var result = new Array();
 			var titleAr = new Array();
-			titleAr[0] = dictResultElem.querySelector("div.di > div.di-head > h1 > span.hw");
-			if (titleAr[0] == null) {
-				// word: relying
-				titleAr[0] = dictResultElem.querySelector("div.di > div.di-head > h1 > span");
-			}
-			titleAr[1] = dictResultElem.querySelector("div.di > div.di-head > span.di-info > span.posgram > span.pos");
-			if (titleAr[1] == null) {
-				// word: relying
-				titleAr[1] = dictResultElem.querySelector("div.di > div.di-head > span.di-info span.pos");
-			}
-			// mar2013: yet to fix multiple line display: word: speculation 
-			//titleAr[2] = dictResultElem.querySelector("div.di > div.di-head > span.di-info > span.posgram > span.gram span.gcs");
-			//if (titleAr[2] != null) {
-			//	titleAr[2].setAttribute("style", "margin-left:2px;margin-right:2px;display:inline;");
-			//}
-			//todo: multiple pronunciation word: scroll
-			titleAr[2] = dictResultElem.querySelector("div.di > div.di-head > span.di-info > span.pron");
+			titleAr[0] = dictResultElem.querySelector("div.di > div.di-head > h1 > span");
+			titleAr[1] = dictResultElem.querySelector("div.di > div.di-head > span.di-info span.posgram > span.pos");
+			titleAr[2] = dictResultElem.querySelector("div.di > div.di-head > span.di-info span.pron");
 			if (titleAr[2] == null) {
-				titleAr[2] = dictResultElem.querySelector("div.di > div.di-head > span.di-info span.pron");
+				titleAr[2] = dictResultElem.querySelector("div.di > div.di-body div.sense-block > span.sense-body span.def-block > span.def-head span.pron");
 			}
 			if (titleAr[2] != null) {
 				titleAr[2].setAttribute("style", "margin-left:2px;margin-right:2px;");
 			}
-			// mar2013:moved to index2
-			//titleAr[3] = dictResultElem.querySelector("div.posblock > div.posblock_b > div.gwblock > div.gwblock_h > div.additional_header > span.grams");
 			
 			var defAr = new Array();
-			defAr[0] = dictResultElem.querySelector("div.di > div.di-body > div.sense-block > span.sense-body > span.def-block > span.def-head > span.def");
+			defAr[0] = dictResultElem.querySelector("div.di > div.di-body div.sense-block > span.sense-body span.def-block > span.def-head > span.def");
 			if (defAr[0] == null) {
-				// word: remainder
-				defAr[0] = dictResultElem.querySelector("div.di > div.di-body > div.sense-block > span.sense-body > span.phrase-block > span.phrase-head > span.phrase-title > span.phrase");
-				if (defAr[0] != null) {
-					defAr[1] = dictResultElem.querySelector("div.di > div.di-body > div.sense-block > span.sense-body > span.phrase-block > span.phrase-body > span.def-block > span.def-head > span.def");
-				}
-			}
-			
-			if (defAr[0] == null) {
-				// word: implementation
-				defAr[0] = dictResultElem.querySelector("div.di > div.di-body span.sense-block > span.sense-body > span.def-block > span.def-head > span.def");
+				defAr[0] = dictResultElem.querySelector("div.di > div.di-body > div.idiom-block > span.idiom-body > span.def-block > span.def-head > span.def");
 			}
 			
 			result[0] = titleAr;

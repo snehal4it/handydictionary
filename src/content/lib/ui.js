@@ -560,12 +560,96 @@ hd_alias.compactPopup=function() {
 		self.contentdiv.appendChild(titleDiv);
 		self.contentdiv.appendChild(defDiv);
 		
+		// check if data is found for compact mode
+		var dataIssue = (titleDiv.textContent == null
+				|| titleDiv.textContent.replace(/\s/g, "").length == 0
+				|| defDiv.textContent == null
+				|| defDiv.textContent.replace(/\s/g, "").length == 0);
+		if (dataIssue) {
+			var cm_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.compact_mode_flag");
+			if (cm_flag == true) {
+				self.switchMode(null);
+				// call to switchMode already invalidated this popup
+				return;
+			} else {
+				self.handleDataIssue();
+			}
+		}
+		
 		// display scroll if content is more
 		if (self.contentdiv.getBoundingClientRect().height > self.height) {
 			self.contentdiv.style.height=self.height+"px";
 			self.contentdiv.style.overflow="auto";
 			self.titlebar.style.left=(self.titleContainerLeft-13)+"px";
 		}
+	};
+	
+	// display result in classic mode
+	this.switchMode=function(eventObj) {
+		var selText = self.selectedText;
+		var posAr = new Array(self.currentX,self.currentY);
+		self.close();
+		
+		var popup = new hd_alias.popupHandler();
+		var flag=popup.init(posAr, selText);
+		if (!flag) {
+			alert(hd_alias.str("display.error1")+'\n'+hd_alias.str("display.error2"));
+			return;
+		}
+	};
+	
+	// display settings
+	this.changeSettings=function(eventObj) {
+		self.close();
+		hd_alias.kbh.handlePreferrences(eventObj);
+	};
+	
+	// incase data cannot be located for compact mode
+	// display pop-up to select option to display result in classic mode
+	// or open settings window
+	this.handleDataIssue=function() {
+		self.clearContentNode();
+		
+		var containerElem = self.doc.createElement("div");
+		var errElem = self.doc.createElement("div");
+		var errSpanElem = self.doc.createElement("span");
+		errSpanElem.setAttribute("style", "color:red;");
+		var errSpantxt = self.doc.createTextNode(hd_alias.str("ui_cm_error_title")+" ");
+		var errtxt = self.doc.createTextNode(self.selectedText);
+		errSpanElem.appendChild(errSpantxt);
+		errElem.appendChild(errSpanElem);
+		errElem.appendChild(errtxt);
+		
+		var msgElem = self.doc.createElement("div");
+		var msgtxt = self.doc.createTextNode(hd_alias.str("ui_cm_error_text"));
+		msgElem.appendChild(msgtxt);
+		
+		var opt1Elem = self.doc.createElement("a");
+		opt1Elem.setAttribute("href", "#");
+		opt1Elem.setAttribute("style", "display:block;");
+		var opt1txt = self.doc.createTextNode(hd_alias.str("ui_cm_opt1"));
+		opt1Elem.appendChild(opt1txt);
+		opt1Elem.addEventListener("click", self.switchMode, false);
+		
+		var opt2Elem = self.doc.createElement("a");
+		opt2Elem.setAttribute("href", "#");
+		opt2Elem.setAttribute("style", "display:block;");
+		var opt2txt = self.doc.createTextNode(hd_alias.str("ui_cm_opt2"));
+		opt2Elem.appendChild(opt2txt);
+		opt2Elem.addEventListener("click", self.changeSettings, false);
+		
+		var msgElem1 = self.doc.createElement("div");
+		msgElem1.setAttribute("style", "font-size:10px;");
+		var msgtxt1 = self.doc.createTextNode(hd_alias.str("ui_cm_opt2_desc"));
+		msgElem1.appendChild(msgtxt1);
+		
+		containerElem.appendChild(errElem);
+		containerElem.appendChild(msgElem);
+		containerElem.appendChild(opt1Elem);
+		containerElem.appendChild(msgElem1);
+		containerElem.appendChild(opt2Elem);
+		
+		self.contentdiv.appendChild(containerElem);
 	};
 	
 	this.checkCloseEvent=function(eventObj) {

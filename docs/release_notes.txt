@@ -1,4 +1,20 @@
 ---------------------------------
+Handy Dictionary v0.6
+---------------------------------
+- dynamic css for classic mode
+	- previously static list was used, which may not work if website changes css
+	- now css are extracted from response in order to display result in native look
+- some minor fix for cambridge dictionary after website interface changed
+- fail safe compact mode
+	- by default if details not found during word lookup in compact mode, automatically result is displayed in classic mode
+	- this can be changed using "Preferences", de-select the checkbox next to compact mode
+	- in above case pop-up displays error along with following options, which user has to select manually:
+		- Display Result in Classic Mode
+		- Change Settings to use Classic Mode
+- 
+------------------------------------------------------------------------------------------------
+
+---------------------------------
 Handy Dictionary v0.5 16-Mar-2013
 ---------------------------------
 - fix for cambridge dictionary compact mode

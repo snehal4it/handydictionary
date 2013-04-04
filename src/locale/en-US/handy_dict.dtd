@@ -23,4 +23,8 @@
 <!ENTITY select_dict_label "Select Dictionary">
 <!ENTITY select_mode_label "Select Display Mode">
 <!ENTITY classic_mode_label "Classic Mode">
+<!ENTITY classic_mode_desc "Detailed Definition">
 <!ENTITY compact_mode_label "Compact Mode">
+<!ENTITY compact_mode_desc "Simple Definition">
+
+<!ENTITY compact_mode_error_case_label "Automatically switch to Classic Mode if details not available for Compact Mode">

@@ -14,6 +14,7 @@
 			<preference id="handy_dictionary_ext_pref_autorun" name="extensions.handy_dictionary_ext.autorun" type="bool"/>
 			<preference id="handy_dictionary_ext_pref_dict" name="extensions.handy_dictionary_ext.dict" type="int" />
 			<preference id="handy_dictionary_ext_pref_mode" name="extensions.handy_dictionary_ext.mode" type="int" />
+			<preference id="handy_dictionary_ext_pref_comp_md_flag" name="extensions.handy_dictionary_ext.compact_mode_flag" type="bool"/>
 		</preferences>
 
 		<groupbox>
@@ -23,10 +24,7 @@
 				<rows>
 					<row>
 						<label control="handy_dictionary_ext_cntrl_checkbox" value="&autorun_label;"/>
-						<hbox flex="1">
-							<checkbox style="margin:0px;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" accesskey="a" />
-							<description flex="1" style="margin-top:5px;margin-left:0px;padding-left:0px;">&autorun_desc;</description>
-						</hbox>
+						<checkbox label="&autorun_desc;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" accesskey="a" />
 					</row>
 					<spacer flex="1" style="min-height:10px;"/>
 					<row>
@@ -70,12 +68,13 @@
 						<radiogroup id="handy_dictionary_ext_cntrl_select_mode" orient="vertical" preference="handy_dictionary_ext_pref_mode">
 							<hbox>
 								<radio label="&classic_mode_label;" value="0" accesskey="i"/>
-								<description style="padding-top:4px;">Detailed Definition</description>
+								<description style="padding-top:4px;">&classic_mode_desc;</description>
 							</hbox>
 							<hbox>
 								<radio label="&compact_mode_label;" value="1" accesskey="p" />
-								<description style="padding-top:4px;">Simple Definition</description>
+								<description style="padding-top:4px;">&compact_mode_desc;</description>
 							</hbox>
+							<checkbox label="&compact_mode_error_case_label;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_comp_md_flag" />
 						</radiogroup>
 					</row>					
 				</rows>
