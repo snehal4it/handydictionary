@@ -27,4 +27,5 @@
 <!ENTITY compact_mode_label "Compact Mode">
 <!ENTITY compact_mode_desc "Simple Definition">
 
-<!ENTITY compact_mode_error_case_label "Automatically switch to Classic Mode if details not available for Compact Mode">
+<!ENTITY failsafe_flag_label "Fail-safe Mode">
+<!ENTITY failsafe_flag_desc "Automatically switch to Classic Mode if details not available for Compact Mode">

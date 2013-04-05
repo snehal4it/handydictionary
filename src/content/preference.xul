@@ -14,7 +14,7 @@
 			<preference id="handy_dictionary_ext_pref_autorun" name="extensions.handy_dictionary_ext.autorun" type="bool"/>
 			<preference id="handy_dictionary_ext_pref_dict" name="extensions.handy_dictionary_ext.dict" type="int" />
 			<preference id="handy_dictionary_ext_pref_mode" name="extensions.handy_dictionary_ext.mode" type="int" />
-			<preference id="handy_dictionary_ext_pref_comp_md_flag" name="extensions.handy_dictionary_ext.compact_mode_flag" type="bool"/>
+			<preference id="handy_dictionary_ext_pref_failsafe" name="extensions.handy_dictionary_ext.failsafe" type="bool"/>
 		</preferences>
 
 		<groupbox>
@@ -74,7 +74,8 @@
 								<radio label="&compact_mode_label;" value="1" accesskey="p" />
 								<description style="padding-top:4px;">&compact_mode_desc;</description>
 							</hbox>
-							<checkbox label="&compact_mode_error_case_label;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_comp_md_flag" />
+							<checkbox label="&failsafe_flag_label;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_failsafe" />
+							<description style="margin-left:30px;">&failsafe_flag_desc;</description>
 						</radiogroup>
 					</row>					
 				</rows>

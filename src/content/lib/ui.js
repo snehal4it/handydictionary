@@ -566,8 +566,8 @@ hd_alias.compactPopup=function() {
 				|| defDiv.textContent == null
 				|| defDiv.textContent.replace(/\s/g, "").length == 0);
 		if (dataIssue) {
-			var cm_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.compact_mode_flag");
-			if (cm_flag == true) {
+			var failsafe_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.failsafe");
+			if (failsafe_flag == true) {
 				self.switchMode(null);
 				// call to switchMode already invalidated this popup
 				return;
