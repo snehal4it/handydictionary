@@ -175,12 +175,9 @@ hd_alias.ajaxHandler=function(dictURL, popup) {
 	}
 	xhr.onreadystatechange= function() {
 		if (xhr.readyState==4) {
-			if (xhr.status==200) {
+			if (xhr.status==200 || popup.bypassErrStatus(xhr.status)==true) {
 				var respText = xhr.responseText;
-				var dynaCSSAr = null;
-				if (popup.dynaCSS == true) {
-					dynaCSSAr = util.extractCSS(respText);
-				}
+				var dynaCSSAr = util.extractCSS(respText);
 				var dictionaryDomFragment = util.parseHTML(
 					content.document, respText, true, 
 					xhr.channel.URI, false);

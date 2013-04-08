@@ -30,8 +30,6 @@ var popupbase = function() {
 	
 	this.titleContainerLeft=0;
 	this.selectedText="";
-	// css to be extracted or not
-	this.dynaCSS=false;
 };
 popupbase.prototype.checkAndStorePos=function(updateX, updateY){
 	if (updateX != null && updateX > 0) {
@@ -166,6 +164,12 @@ popupbase.prototype.commonUpdateResult = function(element) {
 		}
 	}
 };
+
+// check whether given err status can be ignored
+popupbase.prototype.bypassErrStatus = function(statusCode) {
+	// for Merriam-Webster dict 404 is returned when word is not found
+	return (statusCode == 404 && this.dict == hd_alias.dicts[3]);
+};
 //-- end ----------- popupbase------------
 
 //--start---classic mode------------------
@@ -179,11 +183,22 @@ hd_alias.popupHandler = function() {
 	this.inputCtrl=null;
 	this.btnCtrl=null;
 	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
-	this.dynaCSS=true;
 	
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
 		return self.commonInit(posArr, selectedText, self.buildUI);
+	};
+	
+	// alternate init for compact mode error case
+	this.initSwitch = function(posArr, selectedText, docFragment, dynaCSSAr) {
+		// invoke init with manual search
+		return self.commonInit(posArr, "", function(eventObj) {
+			self.buildUI(eventObj);
+			// toggle manual search mode
+			self.toggleSearchDisplay(null);
+			self.updateSelectedText(selectedText);
+			self.updateresult(docFragment,dynaCSSAr);
+		});
 	};
 	
 	this.buildUI=function(eventObj) {
@@ -226,11 +241,38 @@ hd_alias.popupHandler = function() {
 		self.toggleSearchDisplay(null);
 		
 		//todo: move to common method
-		self.selectedText=selectedText;
-		self.dictURL=self.dict.getURL(selectedText);
+		//self.selectedText=selectedText;
+		//self.dictURL=self.dict.getURL(selectedText);
+		//self.moreoptlink.setAttribute("href", self.dictURL);
+		//
+		//self.loadContent();
+		self.reload(selectedText);
+	};
+	
+	this.updateSelectedText=function(selText) {
+		self.selectedText=selText;
+		self.dictURL=self.dict.getURL(self.selectedText);
 		self.moreoptlink.setAttribute("href", self.dictURL);
-		
+	};
+	
+	this.reload=function(selText) {
+		self.updateSelectedText(selText);
 		self.loadContent();
+	};
+	
+	this.spellCheckReload=function(eventObj) {
+		if (eventObj.target == null) {
+			// error
+			return;
+		}
+		var selText = eventObj.target.textContent;
+		if (selText != null) {
+			selText = selText.replace(/\s/g, "");
+			if (selText.length > 0) {
+				self.reload(selText);
+				return;
+			}
+		}
 	};
 	
 	// toggle display of search manual option
@@ -301,8 +343,44 @@ hd_alias.popupHandler = function() {
 			
 			self.contentdiv.appendChild(dictResultElem);
 		} else {
-			// update links
-			self.commonUpdateResult(self.contentdiv);
+			// check for suggestions if word is not found
+			var spellCheckElem = self.contentdiv.querySelector(self.dict.errId);
+			if (spellCheckElem != null) {
+				var links = spellCheckElem.querySelectorAll("a");
+				if (links != null && links.length > 0) {
+					for (var i = 0; i < links.length; i++) {
+						links[i].setAttribute("href", "#");
+						links[i].setAttribute("style", "color:#0000EE;cursor:pointer;");
+						links[i].addEventListener("click", self.spellCheckReload, false);
+					}
+				} else {
+					// update links
+					self.commonUpdateResult(self.contentdiv);
+					return;
+				}
+				
+				self.clearContentNode();
+				
+				var errElem = self.doc.createElement("div");
+				var errSpanElem = self.doc.createElement("span");
+				errSpanElem.setAttribute("style", "color:red;");
+				var errSpantxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
+				var errtxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
+				errSpanElem.appendChild(errSpantxt);
+				errElem.appendChild(errSpanElem);
+				errElem.appendChild(errtxt);
+				
+				self.contentdiv.appendChild(errElem);
+				self.contentdiv.appendChild(spellCheckElem);
+			} else {
+				// update links
+				self.commonUpdateResult(self.contentdiv);
+				
+				var refElem1 = self.contentdiv.querySelector("div#ContentBox > h1");
+				if (refElem1 != null && refElem1.scrollIntoView) {
+					refElem1.scrollIntoView(false);
+				}
+			}
 		}
 	};
 	
@@ -531,48 +609,47 @@ hd_alias.compactPopup=function() {
 	this.updateresult = function(docFragment, dynaCSSAr) {
 		self.clearContentNode();
 		
+		var dataIssue = false;
 		var result = self.dict.getCompactResult(docFragment);
 		if (result.length == 1) {
-			self.display(result[0]);
-			return;
-		}
-				
-		var titleDiv = self.doc.createElement("div");
-		titleDiv.setAttribute("style", "width:"+self.titleContainerLeft+"px;font-size:12px;overflow:hidden;");
-		var titleAr = result[0];
-		for (var i = 0; i < titleAr.length; i++) {
-			if (titleAr[i] == null) { continue; }
-			if (i == 0) {
-				titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;");
+			// switch to classic mode if result not found
+			//self.display(result[0]);
+			dataIssue = true;
+		} else {
+			var titleDiv = self.doc.createElement("div");
+			titleDiv.setAttribute("style", "width:"+self.titleContainerLeft+"px;font-size:12px;overflow:hidden;");
+			var titleAr = result[0];
+			for (var i = 0; i < titleAr.length; i++) {
+				if (titleAr[i] == null) { continue; }
+				if (i == 0) {
+					titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;");
+				}
+				titleAr[i].style.display="inline";
+				titleDiv.appendChild(titleAr[i]);
 			}
-			titleAr[i].style.display="inline";
-			titleDiv.appendChild(titleAr[i]);
+			
+			var defDiv = self.doc.createElement("div");
+			defDiv.setAttribute("style", "margin-left:10px;font-size:14px;");
+			var defAr = result[1];
+			for (var i = 0; i < defAr.length; i++) {
+				if (defAr[i] == null) { continue; }
+				defDiv.appendChild(defAr[i]);
+			}
+			
+			self.contentdiv.appendChild(titleDiv);
+			self.contentdiv.appendChild(defDiv);
+			
+			// check if data is found for compact mode
+			dataIssue = (titleDiv.textContent == null
+					|| titleDiv.textContent.replace(/\s/g, "").length == 0
+					|| defDiv.textContent == null
+					|| defDiv.textContent.replace(/\s/g, "").length == 0);
 		}
 		
-		var defDiv = self.doc.createElement("div");
-		defDiv.setAttribute("style", "margin-left:10px;font-size:14px;");
-		var defAr = result[1];
-		for (var i = 0; i < defAr.length; i++) {
-			if (defAr[i] == null) { continue; }
-			defDiv.appendChild(defAr[i]);
-		}
-		
-		self.contentdiv.appendChild(titleDiv);
-		self.contentdiv.appendChild(defDiv);
-		
-		// check if data is found for compact mode
-		var dataIssue = (titleDiv.textContent == null
-				|| titleDiv.textContent.replace(/\s/g, "").length == 0
-				|| defDiv.textContent == null
-				|| defDiv.textContent.replace(/\s/g, "").length == 0);
 		if (dataIssue) {
-			var failsafe_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.failsafe");
-			if (failsafe_flag == true) {
-				self.switchMode(null);
-				// call to switchMode already invalidated this popup
+			var switchFlag = self.handleDataIssue(docFragment,dynaCSSAr);
+			if (switchFlag == true) {
 				return;
-			} else {
-				self.handleDataIssue();
 			}
 		}
 		
@@ -585,13 +662,13 @@ hd_alias.compactPopup=function() {
 	};
 	
 	// display result in classic mode
-	this.switchMode=function(eventObj) {
+	this.switchMode=function(docFragment, dynaCSSAr) {
 		var selText = self.selectedText;
 		var posAr = new Array(self.currentX,self.currentY);
 		self.close();
 		
 		var popup = new hd_alias.popupHandler();
-		var flag=popup.init(posAr, selText);
+		var flag=popup.initSwitch(posAr, selText, docFragment, dynaCSSAr);
 		if (!flag) {
 			alert(hd_alias.str("display.error1")+'\n'+hd_alias.str("display.error2"));
 			return;
@@ -607,7 +684,15 @@ hd_alias.compactPopup=function() {
 	// incase data cannot be located for compact mode
 	// display pop-up to select option to display result in classic mode
 	// or open settings window
-	this.handleDataIssue=function() {
+	// returns true if auto switch is enabled else false
+	this.handleDataIssue=function(docFragment, dynaCSSAr) {
+		var failsafe_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.failsafe");
+		if (failsafe_flag == true) {
+			self.switchMode(docFragment,dynaCSSAr);
+			// call to switchMode already invalidated this popup
+			return true;
+		}
+		
 		self.clearContentNode();
 		
 		var containerElem = self.doc.createElement("div");
@@ -626,14 +711,16 @@ hd_alias.compactPopup=function() {
 		
 		var opt1Elem = self.doc.createElement("a");
 		opt1Elem.setAttribute("href", "#");
-		opt1Elem.setAttribute("style", "display:block;");
+		opt1Elem.setAttribute("style", "display:block;color:#0000EE;cursor:pointer;");
 		var opt1txt = self.doc.createTextNode(hd_alias.str("ui_cm_opt1"));
 		opt1Elem.appendChild(opt1txt);
-		opt1Elem.addEventListener("click", self.switchMode, false);
+		opt1Elem.addEventListener("click", function(eventObj){
+			self.switchMode(docFragment,dynaCSSAr);
+		}, false);
 		
 		var opt2Elem = self.doc.createElement("a");
 		opt2Elem.setAttribute("href", "#");
-		opt2Elem.setAttribute("style", "display:block;");
+		opt2Elem.setAttribute("style", "display:block;color:#0000EE;cursor:pointer;");
 		var opt2txt = self.doc.createTextNode(hd_alias.str("ui_cm_opt2"));
 		opt2Elem.appendChild(opt2txt);
 		opt2Elem.addEventListener("click", self.changeSettings, false);
@@ -650,6 +737,7 @@ hd_alias.compactPopup=function() {
 		containerElem.appendChild(opt2Elem);
 		
 		self.contentdiv.appendChild(containerElem);
+		return false;
 	};
 	
 	this.checkCloseEvent=function(eventObj) {

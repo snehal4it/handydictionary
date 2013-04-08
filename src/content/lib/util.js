@@ -310,6 +310,8 @@ hd_alias.dicts=[
 		this.baseURL="http://dictionary.cambridge.org/";
 		this.url=hd_alias.defaultDictURL;
 		this.resultId="entryContent";
+		// if word is not found, then suggestions container css selector
+		this.errId="div#cdo-spellcheck-container ul#cdo-spellcheck";
 		this.css=["http://dictionary.cambridge.org/common.css?version=2013-03-20-1149"];
 		this.excludeCSS=[];
 		this.cssRules=["#" + self.resultId + " > div {display:block;}",
@@ -357,6 +359,7 @@ hd_alias.dicts=[
 		this.baseURL="http://oxforddictionaries.com/";
 		this.url=self.baseURL+"search/english/?direct=1&multi=1&q=";
 		this.resultId="mainContent";
+		this.errId="div#noSearchResults div#noresults";
 		this.css=["http://oxforddictionaries.com/common.css?version=2013-03-28-1205"];
 		this.excludeCSS=[];
 		// header, headTitleElem, translateElem, defElem
@@ -405,6 +408,7 @@ hd_alias.dicts=[
 		this.baseURL="http://dictionary.reference.com/";
 		this.url=self.baseURL+"dic?q=";
 		this.resultId="contentResults";
+		this.errId="div#nBL";
 		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90586.css"];
 		// remove css from dynamically generated css array
 		this.excludeCSS=[/http(.|\s)*?static\.sfdict\.com(.|\s)*?responsive\.css/i];
@@ -452,6 +456,7 @@ hd_alias.dicts=[
 		this.baseURL="http://www.merriam-webster.com/";
 		this.url=self.baseURL+"dictionary/";
 		this.resultId="wordclick";
+		this.errId="div#content > div.spelling-help > ol";
 		this.css=["http://www.merriam-webster.com/styles/default/mw-ref.css"];
 		// remove css from dynamically generated css array
 		this.excludeCSS=[/styles\/default\/interface\.css/i];
@@ -498,6 +503,7 @@ hd_alias.dicts=[
 		this.baseURL="http://www.thefreedictionary.com/";
 		this.url=self.baseURL;
 		this.resultId="MainTxt";
+		this.errId="table#ContentTable td:nth-child(2) div table";
 		this.css=["http://img.tfd.com/t.css?g"];
 		this.cssRules=["TD{font-size:10pt;}"];
 		this.excludeCSS=[];
