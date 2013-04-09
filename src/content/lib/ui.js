@@ -339,62 +339,71 @@ hd_alias.popupHandler = function() {
 			self.contentdiv.appendChild(dictResultElem);
 		} else {
 			// check for suggestions if word is not found
-			var spellCheckElem = self.contentdiv.querySelector(self.dict.errId);
-			if (spellCheckElem != null) {
-				var links = spellCheckElem.querySelectorAll("a");
-				if (links != null && links.length > 0) {
-					self.clearContentNode();
-					
-					var errElem = self.doc.createElement("div");
-					errElem.setAttribute("style", "color:red;");
-					var errtxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
-					errElem.appendChild(errtxt);
-					
-					var opt1Elem = self.doc.createElement("div");
-					opt1Elem.setAttribute("style", "border-right:dashed 1px #555555;width:47%;float:left;padding-right:5px;");
-					var altElem = self.doc.createElement("div");
-					altElem.setAttribute("style", "color:#555555;");
-					var altTxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
-					altElem.appendChild(altTxt);
-					
-					opt1Elem.appendChild(altElem);
-					var ulElem = self.doc.createElement("ul");
-					opt1Elem.appendChild(ulElem);
-					
-					for (var i = 0; i < links.length; i++) {
-						links[i].setAttribute("href", "#");
-						links[i].setAttribute("style", "color:#0000EE;cursor:pointer;");
-						links[i].addEventListener("click", self.spellCheckReload, false);
-						
-						var liElem = self.doc.createElement("li");
-						liElem.appendChild(links[i]);
-						ulElem.appendChild(liElem);
-					}
-					
-					var opt2Elem = self.doc.createElement("div");
-					opt2Elem.setAttribute("style", "margin-left:5px;width:45%;float:left;");
-					var containerElem = self._getOtherDictSearchContainer(false);
-					opt2Elem.appendChild(containerElem);
-					
-					self.contentdiv.appendChild(errElem);
-					self.contentdiv.appendChild(opt1Elem);
-					self.contentdiv.appendChild(opt2Elem);
-				} else {
-					self.handleNoDataFound();
-					return;
-				}
-			} else {
+			var flag = self.handleResultNotFound();
+			if (flag != true) {
 				self.handleNoDataFound();
 			}
 		}
 	};
 	
+	this.handleResultNotFound=function() {
+		// check for suggestions if word is not found
+		var spellCheckElem = self.contentdiv.querySelector(self.dict.errId);
+		if (spellCheckElem == null) {
+			return false;
+		}
+		
+		var links = spellCheckElem.querySelectorAll("a");
+		if (links == null || links.length <= 0) {
+			return false;
+		}
+		self.clearContentNode();
+		
+		var errElem = self.doc.createElement("div");
+		errElem.setAttribute("style", "color:red;");
+		var errtxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
+		errElem.appendChild(errtxt);
+		
+		var opt1Elem = self.doc.createElement("div");
+		opt1Elem.setAttribute("style", "border-right:dashed 1px #555555;width:47%;float:left;padding-right:5px;");
+		var altElem = self.doc.createElement("div");
+		altElem.setAttribute("style", "color:#555555;");
+		var altTxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
+		altElem.appendChild(altTxt);
+		
+		opt1Elem.appendChild(altElem);
+		var ulElem = self.doc.createElement("ul");
+		opt1Elem.appendChild(ulElem);
+		
+		for (var i = 0; i < links.length; i++) {
+			links[i].setAttribute("href", "#");
+			links[i].setAttribute("style", "color:#0000EE;cursor:pointer;");
+			links[i].addEventListener("click", self.spellCheckReload, false);
+			
+			var liElem = self.doc.createElement("li");
+			liElem.appendChild(links[i]);
+			ulElem.appendChild(liElem);
+		}
+		
+		var opt2Elem = self.doc.createElement("div");
+		opt2Elem.setAttribute("style", "margin-left:5px;width:45%;float:left;");
+		var containerElem = self._getOtherDictSearchContainer(true);
+		opt2Elem.appendChild(containerElem);
+		
+		self.contentdiv.appendChild(errElem);
+		self.contentdiv.appendChild(opt1Elem);
+		self.contentdiv.appendChild(opt2Elem);
+		return true;
+	};
+	
+	// case where no definition, no suggestions found
 	this.handleNoDataFound=function() {
 		self.clearContentNode();
 		var containerElem = self._getOtherDictSearchContainer(false);
 		self.contentdiv.appendChild(containerElem);
 	};
 	
+	// search word using other dictionary
 	this.switchDict=function(eventObj) {
 		if (eventObj.target != null) {
 			var selDictLbl = eventObj.target.textContent;
@@ -410,6 +419,7 @@ hd_alias.popupHandler = function() {
 						}
 					}
 					if (dict != null) {
+						// change current dictionary
 						self.dict = dict;
 						self.dictTitleLbl.nodeValue=dictAr[i].lbl;
 						self.reload(self.selectedText);
@@ -446,7 +456,7 @@ hd_alias.popupHandler = function() {
 	this._getOtherDictSearchContainer = function(excludeHeader) {
 		var containerElem = self.doc.createElement("div");
 		
-		if (excludeHeader == true) {
+		if (excludeHeader != true) {
 			var errElem = self.doc.createElement("div");
 			errElem.setAttribute("style", "color:red;");
 			var errtxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
@@ -472,7 +482,6 @@ hd_alias.popupHandler = function() {
 			dictElem.setAttribute("style", "color:#0000EE;cursor:pointer;");
 			var dictElemTxt = self.doc.createTextNode(dictAr[i].lbl);
 			dictElem.appendChild(dictElemTxt);
-			var dictURL = dictAr[i].url;
 			dictElem.addEventListener("click", self.switchDict, false);
 
 			var liElem = self.doc.createElement("li");
