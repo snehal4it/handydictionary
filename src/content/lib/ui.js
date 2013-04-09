@@ -343,36 +343,46 @@ hd_alias.popupHandler = function() {
 			if (spellCheckElem != null) {
 				var links = spellCheckElem.querySelectorAll("a");
 				if (links != null && links.length > 0) {
+					self.clearContentNode();
+					
+					var errElem = self.doc.createElement("div");
+					errElem.setAttribute("style", "color:red;");
+					var errtxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
+					errElem.appendChild(errtxt);
+					
+					var opt1Elem = self.doc.createElement("div");
+					opt1Elem.setAttribute("style", "border-right:dashed 1px #555555;width:47%;float:left;padding-right:5px;");
+					var altElem = self.doc.createElement("div");
+					altElem.setAttribute("style", "color:#555555;");
+					var altTxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
+					altElem.appendChild(altTxt);
+					
+					opt1Elem.appendChild(altElem);
+					var ulElem = self.doc.createElement("ul");
+					opt1Elem.appendChild(ulElem);
+					
 					for (var i = 0; i < links.length; i++) {
 						links[i].setAttribute("href", "#");
 						links[i].setAttribute("style", "color:#0000EE;cursor:pointer;");
 						links[i].addEventListener("click", self.spellCheckReload, false);
+						
+						var liElem = self.doc.createElement("li");
+						liElem.appendChild(links[i]);
+						ulElem.appendChild(liElem);
 					}
+					
+					var opt2Elem = self.doc.createElement("div");
+					opt2Elem.setAttribute("style", "margin-left:5px;width:45%;float:left;");
+					var containerElem = self._getOtherDictSearchContainer(false);
+					opt2Elem.appendChild(containerElem);
+					
+					self.contentdiv.appendChild(errElem);
+					self.contentdiv.appendChild(opt1Elem);
+					self.contentdiv.appendChild(opt2Elem);
 				} else {
 					self.handleNoDataFound();
 					return;
 				}
-				
-				self.clearContentNode();
-				
-				var errElem = self.doc.createElement("div");
-				errElem.setAttribute("style", "color:red;");
-				//var errSpanElem = self.doc.createElement("span");
-				//errSpanElem.setAttribute("style", "color:red;");
-				var errSpantxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
-				//var errtxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
-				//errSpanElem.appendChild(errSpantxt);
-				//errElem.appendChild(errSpanElem);
-				//errElem.appendChild(errtxt);
-				errElem.appendChild(errSpantxt);
-				
-				var altElem = self.doc.createElement("div");
-				var altTxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
-				altElem.appendChild(altTxt);
-				
-				self.contentdiv.appendChild(errElem);
-				self.contentdiv.appendChild(altElem);
-				self.contentdiv.appendChild(spellCheckElem);
 			} else {
 				self.handleNoDataFound();
 			}
@@ -381,35 +391,7 @@ hd_alias.popupHandler = function() {
 	
 	this.handleNoDataFound=function() {
 		self.clearContentNode();
-		
-		var containerElem = self.doc.createElement("div");
-		
-		var errElem = self.doc.createElement("div");
-		errElem.setAttribute("style", "color:red;");
-		var errtxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
-		errElem.appendChild(errtxt);
-		containerElem.appendChild(errElem);
-		
-		var msgElem = self.doc.createElement("div");
-		msgElem.setAttribute("style", "color:#555555;");
-		var msgtxt = self.doc.createTextNode(hd_alias.str("ui_cl_try_other_dict"));
-		msgElem.appendChild(msgtxt);
-		containerElem.appendChild(msgElem);
-		
-		var dictAr = hd_alias.dicts;
-		for(var i = 0; i < dictAr.length; i++) {
-			if (self.dict == dictAr[i]) {
-				continue;
-			}
-			var dictElem = self.doc.createElement("a");
-			dictElem.setAttribute("href", "#");
-			dictElem.setAttribute("style", "display:block;color:#0000EE;cursor:pointer;margin:5px 0px 5px 20px;");
-			var dictElemTxt = self.doc.createTextNode(dictAr[i].lbl);
-			dictElem.appendChild(dictElemTxt);
-			var dictURL = dictAr[i].url;
-			dictElem.addEventListener("click", self.switchDict, false);
-			containerElem.appendChild(dictElem);
-		}		
+		var containerElem = self._getOtherDictSearchContainer(false);
 		self.contentdiv.appendChild(containerElem);
 	};
 	
@@ -458,6 +440,47 @@ hd_alias.popupHandler = function() {
 		self.btnCtrl=null;
 		self.dictTitleLbl=null;
 		self=null;
+	};
+	
+	// creates and returns container for searching the word using other dictionary
+	this._getOtherDictSearchContainer = function(excludeHeader) {
+		var containerElem = self.doc.createElement("div");
+		
+		if (excludeHeader == true) {
+			var errElem = self.doc.createElement("div");
+			errElem.setAttribute("style", "color:red;");
+			var errtxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
+			errElem.appendChild(errtxt);
+			containerElem.appendChild(errElem);
+		}
+		
+		var msgElem = self.doc.createElement("div");
+		msgElem.setAttribute("style", "color:#555555;");
+		var msgtxt = self.doc.createTextNode(hd_alias.str("ui_cl_try_other_dict"));
+		msgElem.appendChild(msgtxt);
+		containerElem.appendChild(msgElem);
+		
+		var ulElem = self.doc.createElement("ul");
+		containerElem.appendChild(ulElem);
+		var dictAr = hd_alias.dicts;
+		for(var i = 0; i < dictAr.length; i++) {
+			if (self.dict == dictAr[i]) {
+				continue;
+			}
+			var dictElem = self.doc.createElement("a");
+			dictElem.setAttribute("href", "#");
+			dictElem.setAttribute("style", "color:#0000EE;cursor:pointer;");
+			var dictElemTxt = self.doc.createTextNode(dictAr[i].lbl);
+			dictElem.appendChild(dictElemTxt);
+			var dictURL = dictAr[i].url;
+			dictElem.addEventListener("click", self.switchDict, false);
+
+			var liElem = self.doc.createElement("li");
+			liElem.setAttribute("style", "margin:5px 0px 5px 0px;");
+			liElem.appendChild(dictElem);
+			ulElem.appendChild(liElem);
+		}
+		return containerElem;
 	};
 	
 	this._getTitleContainer = function(dictURL) {
