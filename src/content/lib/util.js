@@ -307,6 +307,7 @@ hd_alias.dicts=[
 	new function(){
 		// 0 dictionary.cambridge.org
 		var self=this;
+		this.lbl="Cambridge Dictionary";
 		this.baseURL="http://dictionary.cambridge.org/";
 		this.url=hd_alias.defaultDictURL;
 		this.resultId="entryContent";
@@ -356,6 +357,7 @@ hd_alias.dicts=[
 	new function(){
 		// 1 Oxford
 		var self=this;
+		this.lbl="Oxford Dictionary";
 		this.baseURL="http://oxforddictionaries.com/";
 		this.url=self.baseURL+"search/english/?direct=1&multi=1&q=";
 		this.resultId="mainContent";
@@ -405,6 +407,7 @@ hd_alias.dicts=[
 	new function(){
 		// 2 dictionary.reference.com
 		var self=this;
+		this.lbl="Dictionary.com";
 		this.baseURL="http://dictionary.reference.com/";
 		this.url=self.baseURL+"dic?q=";
 		this.resultId="contentResults";
@@ -453,6 +456,7 @@ hd_alias.dicts=[
 	new function(){
 		// 3 Merriam-Webster
 		var self=this;
+		this.lbl="Merriam-Webster Dictionary";
 		this.baseURL="http://www.merriam-webster.com/";
 		this.url=self.baseURL+"dictionary/";
 		this.resultId="wordclick";
@@ -500,6 +504,7 @@ hd_alias.dicts=[
 	new function(){
 		// 4 The Free Dictionary
 		var self=this;
+		this.lbl="The Free Dictionary";
 		this.baseURL="http://www.thefreedictionary.com/";
 		this.url=self.baseURL;
 		this.resultId="MainTxt";

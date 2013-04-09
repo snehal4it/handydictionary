@@ -13,6 +13,8 @@ Handy Dictionary v0.6
 		- Change Settings to use Classic Mode
 - suggestions incase word not found
 	- if word is not found then suggestions are displayed if present in the response
+	
+- fix for manual search, now phrase can be searched
 ------------------------------------------------------------------------------------------------
 
 ---------------------------------

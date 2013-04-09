@@ -183,6 +183,7 @@ hd_alias.popupHandler = function() {
 	this.inputCtrl=null;
 	this.btnCtrl=null;
 	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
+	this.dictTitleLbl=null;
 	
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
@@ -236,16 +237,11 @@ hd_alias.popupHandler = function() {
 			alert(msg);
 			return;
 		}
-		selectedText=selectedText.replace(/\s/g, "");
+		// fix the case where user entered phrase
+		//selectedText=selectedText.replace(/\s/g, "");
+		selectedText=selectedText.trim();
 		self.inputCtrl.value="";
 		self.toggleSearchDisplay(null);
-		
-		//todo: move to common method
-		//self.selectedText=selectedText;
-		//self.dictURL=self.dict.getURL(selectedText);
-		//self.moreoptlink.setAttribute("href", self.dictURL);
-		//
-		//self.loadContent();
 		self.reload(selectedText);
 	};
 	
@@ -261,18 +257,17 @@ hd_alias.popupHandler = function() {
 	};
 	
 	this.spellCheckReload=function(eventObj) {
-		if (eventObj.target == null) {
-			// error
-			return;
-		}
-		var selText = eventObj.target.textContent;
-		if (selText != null) {
-			selText = selText.replace(/\s/g, "");
-			if (selText.length > 0) {
-				self.reload(selText);
-				return;
+		if (eventObj.target != null) {
+			var selText = eventObj.target.textContent;
+			if (selText != null) {
+				selText = selText.trim();
+				if (selText.length > 0) {
+					self.reload(selText);
+					return;
+				}
 			}
 		}
+		alert(hd_alias.str("ui_cl_error_spell"));
 	};
 	
 	// toggle display of search manual option
@@ -354,34 +349,94 @@ hd_alias.popupHandler = function() {
 						links[i].addEventListener("click", self.spellCheckReload, false);
 					}
 				} else {
-					// update links
-					self.commonUpdateResult(self.contentdiv);
+					self.handleNoDataFound();
 					return;
 				}
 				
 				self.clearContentNode();
 				
 				var errElem = self.doc.createElement("div");
-				var errSpanElem = self.doc.createElement("span");
-				errSpanElem.setAttribute("style", "color:red;");
+				errElem.setAttribute("style", "color:red;");
+				//var errSpanElem = self.doc.createElement("span");
+				//errSpanElem.setAttribute("style", "color:red;");
 				var errSpantxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
-				var errtxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
-				errSpanElem.appendChild(errSpantxt);
-				errElem.appendChild(errSpanElem);
-				errElem.appendChild(errtxt);
+				//var errtxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
+				//errSpanElem.appendChild(errSpantxt);
+				//errElem.appendChild(errSpanElem);
+				//errElem.appendChild(errtxt);
+				errElem.appendChild(errSpantxt);
+				
+				var altElem = self.doc.createElement("div");
+				var altTxt = self.doc.createTextNode(" "+hd_alias.str("ui_cl_error_alt"));
+				altElem.appendChild(altTxt);
 				
 				self.contentdiv.appendChild(errElem);
+				self.contentdiv.appendChild(altElem);
 				self.contentdiv.appendChild(spellCheckElem);
 			} else {
-				// update links
-				self.commonUpdateResult(self.contentdiv);
-				
-				var refElem1 = self.contentdiv.querySelector("div#ContentBox > h1");
-				if (refElem1 != null && refElem1.scrollIntoView) {
-					refElem1.scrollIntoView(false);
+				self.handleNoDataFound();
+			}
+		}
+	};
+	
+	this.handleNoDataFound=function() {
+		self.clearContentNode();
+		
+		var containerElem = self.doc.createElement("div");
+		
+		var errElem = self.doc.createElement("div");
+		errElem.setAttribute("style", "color:red;");
+		var errtxt = self.doc.createTextNode(self.selectedText+" "+hd_alias.str("ui_cl_error_title"));
+		errElem.appendChild(errtxt);
+		containerElem.appendChild(errElem);
+		
+		var msgElem = self.doc.createElement("div");
+		msgElem.setAttribute("style", "color:#555555;");
+		var msgtxt = self.doc.createTextNode(hd_alias.str("ui_cl_try_other_dict"));
+		msgElem.appendChild(msgtxt);
+		containerElem.appendChild(msgElem);
+		
+		var dictAr = hd_alias.dicts;
+		for(var i = 0; i < dictAr.length; i++) {
+			if (self.dict == dictAr[i]) {
+				continue;
+			}
+			var dictElem = self.doc.createElement("a");
+			dictElem.setAttribute("href", "#");
+			dictElem.setAttribute("style", "display:block;color:#0000EE;cursor:pointer;margin:5px 0px 5px 20px;");
+			var dictElemTxt = self.doc.createTextNode(dictAr[i].lbl);
+			dictElem.appendChild(dictElemTxt);
+			var dictURL = dictAr[i].url;
+			dictElem.addEventListener("click", self.switchDict, false);
+			containerElem.appendChild(dictElem);
+		}		
+		self.contentdiv.appendChild(containerElem);
+	};
+	
+	this.switchDict=function(eventObj) {
+		if (eventObj.target != null) {
+			var selDictLbl = eventObj.target.textContent;
+			if (selDictLbl != null) {
+				selDictLbl = selDictLbl.trim();
+				if (selDictLbl.length > 0) {
+					var dictAr = hd_alias.dicts;
+					var dict = null;
+					for(var i = 0; i < dictAr.length; i++) {
+						if (selDictLbl == dictAr[i].lbl) {
+							dict = dictAr[i];
+							break;
+						}
+					}
+					if (dict != null) {
+						self.dict = dict;
+						self.dictTitleLbl.nodeValue=dictAr[i].lbl;
+						self.reload(self.selectedText);
+						return;
+					}
 				}
 			}
 		}
+		alert(hd_alias.str("ui_cl_error_spell"));
 	};
 	
 	// remove listeners and references on close
@@ -401,6 +456,7 @@ hd_alias.popupHandler = function() {
 		self.searchcontroldisplayed=false;
 		self.inputCtrl=null;
 		self.btnCtrl=null;
+		self.dictTitleLbl=null;
 		self=null;
 	};
 	
@@ -474,6 +530,21 @@ hd_alias.popupHandler = function() {
 		styleVal += "'Liberation Sans','Microsoft Sans Serif','Arial Unicode MS',sans-serif;";
 		self.contentdiv.setAttribute("style", styleVal);
 		
+		// container for dictionary title
+		var dictTitleDiv = self.doc.createElement("div");
+		var dictTitleStyle = "position:absolute;font-size:12px;left:150px;top:28px;";
+		dictTitleStyle += "background-color:transparent;color:#555555;";
+		dictTitleDiv.setAttribute("style", dictTitleStyle);
+		var dictTitleTxt = self.doc.createTextNode("Definition from ");
+		var dictTitleSpan = self.doc.createElement("span");
+		dictTitleSpan.setAttribute("style", "font-weight:bold;color:#555555;");
+		self.dictTitleLbl=self.doc.createTextNode(self.dict.lbl);
+		dictTitleSpan.appendChild(self.dictTitleLbl);
+		
+		dictTitleDiv.appendChild(dictTitleTxt);
+		dictTitleDiv.appendChild(dictTitleSpan);
+		
+		popupbody.appendChild(dictTitleDiv);
 		popupbody.appendChild(self.searchdiv);
 		popupbody.appendChild(self.contentdiv);
 		return popupbody;
