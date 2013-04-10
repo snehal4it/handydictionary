@@ -11,9 +11,10 @@ Handy Dictionary v0.6
 	- in above case pop-up displays error along with following options, which user has to select manually:
 		- Display Result in Classic Mode
 		- Change Settings to use Classic Mode
-- suggestions incase word not found
+- fail safe classic mode
 	- if word is not found then suggestions are displayed if present in the response
-	
+	- also list of dictionary is displayed in which current word can be searched by clicking on link
+- current dictionary label is displayed in title bar for classic mode
 - fix for manual search, now phrase can be searched
 ------------------------------------------------------------------------------------------------
 

@@ -346,6 +346,7 @@ hd_alias.popupHandler = function() {
 		}
 	};
 	
+	// case when definition not found
 	this.handleResultNotFound=function() {
 		// check for suggestions if word is not found
 		var spellCheckElem = self.contentdiv.querySelector(self.dict.errId);
@@ -376,7 +377,8 @@ hd_alias.popupHandler = function() {
 		opt1Elem.appendChild(ulElem);
 		
 		for (var i = 0; i < links.length; i++) {
-			links[i].setAttribute("href", "#");
+			//links[i].setAttribute("href", "#");
+			links[i].removeAttribute("href");
 			links[i].setAttribute("style", "color:#0000EE;cursor:pointer;");
 			links[i].addEventListener("click", self.spellCheckReload, false);
 			
@@ -478,7 +480,7 @@ hd_alias.popupHandler = function() {
 				continue;
 			}
 			var dictElem = self.doc.createElement("a");
-			dictElem.setAttribute("href", "#");
+			//dictElem.setAttribute("href", "#");
 			dictElem.setAttribute("style", "color:#0000EE;cursor:pointer;");
 			var dictElemTxt = self.doc.createTextNode(dictAr[i].lbl);
 			dictElem.appendChild(dictElemTxt);
@@ -499,14 +501,30 @@ hd_alias.popupHandler = function() {
 		
 		var titlediv = self.doc.createElement("div");
 		var titledivtxtcont = self.doc.createElement("span");
-		titledivtxtcont.setAttribute("style", "margin-right:60px;");
+		titledivtxtcont.setAttribute("style", "font-size:9px;");
 		var titledivtxt = self.doc.createTextNode(hd_alias.str("title"));
 		titledivtxtcont.appendChild(titledivtxt);
 		titlediv.appendChild(titledivtxtcont);
-		var titledivstyle = "float:right;text-align:right;color:#555555;width:330px;";
-		titledivstyle += ("font-weight:bold;cursor:move;line-height:17px;" + self.fontFamily);
+		var titledivstyle = "float:right;color:#555555;width:80px;";
+		titledivstyle += ("cursor:move;line-height:17px;" + self.fontFamily);
 		titlediv.setAttribute("style", titledivstyle);
 		
+		// container for dictionary title
+		var dictTitleDiv = self.doc.createElement("div");
+		var dictTitleDivStyle = "float:right;color:#555555;width:250px;text-align:center;";
+		dictTitleDivStyle += "cursor:move;line-height:17px;" + self.fontFamily;
+		dictTitleDiv.setAttribute("style", dictTitleDivStyle);
+		var dictTitlePrefixCont = self.doc.createElement("span");
+		dictTitlePrefixCont.setAttribute("style", "font-size:9px;vertical-align:1;");
+		var dictTitleTxt = self.doc.createTextNode("Definition from ");
+		dictTitlePrefixCont.appendChild(dictTitleTxt);
+		var dictTitleSpan = self.doc.createElement("span");
+		dictTitleSpan.setAttribute("style", "font-weight:bold;font-size:12px;");
+		self.dictTitleLbl=self.doc.createTextNode(self.dict.lbl);
+		dictTitleSpan.appendChild(self.dictTitleLbl);
+		dictTitleDiv.appendChild(dictTitlePrefixCont);
+		dictTitleDiv.appendChild(dictTitleSpan);
+
 		var moreoptdiv = self.doc.createElement("div");
 		var moreoptdivStyle = "width:110px;float:right;text-align:center;";
 		moreoptdivStyle += "margin-right:5px;line-height:17px;";
@@ -532,6 +550,7 @@ hd_alias.popupHandler = function() {
 		
 		titleContainer.appendChild(self.closebtndiv);
 		titleContainer.appendChild(moreoptdiv);
+		titleContainer.appendChild(dictTitleDiv);
 		titleContainer.appendChild(titlediv);
 		
 		return titleContainer;
@@ -561,22 +580,7 @@ hd_alias.popupHandler = function() {
 		styleVal += "font-family:'Arial','Helvetica','Nimbus Sans L','FreeSans',";
 		styleVal += "'Liberation Sans','Microsoft Sans Serif','Arial Unicode MS',sans-serif;";
 		self.contentdiv.setAttribute("style", styleVal);
-		
-		// container for dictionary title
-		var dictTitleDiv = self.doc.createElement("div");
-		var dictTitleStyle = "position:absolute;font-size:12px;left:150px;top:28px;";
-		dictTitleStyle += "background-color:transparent;color:#555555;";
-		dictTitleDiv.setAttribute("style", dictTitleStyle);
-		var dictTitleTxt = self.doc.createTextNode("Definition from ");
-		var dictTitleSpan = self.doc.createElement("span");
-		dictTitleSpan.setAttribute("style", "font-weight:bold;color:#555555;");
-		self.dictTitleLbl=self.doc.createTextNode(self.dict.lbl);
-		dictTitleSpan.appendChild(self.dictTitleLbl);
-		
-		dictTitleDiv.appendChild(dictTitleTxt);
-		dictTitleDiv.appendChild(dictTitleSpan);
-		
-		popupbody.appendChild(dictTitleDiv);
+
 		popupbody.appendChild(self.searchdiv);
 		popupbody.appendChild(self.contentdiv);
 		return popupbody;
