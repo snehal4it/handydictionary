@@ -15,6 +15,7 @@
 			<preference id="handy_dictionary_ext_pref_dict" name="extensions.handy_dictionary_ext.dict" type="int" />
 			<preference id="handy_dictionary_ext_pref_mode" name="extensions.handy_dictionary_ext.mode" type="int" />
 			<preference id="handy_dictionary_ext_pref_failsafe" name="extensions.handy_dictionary_ext.failsafe" type="bool"/>
+			<preference id="handy_dictionary_ext_pref_cl_failsafe" name="extensions.handy_dictionary_ext.cl_failsafe" type="bool"/>
 		</preferences>
 
 		<groupbox>
@@ -70,14 +71,14 @@
 								<radio label="&classic_mode_label;" value="0" accesskey="i"/>
 								<description style="padding-top:4px;">&classic_mode_desc;</description>
 							</hbox>
+							<checkbox label="&failsafe_flag_label; : &cl_failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_cl_failsafe" />
 							<hbox>
 								<radio label="&compact_mode_label;" value="1" accesskey="p" />
 								<description style="padding-top:4px;">&compact_mode_desc;</description>
 							</hbox>
-							<checkbox label="&failsafe_flag_label;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_failsafe" />
-							<description style="margin-left:30px;">&failsafe_flag_desc;</description>
+							<checkbox label="&failsafe_flag_label; : &failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_failsafe" />
 						</radiogroup>
-					</row>					
+					</row>
 				</rows>
 			</grid>
 		</groupbox>

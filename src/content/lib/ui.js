@@ -184,6 +184,7 @@ hd_alias.popupHandler = function() {
 	this.btnCtrl=null;
 	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
 	this.dictTitleLbl=null;
+	this.autoSearchFlag=false;
 	
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
@@ -343,9 +344,45 @@ hd_alias.popupHandler = function() {
 			if (flag != true) {
 				self.handleNoDataFound();
 			}
+
+			var failsafe_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.cl_failsafe");
+			if (self.autoSearchFlag == false && failsafe_flag == true) {
+				var autoSearchDiv = self.doc.createElement("div");
+				var autoSearchStyle = "position:absolute;left:100px;top:80px;height:30px;width:280px;";
+				autoSearchStyle += "border-radius:6px;color:blue;background-color:#cccccc;";
+				autoSearchStyle += "text-align:center;font-weight:bold;padding-top:12px;";
+				autoSearchDiv.setAttribute("style", autoSearchStyle);
+				var autoSearchTxt = self.doc.createTextNode(hd_alias.str("ui_cl_auto_search_msg"));
+				var autoSearchInc = self.doc.createTextNode("");
+				autoSearchDiv.appendChild(autoSearchTxt);
+				autoSearchDiv.appendChild(autoSearchInc);
+				self.contentdiv.appendChild(autoSearchDiv);
+				
+				self.autoSearchFlag=true;
+				new hd_alias.ANALYZER(self).autoSearch(autoSearchInc);
+			}
 		}
 	};
 	
+	// called when auto search operation ends
+	this.autoSearchResult=function(result) {
+		if (result.type == 1) {
+			// result found
+			self.dict = result.dict;
+			self.dictTitleLbl.nodeValue=self.dict.lbl;
+			self.updateSelectedText(self.selectedText);
+			self.updateresult(result.docFrag, result.dCSSAr);
+		} else {
+			setTimeout(function(){
+				if (self != null && self.contentdiv != null
+						&& self.contentdiv.lastChild != null) {
+					self.contentdiv.removeChild(self.contentdiv.lastChild);
+				}
+			}, 1500);
+		}
+		self.autoSearchFlag=false;
+	};
+
 	// case when definition not found
 	this.handleResultNotFound=function() {
 		// check for suggestions if word is not found

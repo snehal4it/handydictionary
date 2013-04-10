@@ -14,7 +14,8 @@ var scriptAr = [
 		"lib/contextmenu.js",
 		"lib/ui.js",
 		"handydict.js",
-		"overlay.js"
+		"overlay.js",
+		"lib/analyzer.js"
 	];
 var hdURL = "chrome://handy_dictionary_ext/content/";
 
