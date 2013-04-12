@@ -203,8 +203,9 @@ hd_alias.StatusbarMenuBuilder = new function() {
 		
 		var onBtn = document.createElement("statusbarpanel");
 		onBtn.setAttribute("id", "handy_dictionary_ext_status_bar_on");
-		var lbl = hd_alias.str("ext_short_label")+hd_alias.str("turnon_label");
+		var lbl = "HDi";
 		onBtn.setAttribute("label", lbl);
+		onBtn.setAttribute("style", "background-color:red;color:white;font-weight:bold;border:solid 1px white;");
 		onBtn.addEventListener("click",function() {
 			hd_alias.changeStateManually(true);
 		},false);
@@ -212,8 +213,8 @@ hd_alias.StatusbarMenuBuilder = new function() {
 		
 		var offBtn = document.createElement("statusbarpanel");
 		offBtn.setAttribute("id", "handy_dictionary_ext_status_bar_off");
-		var lbl1 = hd_alias.str("ext_short_label")+hd_alias.str("turnoff_label");
-		offBtn.setAttribute("label", lbl1);
+		offBtn.setAttribute("label", lbl);
+		offBtn.setAttribute("style", "background-color:green;color:white;font-weight:bold;border:solid 1px white;");
 		offBtn.addEventListener("click",function() {
 			hd_alias.changeStateManually(false);
 		},false);

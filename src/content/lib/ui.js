@@ -30,6 +30,7 @@ var popupbase = function() {
 	
 	this.titleContainerLeft=0;
 	this.selectedText="";
+	this.closeTimer=null;
 };
 popupbase.prototype.checkAndStorePos=function(updateX, updateY){
 	if (updateX != null && updateX > 0) {
@@ -107,6 +108,11 @@ popupbase.prototype.close = function(closeFunct) {
 	
 	this.dragdropref.close();
 	this.dragdropref=null;
+	
+	if (this.closeTimer != null) {
+		this.closeTimer.clear();
+		this.closeTimer=null;
+	}
 	
 	var body = util.getRootElement();
 	if(!body) {return;}
@@ -338,6 +344,8 @@ hd_alias.popupHandler = function() {
 			}
 			
 			self.contentdiv.appendChild(dictResultElem);
+			
+			self.closeTimer.start();
 		} else {
 			// check for suggestions if word is not found
 			var flag = self.handleResultNotFound();
@@ -548,7 +556,7 @@ hd_alias.popupHandler = function() {
 		
 		// container for dictionary title
 		var dictTitleDiv = self.doc.createElement("div");
-		var dictTitleDivStyle = "float:right;color:#555555;width:250px;text-align:center;";
+		var dictTitleDivStyle = "float:right;color:#555555;width:285px;text-align:center;";
 		dictTitleDivStyle += "cursor:move;line-height:17px;" + self.fontFamily;
 		dictTitleDiv.setAttribute("style", dictTitleDivStyle);
 		var dictTitlePrefixCont = self.doc.createElement("span");
@@ -563,8 +571,8 @@ hd_alias.popupHandler = function() {
 		dictTitleDiv.appendChild(dictTitleSpan);
 
 		var moreoptdiv = self.doc.createElement("div");
-		var moreoptdivStyle = "width:110px;float:right;text-align:center;";
-		moreoptdivStyle += "margin-right:5px;line-height:17px;";
+		var moreoptdivStyle = "width:60px;float:right;text-align:center;";
+		moreoptdivStyle += "line-height:17px;";
 		moreoptdiv.setAttribute("style", moreoptdivStyle);
 		self.moreoptlink = self.doc.createElement("a");
 		self.moreoptlink.setAttribute("href", dictURL);
@@ -572,20 +580,40 @@ hd_alias.popupHandler = function() {
 		moreoptlinkStyle += "cursor:pointer;" + self.fontFamily;
 		self.moreoptlink.setAttribute("style", moreoptlinkStyle);
 		self.moreoptlink.setAttribute("target", "_blank");
-		var moreoptlinktxt = self.doc.createTextNode(hd_alias.str("ui_open_new_tab"));
+		self.moreoptlink.setAttribute("title", hd_alias.str("ui_open_new_tab"));
+		var moreoptlinktxt = self.doc.createTextNode(hd_alias.str("ui_more"));
 		self.moreoptlink.appendChild(moreoptlinktxt);
+		var preflink = self.doc.createElement("a");
+		preflink.setAttribute("style", moreoptlinkStyle+"margin-right:5px;");
+		preflink.setAttribute("title", hd_alias.str("ui_title_pref_title"));
+		preflink.addEventListener("click", hd_alias.kbh.handlePreferrences, false);
+		var preflinktxt = self.doc.createTextNode(hd_alias.str("ui_title_pref_lbl"));
+		preflink.appendChild(preflinktxt);
+		moreoptdiv.appendChild(preflink);
 		moreoptdiv.appendChild(self.moreoptlink);
+		
+		var autoCloseDiv = self.doc.createElement("div");
+		var autoCloseDivStyle = "width:20px;float:right;text-align:center;";
+		autoCloseDivStyle += "margin-right:5px;line-height:17px;cursor:default;";
+		autoCloseDiv.setAttribute("style", autoCloseDivStyle);
+		autoCloseDiv.setAttribute("title", hd_alias.str("ui_auto_close_title"));
+		var autoCloseTxt = self.doc.createTextNode("0");
+		autoCloseDiv.appendChild(autoCloseTxt);
+		
+		self.closeTimer=new hd_alias.TIMER(autoCloseTxt, self);
 		
 		self.closebtndiv = self.doc.createElement("div");
 		var styleVar2 = "border:solid 1px #555555;width:30px;float:right;color:#555555;";
 		styleVar2 += "text-align:center;font-size:14px;background-color:#cccccc;";
 		styleVar2 += "cursor:pointer;margin-right:5px;border-radius:4px;";
 		self.closebtndiv.setAttribute("style", styleVar2);
+		self.closebtndiv.setAttribute("title", hd_alias.str("ui_close_title"));
 		self.closebtndiv.addEventListener("click", self.close, false);
 		var closebtntxt = self.doc.createTextNode("X");
 		self.closebtndiv.appendChild(closebtntxt);
 		
 		titleContainer.appendChild(self.closebtndiv);
+		titleContainer.appendChild(autoCloseDiv);
 		titleContainer.appendChild(moreoptdiv);
 		titleContainer.appendChild(dictTitleDiv);
 		titleContainer.appendChild(titlediv);
@@ -795,6 +823,8 @@ hd_alias.compactPopup=function() {
 			if (switchFlag == true) {
 				return;
 			}
+		} else {
+			self.closeTimer.start();
 		}
 		
 		// display scroll if content is more
@@ -898,7 +928,7 @@ hd_alias.compactPopup=function() {
 	};
 	
 	this._getTitleContainer = function(dictURL) {
-		var titleContainerWidth = 90;
+		var titleContainerWidth = 105;
 		self.titleContainerLeft = self.width - titleContainerWidth;
 		var titleContainer = self.doc.createElement("div");
 		var titleContainerStyle="position:absolute;font-size:12px;height:24px;cursor:move;"+self.fontFamily;
@@ -907,28 +937,41 @@ hd_alias.compactPopup=function() {
 		
 		var moreoptdiv = self.doc.createElement("div");
 		var moreoptdivStyle = "width:40px;float:right;text-align:center;";
-		moreoptdivStyle += "margin-right:5px;line-height:17px;";
+		moreoptdivStyle += "line-height:17px;";
 		moreoptdiv.setAttribute("style", moreoptdivStyle);
 		self.moreoptlink = self.doc.createElement("a");
 		self.moreoptlink.setAttribute("href", dictURL);
 		var moreoptlinkStyle = "text-decoration:underline;color:#555555;";
 		moreoptlinkStyle += "cursor:pointer;" + self.fontFamily;
 		self.moreoptlink.setAttribute("style", moreoptlinkStyle);
+		self.moreoptlink.setAttribute("title", hd_alias.str("ui_open_new_tab"));
 		self.moreoptlink.setAttribute("target", "_blank");
 		var moreoptlinktxt = self.doc.createTextNode(hd_alias.str("ui_more"));
 		self.moreoptlink.appendChild(moreoptlinktxt);
 		moreoptdiv.appendChild(self.moreoptlink);
+		
+		var autoCloseDiv = self.doc.createElement("div");
+		var autoCloseDivStyle = "width:17px;float:right;text-align:center;";
+		autoCloseDivStyle += "margin-right:3px;line-height:17px;cursor:default;";
+		autoCloseDiv.setAttribute("style", autoCloseDivStyle);
+		autoCloseDiv.setAttribute("title", hd_alias.str("ui_auto_close_title"));
+		var autoCloseTxt = self.doc.createTextNode("0");
+		autoCloseDiv.appendChild(autoCloseTxt);
+		
+		self.closeTimer=new hd_alias.TIMER(autoCloseTxt, self);
 		
 		self.closebtndiv = self.doc.createElement("div");
 		var styleVar2 = "border:solid 1px #555555;width:30px;float:right;color:#555555;";
 		styleVar2 += "text-align:center;font-size:14px;background-color:#cccccc;";
 		styleVar2 += "cursor:pointer;margin-right:5px;border-radius:4px;";
 		self.closebtndiv.setAttribute("style", styleVar2);
+		self.closebtndiv.setAttribute("title", hd_alias.str("ui_close_title"));
 		self.closebtndiv.addEventListener("click", self.close, false);
 		var closebtntxt = self.doc.createTextNode("X");
 		self.closebtndiv.appendChild(closebtntxt);
 		
 		titleContainer.appendChild(self.closebtndiv);
+		titleContainer.appendChild(autoCloseDiv);
 		titleContainer.appendChild(moreoptdiv);
 				
 		return titleContainer;

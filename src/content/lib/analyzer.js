@@ -98,4 +98,60 @@ hd_alias.ANALYZER=function(popupVar){
 	};
 	//------ end ---- popup methods for ajax call back--------
 };
+
+hd_alias.TIMER=function(uiElemVar, popupVar){
+	var self=this;
+	this.uiElem=uiElemVar;
+	this.popup=popupVar;
+	this.timerVar=null;
+	
+	this.start=function() {
+		if (self.uiElem == null) { return; }
+		self.clear();
+		self.popup.doc.addEventListener("mousemove", self.curmoved, false);
+		self.popup.doc.addEventListener("mouseout", self.curout, false);
+		self.uiElem.nodeValue=20;
+		self.timerVar=setInterval(self.update, 1000);
+	};
+	
+	this.update=function() {
+		if (self.uiElem == null) {
+			self.clear();
+			return;
+		}
+		var currValue = parseInt(self.uiElem.nodeValue);
+		if (currValue == null || currValue <= 1) {
+			self.clear();
+			if (self.popup != null) {
+				self.popup.close();
+			}
+			return;
+		}
+		self.uiElem.nodeValue=currValue-1;
+	};
+	
+	this.clear=function() {
+		if (self.timerVar != null) {
+			clearInterval(self.timerVar);
+			self.timerVar = null;
+		}
+		if (self.uiElem != null) {
+			self.uiElem.nodeValue=0;
+			return;
+		}
+		
+		if (self.popup != null && self.popup.doc != null) {
+			self.popup.doc.removeEventListener("mousemove", self.curmoved, false);
+			self.popup.doc.removeEventListener("mouseout", self.curout, false);
+		}
+	};
+	
+	this.curmoved=function() {
+		self.clear();
+	};
+	
+	this.curout=function() {
+		self.start();
+	};
+};
 })();
