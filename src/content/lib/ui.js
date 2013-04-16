@@ -130,9 +130,6 @@ popupbase.prototype.close = function(closeFunct) {
 		this.closeTimer=null;
 	}
 	
-	//var body = util.getRootElement();
-	//if(!body) {return;}
-	//body.removeChild(this.frm);
 	if (this.rootElem == null) { return; }
 	this.rootElem.removeChild(this.frm);
 	this.rootElem = null;
@@ -352,7 +349,6 @@ hd_alias.popupHandler = function() {
 			var childNodes = dictResultElem.childNodes;
 			self.clearContentNode();
 			
-			//var cssAr = self.dict.css;
 			var cssAr = util.getRefinedCSSList(dynaCSSAr, self.dict);
 			var linkVar = null;
 			for (var i = 0; i < cssAr.length; i++) {
@@ -457,7 +453,6 @@ hd_alias.popupHandler = function() {
 		opt1Elem.appendChild(ulElem);
 		
 		for (var i = 0; i < links.length; i++) {
-			//links[i].setAttribute("href", "#");
 			links[i].removeAttribute("href");
 			links[i].setAttribute("style", "color:#0000EE;cursor:pointer;");
 			links[i].addEventListener("click", self.spellCheckReload, false);
@@ -565,7 +560,6 @@ hd_alias.popupHandler = function() {
 				continue;
 			}
 			var dictElem = self.doc.createElement("a");
-			//dictElem.setAttribute("href", "#");
 			dictElem.setAttribute("style", "color:#0000EE;cursor:pointer;");
 			var dictElemTxt = self.doc.createTextNode(dictAr[i].lbl);
 			dictElem.appendChild(dictElemTxt);
@@ -718,7 +712,6 @@ hd_alias.popupHandler = function() {
 	};
 	
 };
-//hd_alias.classicPopup.prototype = Object.create(new popupbase);
 hd_alias.popupHandler.prototype = Object.create(new popupbase);
 //-- end ---classic mode------------------
 
@@ -795,7 +788,6 @@ hd_alias.dragDropHandler=function() {
 //Display result in compact mode
 hd_alias.compactPopup=function() {
 	var self=this;
-	//this.backgroundColor="#ffffe8";
 	this.backgroundColor="#f9f9e9";
 	this.outerBorderColor="#bcaab4";
 	
@@ -827,7 +819,6 @@ hd_alias.compactPopup=function() {
 		var result = self.dict.getCompactResult(docFragment);
 		if (result.length == 1) {
 			// switch to classic mode if result not found
-			//self.display(result[0]);
 			dataIssue = true;
 		} else {
 			var titleDiv = self.doc.createElement("div");
