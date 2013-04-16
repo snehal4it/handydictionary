@@ -30,3 +30,6 @@
 <!ENTITY failsafe_flag_label "Fail-safe Mode">
 <!ENTITY failsafe_flag_desc "Automatically switch to Classic Mode if details not available">
 <!ENTITY cl_failsafe_flag_desc "Automatically search other dictionary if details not available">
+
+<!ENTITY autoclose_label "Auto Close :">
+<!ENTITY autoclose_desc "Automatically close popup after given seconds. Enter 0 to disabled this feature, maximum value is 60 seconds">

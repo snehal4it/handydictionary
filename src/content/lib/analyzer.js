@@ -11,6 +11,7 @@ var hd_alias = handy_dictionary_ext_ns_id123;
 hd_alias.ANALYZER=function(popupVar){
 	var self=this;
 	this.popup=popupVar;
+	this.closeFlag=false;
 	
 	//auto-search vars
 	this.auto=false;
@@ -19,6 +20,9 @@ hd_alias.ANALYZER=function(popupVar){
 	this.autoSearchInc=null;
 	
 	this.analyze=function(docFragment, dict){
+		if (dict == null) {
+			return {type:2};
+		}
 		var dictResultElem = docFragment.querySelector("#"+dict.resultId);
 		if (dictResultElem != null) {
 			return {type:1,resultObject:dictResultElem};
@@ -52,7 +56,13 @@ hd_alias.ANALYZER=function(popupVar){
 	};
 	
 	this.autoSearchError=function(flag) {
-		self.autoSearchInc.nodeValue=hd_alias.str("ui_cl_auto_search_no_res");
+		if (self.closeFlag == true) { return; }
+		var flag = self.updateStatus(hd_alias.str("ui_cl_auto_search_no_res"));
+		if (flag == true) {
+			// dead object
+			self.close();
+			return;
+		}
 		self.clearAutoSearch();
 		self.popup.autoSearchResult({type:2, endFlag:flag});
 	};
@@ -65,18 +75,40 @@ hd_alias.ANALYZER=function(popupVar){
 	};
 	
 	this.searchNext=function() {
+		if (self.closeFlag == true) { return; }
 		if (self.searchList == null || self.searchList.length == 0) {
 			self.autoSearchError(true);
 			return;
 		}
 		self.currDict = self.searchList.splice(0,1)[0];
-		self.autoSearchInc.nodeValue=self.searchList.length;
+		var flag = self.updateStatus(self.searchList.length);
+		if (flag == true) {
+			// dead object
+			self.close();
+			return;
+		}
 		var dictURL = self.currDict.getURL(self.popup.selectedText);
 		hd_alias.ajaxHandler(dictURL, self);
 	};
 	
+	this.updateStatus=function(msg) {
+		if (self.autoSearchInc == null) { return false; }
+		try {
+			self.autoSearchInc.nodeValue=msg;
+		} catch (e) {
+			// dead object
+			return true;
+		}
+		return false;
+	};
+	 
+	this.close=function() {
+		self.closeFlag = true;
+		self.clearAutoSearch();
+	};
 	//------ start ---- popup methods for ajax call back--------
 	this.updateresult=function(docFragment, dynaCSSAr) {
+		if (self.closeFlag == true) { return; }
 		var result = self.analyze(docFragment, self.currDict);
 		if (result.type == 1) {
 			var currDict = self.currDict;
@@ -104,30 +136,54 @@ hd_alias.TIMER=function(uiElemVar, popupVar){
 	this.uiElem=uiElemVar;
 	this.popup=popupVar;
 	this.timerVar=null;
+	this.closeFlag=false;
 	
 	this.start=function() {
-		if (self.uiElem == null) { return; }
+		if (self.uiElem == null || self.closeFlag == true) { return; }
 		self.clear();
-		self.popup.doc.addEventListener("mousemove", self.curmoved, false);
-		self.popup.doc.addEventListener("mouseout", self.curout, false);
-		self.uiElem.nodeValue=20;
+		
+		var autoCloseVal = 10;
+		if (self.popup instanceof hd_alias.popupHandler) {
+			autoCloseVal = hd_alias.prefManager.getIntPref("extensions.handy_dictionary_ext.cl_autoclose"); 
+		} else if (self.popup instanceof hd_alias.compactPopup) {
+			autoCloseVal = hd_alias.prefManager.getIntPref("extensions.handy_dictionary_ext.autoclose");
+		}
+		if (autoCloseVal == null || autoCloseVal <= 0) {
+			return;
+		}
+		
+		try {
+			self.popup.doc.addEventListener("mousemove", self.curmoved, false);
+			self.popup.doc.addEventListener("mouseout", self.curout, false);
+			self.uiElem.nodeValue=autoCloseVal;
+		} catch (e) {
+			// dead object
+			self.close();
+			return;
+		}
 		self.timerVar=setInterval(self.update, 1000);
 	};
 	
 	this.update=function() {
+		if (self.closeFlag == true) { return; }
 		if (self.uiElem == null) {
 			self.clear();
 			return;
 		}
-		var currValue = parseInt(self.uiElem.nodeValue);
-		if (currValue == null || currValue <= 1) {
-			self.clear();
-			if (self.popup != null) {
-				self.popup.close();
+		try {
+			var currValue = parseInt(self.uiElem.nodeValue);
+			if (currValue == null || currValue <= 1) {
+				self.clear();
+				if (self.popup != null) {
+					self.popup.close();
+				}
+				return;
 			}
-			return;
+			self.uiElem.nodeValue=currValue-1;
+		} catch(e) {
+			// dead object error, clear timer and close
+			self.close();
 		}
-		self.uiElem.nodeValue=currValue-1;
 	};
 	
 	this.clear=function() {
@@ -135,15 +191,29 @@ hd_alias.TIMER=function(uiElemVar, popupVar){
 			clearInterval(self.timerVar);
 			self.timerVar = null;
 		}
-		if (self.uiElem != null) {
-			self.uiElem.nodeValue=0;
-			return;
-		}
 		
-		if (self.popup != null && self.popup.doc != null) {
-			self.popup.doc.removeEventListener("mousemove", self.curmoved, false);
-			self.popup.doc.removeEventListener("mouseout", self.curout, false);
+		if (self.closeFlag == true) { return; }
+		
+		try {
+			if (self.uiElem != null) {
+				self.uiElem.nodeValue=0;
+				return;
+			}
+			
+			if (self.popup != null && self.popup.doc != null) {
+				self.popup.doc.removeEventListener("mousemove", self.curmoved, false);
+				self.popup.doc.removeEventListener("mouseout", self.curout, false);
+			}
+		} catch (e) {
+			//dead object
 		}
+	};
+	
+	this.close=function() {
+		self.closeFlag = true;
+		self.clear();
+		self.uiElem = null;
+		self.popup = null;
 	};
 	
 	this.curmoved=function() {

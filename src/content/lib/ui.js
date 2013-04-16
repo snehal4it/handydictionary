@@ -31,6 +31,8 @@ var popupbase = function() {
 	this.titleContainerLeft=0;
 	this.selectedText="";
 	this.closeTimer=null;
+	this.rootElem=null;
+	this.unloadFunc=null;
 };
 popupbase.prototype.checkAndStorePos=function(updateX, updateY){
 	if (updateX != null && updateX > 0) {
@@ -47,11 +49,15 @@ popupbase.prototype.checkAndStorePos=function(updateX, updateY){
 	this.currentY=updatedPos[1];
 };
 
-popupbase.prototype.commonInit = function(posArr, selectedText, buildFunc) {
+popupbase.prototype.commonInit = function(posArr, selectedText, buildFunc, unloadFuncRef) {
 	this.selectedText=selectedText;
 	this.dict=util.getDictionary();
 	this.dictURL=this.dict.getURL(selectedText);
 	this.checkAndStorePos(posArr[0], posArr[1]);
+	this.unloadFunc=unloadFuncRef;
+	
+	// check for document unload to avoid dead object
+	content.addEventListener("unload", this.unloadFunc, false);
 	
 	// generates inline popup content using iframe
 	this.frm = content.document.createElement("iframe");
@@ -63,13 +69,14 @@ popupbase.prototype.commonInit = function(posArr, selectedText, buildFunc) {
 	styleVal1 += "border:solid 1px "+this.outerBorderColor+";";
 	styleVal1 += "background-color:"+this.backgroundColor+";";
 	styleVal1 += "text-align:justify;font-size:12px;width:"+this.width;
-	styleVal1 += "px;height:"+this.height+"px;z-index:100;";
+	styleVal1 += "px;height:"+this.height+"px;z-index:1000;";
 	styleVal1 += "border-radius:6px;";
 	this.frm.setAttribute("style", styleVal1);
     
 	var body = util.getRootElement();
 	if (!body) { return false; }
 	body.appendChild(this.frm);
+	this.rootElem=body;
 	
 	this.frm.addEventListener("load", buildFunc, false);
 	this.frm.contentDocument.location.href = "about:blank";
@@ -78,6 +85,7 @@ popupbase.prototype.commonInit = function(posArr, selectedText, buildFunc) {
 
 //clear content/messages from content window
 popupbase.prototype.clearContentNode = function() {
+	if (this.contentdiv == null) { return; }
 	var childNodes = this.contentdiv.childNodes;
 	if (childNodes && childNodes.length > 0) {			
 		var tempArray = new Array();
@@ -93,6 +101,8 @@ popupbase.prototype.clearContentNode = function() {
 
 //display temporary messages
 popupbase.prototype.display = function(displayStr) {
+	// if popup closed already then return
+	if (this.frm == null) {return;}
 	this.clearContentNode();
 	
 	var msgElem = this.doc.createElement("h1");
@@ -103,20 +113,29 @@ popupbase.prototype.display = function(displayStr) {
 
 // remove listeners and references on close
 popupbase.prototype.close = function(closeFunct) {
-	this.frm.contentDocument.removeEventListener("keypress",closeFunct,false);
 	content.document.removeEventListener("keypress",closeFunct,false);
+	if (this.unloadFunc != null) {
+		content.removeEventListener("unload", this.unloadFunc, false);
+		this.unloadFunc = null;
+	}
+	
+	if (this.frm == null) {return;}
+	this.frm.contentDocument.removeEventListener("keypress",closeFunct,false);
 	
 	this.dragdropref.close();
 	this.dragdropref=null;
 	
 	if (this.closeTimer != null) {
-		this.closeTimer.clear();
+		this.closeTimer.close();
 		this.closeTimer=null;
 	}
 	
-	var body = util.getRootElement();
-	if(!body) {return;}
-	body.removeChild(this.frm);
+	//var body = util.getRootElement();
+	//if(!body) {return;}
+	//body.removeChild(this.frm);
+	if (this.rootElem == null) { return; }
+	this.rootElem.removeChild(this.frm);
+	this.rootElem = null;
 	
 	this.selectedText=null;
 	this.dict=null;
@@ -191,10 +210,11 @@ hd_alias.popupHandler = function() {
 	this.fontFamily="font-family:arial,verdana,helvetica,sans-serif;";
 	this.dictTitleLbl=null;
 	this.autoSearchFlag=false;
+	this.analyzer=null;
 	
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
-		return self.commonInit(posArr, selectedText, self.buildUI);
+		return self.commonInit(posArr, selectedText, self.buildUI, self.unloadDoc);
 	};
 	
 	// alternate init for compact mode error case
@@ -206,7 +226,7 @@ hd_alias.popupHandler = function() {
 			self.toggleSearchDisplay(null);
 			self.updateSelectedText(selectedText);
 			self.updateresult(docFragment,dynaCSSAr);
-		});
+		}, self.unloadDoc);
 	};
 	
 	this.buildUI=function(eventObj) {
@@ -223,9 +243,16 @@ hd_alias.popupHandler = function() {
         self.commonBuild(body, self.checkCloseEvent);
 	};
 	
+	this.unloadDoc=function(eventObj) {
+		if (self != null) {
+			self.close();
+		}
+	};
+	
 	this.checkCloseEvent=function(eventObj) {
 		if (eventObj.keyCode == 27) {
 			eventObj.stopImmediatePropagation();
+			if (self == null) {	return;	}
 			self.close();
 		}
 		return false;
@@ -298,8 +325,10 @@ hd_alias.popupHandler = function() {
 	
 	// display result in content block
 	this.updateresult = function(docFragment, dynaCSSAr) {
+		if (self == null) { return; }
 		self.clearContentNode();
 
+		if (self.dict == null) { return; }
 		var result_id=self.dict.resultId;
 		var dictResultElem=null;
 		if (docFragment.querySelector) {
@@ -367,13 +396,16 @@ hd_alias.popupHandler = function() {
 				self.contentdiv.appendChild(autoSearchDiv);
 				
 				self.autoSearchFlag=true;
-				new hd_alias.ANALYZER(self).autoSearch(autoSearchInc);
+				self.analyzer = new hd_alias.ANALYZER(self);
+				self.analyzer.autoSearch(autoSearchInc);
 			}
 		}
 	};
 	
 	// called when auto search operation ends
 	this.autoSearchResult=function(result) {
+		// if popup closed already then return
+		if (self == null) { return; }
 		if (result.type == 1) {
 			// result found
 			self.dict = result.dict;
@@ -382,10 +414,13 @@ hd_alias.popupHandler = function() {
 			self.updateresult(result.docFrag, result.dCSSAr);
 		} else {
 			setTimeout(function(){
+				// dead object
+				try {
 				if (self != null && self.contentdiv != null
 						&& self.contentdiv.lastChild != null) {
 					self.contentdiv.removeChild(self.contentdiv.lastChild);
 				}
+				} catch(e) {}
 			}, 1500);
 		}
 		self.autoSearchFlag=false;
@@ -488,6 +523,11 @@ hd_alias.popupHandler = function() {
 		
 		if (self.btnCtrl != null) {
 			self.btnCtrl.removeEventListener("click",self.handleSearch,false);
+		}
+		
+		if (self.analyzer != null) {
+			self.analyzer.close();
+			self.analyzer = null;
 		}
 		
 		self.searchdiv=null;
@@ -760,7 +800,7 @@ hd_alias.compactPopup=function() {
 	this.outerBorderColor="#bcaab4";
 	
 	this.init = function(posArr, selectedText) {
-		return self.commonInit(posArr, selectedText, self.buildUI);
+		return self.commonInit(posArr, selectedText, self.buildUI, self.unloadDoc);
 	};
 	
 	this.buildUI=function(eventObj) {
@@ -779,9 +819,11 @@ hd_alias.compactPopup=function() {
 	
 	// display result in content block
 	this.updateresult = function(docFragment, dynaCSSAr) {
+		if (self == null) { return; }
 		self.clearContentNode();
 		
 		var dataIssue = false;
+		if (self.dict == null) { return; }
 		var result = self.dict.getCompactResult(docFragment);
 		if (result.length == 1) {
 			// switch to classic mode if result not found
@@ -914,9 +956,16 @@ hd_alias.compactPopup=function() {
 		return false;
 	};
 	
+	this.unloadDoc=function(eventObj) {
+		if (self != null) {
+			self.close();
+		}
+	};
+	
 	this.checkCloseEvent=function(eventObj) {
 		if (eventObj.keyCode == 27) {
 			eventObj.stopImmediatePropagation();
+			if (self == null) { return; }
 			self.close();
 		}
 		return false;
