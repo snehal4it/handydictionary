@@ -33,6 +33,9 @@ var popupbase = function() {
 	this.closeTimer=null;
 	this.rootElem=null;
 	this.unloadFunc=null;
+	this.closeFunct=null;
+	// reference to owning window
+	this.winObj=null;
 };
 popupbase.prototype.checkAndStorePos=function(updateX, updateY){
 	if (updateX != null && updateX > 0) {
@@ -49,18 +52,14 @@ popupbase.prototype.checkAndStorePos=function(updateX, updateY){
 	this.currentY=updatedPos[1];
 };
 
-popupbase.prototype.commonInit = function(posArr, selectedText, buildFunc, unloadFuncRef) {
+popupbase.prototype.commonInit=function(posArr,selectedText,buildFunc,unloadFuncRef,closeFunctRef){
 	this.selectedText=selectedText;
 	this.dict=util.getDictionary();
 	this.dictURL=this.dict.getURL(selectedText);
 	this.checkAndStorePos(posArr[0], posArr[1]);
-	this.unloadFunc=unloadFuncRef;
-	
-	// check for document unload to avoid dead object
-	content.addEventListener("unload", this.unloadFunc, false);
 	
 	// generates inline popup content using iframe
-	this.frm = content.document.createElement("iframe");
+	this.frm = this.winObj.document.createElement("iframe");
 	this.frm.setAttribute("type", "content");
 	this.frm.setAttribute("collapsed", "true");
 	
@@ -77,6 +76,13 @@ popupbase.prototype.commonInit = function(posArr, selectedText, buildFunc, unloa
 	if (!body) { return false; }
 	body.appendChild(this.frm);
 	this.rootElem=body;
+	
+	this.unloadFunc=unloadFuncRef;
+	this.closeFunct=closeFunctRef;
+	// check for document unload to avoid dead object
+	this.winObj.addEventListener("unload", this.unloadFunc, false);
+	this.winObj.document.addEventListener("keypress", this.closeFunct, false);
+	this.frm.contentDocument.addEventListener("keypress", this.closeFunct, false);
 	
 	this.frm.addEventListener("load", buildFunc, false);
 	this.frm.contentDocument.location.href = "about:blank";
@@ -112,15 +118,11 @@ popupbase.prototype.display = function(displayStr) {
 };
 
 // remove listeners and references on close
-popupbase.prototype.close = function(closeFunct) {
-	content.document.removeEventListener("keypress",closeFunct,false);
-	if (this.unloadFunc != null) {
-		content.removeEventListener("unload", this.unloadFunc, false);
-		this.unloadFunc = null;
-	}
-	
+popupbase.prototype.close = function() {
 	if (this.frm == null) {return;}
-	this.frm.contentDocument.removeEventListener("keypress",closeFunct,false);
+	this.winObj.removeEventListener("unload", this.unloadFunc, false);
+	this.winObj.document.removeEventListener("keypress",this.closeFunct,false);
+	this.frm.contentDocument.removeEventListener("keypress",this.closeFunct,false);
 	
 	this.dragdropref.close();
 	this.dragdropref=null;
@@ -146,18 +148,15 @@ popupbase.prototype.close = function(closeFunct) {
 	
 	// fix where focus is lost and events no longer fired
 	// which prevents other pop-ups from closing
-	content.focus();
+	this.winObj.focus();
 };
 
-popupbase.prototype.commonBuild = function(body, closeFunct) {
+popupbase.prototype.commonBuild = function(body) {
 	// fix for iframe where parent document loses focus
 	// and stop receiving keyboard events
-	if(content.document.activeElement && content.document.activeElement.blur) {
-		content.document.activeElement.blur();
+	if(this.winObj.document.activeElement && this.winObj.document.activeElement.blur) {
+		this.winObj.document.activeElement.blur();
 	}
-	
-	content.document.addEventListener("keypress", closeFunct, false);
-	this.frm.contentDocument.addEventListener("keypress", closeFunct, false);
 	
 	// enable drag/move for inline popup
 	this.dragdropref = new hd_alias.dragDropHandler();
@@ -208,10 +207,12 @@ hd_alias.popupHandler = function() {
 	this.dictTitleLbl=null;
 	this.autoSearchFlag=false;
 	this.analyzer=null;
+	this.winObj=content;
 	
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
-		return self.commonInit(posArr, selectedText, self.buildUI, self.unloadDoc);
+		return self.commonInit(posArr, selectedText, self.buildUI,
+				self.unloadDoc, self.checkCloseEvent);
 	};
 	
 	// alternate init for compact mode error case
@@ -223,7 +224,7 @@ hd_alias.popupHandler = function() {
 			self.toggleSearchDisplay(null);
 			self.updateSelectedText(selectedText);
 			self.updateresult(docFragment,dynaCSSAr);
-		}, self.unloadDoc);
+		}, self.unloadDoc, self.checkCloseEvent);
 	};
 	
 	this.buildUI=function(eventObj) {
@@ -237,7 +238,7 @@ hd_alias.popupHandler = function() {
         body.appendChild(self.titlebar);
         body.appendChild(popupbody);
         
-        self.commonBuild(body, self.checkCloseEvent);
+        self.commonBuild(body);
 	};
 	
 	this.unloadDoc=function(eventObj) {
@@ -510,7 +511,7 @@ hd_alias.popupHandler = function() {
 	
 	// remove listeners and references on close
 	this.close = function() {
-		popupbase.prototype.close.call(self, self.checkCloseEvent);
+		popupbase.prototype.close.call(self);
 		
 		if (self.inputCtrl != null) {
 			self.inputCtrl.removeEventListener("keypress",self.handleCR,false);
@@ -531,6 +532,7 @@ hd_alias.popupHandler = function() {
 		self.inputCtrl=null;
 		self.btnCtrl=null;
 		self.dictTitleLbl=null;
+		self.winObj=null;
 		self=null;
 	};
 	
@@ -710,7 +712,6 @@ hd_alias.popupHandler = function() {
 		self.searchdiv.appendChild(searchCtrl);
 		self.searchcontroldiv = searchCtrl;
 	};
-	
 };
 hd_alias.popupHandler.prototype = Object.create(new popupbase);
 //-- end ---classic mode------------------
@@ -790,9 +791,11 @@ hd_alias.compactPopup=function() {
 	var self=this;
 	this.backgroundColor="#f9f9e9";
 	this.outerBorderColor="#bcaab4";
+	this.winObj=content;
 	
 	this.init = function(posArr, selectedText) {
-		return self.commonInit(posArr, selectedText, self.buildUI, self.unloadDoc);
+		return self.commonInit(posArr, selectedText, self.buildUI,
+				self.unloadDoc, self.checkCloseEvent);
 	};
 	
 	this.buildUI=function(eventObj) {
@@ -806,7 +809,7 @@ hd_alias.compactPopup=function() {
         body.appendChild(self.titlebar);
         body.appendChild(popupbody);
         
-        self.commonBuild(body, self.checkCloseEvent);
+        self.commonBuild(body);
 	};
 	
 	// display result in content block
@@ -964,7 +967,9 @@ hd_alias.compactPopup=function() {
 	
 	// remove listeners and references on close
 	this.close = function() {
-		popupbase.prototype.close.call(self, self.checkCloseEvent);
+		popupbase.prototype.close.call(self);
+		self.winObj=null;
+		self=null;
 	};
 	
 	this._getTitleContainer = function(dictURL) {
