@@ -151,12 +151,18 @@ popupbase.prototype.close = function() {
 	this.winObj.focus();
 };
 
-popupbase.prototype.commonBuild = function(body) {
+popupbase.prototype.fixFocusIssue=function(){
 	// fix for iframe where parent document loses focus
-	// and stop receiving keyboard events
+	// and stop receiving keyboard events, also in manual search
 	if(this.winObj.document.activeElement && this.winObj.document.activeElement.blur) {
 		this.winObj.document.activeElement.blur();
 	}
+};
+
+popupbase.prototype.commonBuild = function(body) {
+	// fix for case where frame is selected and events not dispatched on doc
+	body.addEventListener("keypress", this.closeFunct, false);
+	this.fixFocusIssue();
 	
 	// enable drag/move for inline popup
 	this.dragdropref = new hd_alias.dragDropHandler();
@@ -311,6 +317,7 @@ hd_alias.popupHandler = function() {
 		if (self.searchcontroldisplayed) {
 			self.searchcontroldiv.style.display="none";
 			self.contentdiv.style.height="230px";
+			self.fixFocusIssue();
 		} else {
 			self.contentdiv.style.height="200px";
 			self.searchcontroldiv.style.display="block";

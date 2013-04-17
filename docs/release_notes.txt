@@ -17,8 +17,10 @@ Handy Dictionary v0.6
 	- if selected pop-up will automatically close after specified time
 - based on user feedback, add-on/status bar button is shortened and color-coding is used for current status
 - current dictionary label is displayed in title bar for classic mode
-- fix for manual search, now phrase can be searched
-- some minor fix for cambridge dictionary after website interface is changed
+- fix
+	- fix for manual search, now phrase can be searched
+	- some minor fix for cambridge dictionary after website interface is changed
+	- fix for case where frame is selected and event not dispatched on doc for close shortcut
 ------------------------------------------------------------------------------------------------
 
 ---------------------------------
