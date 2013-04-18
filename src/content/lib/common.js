@@ -64,4 +64,79 @@ hd_alias.CustomLocale = new function() {
 
 // handles internationalization
 hd_alias.str=hd_alias.CustomLocale.str;
+
+//-- start -- Sites Config -------
+hd_alias.sc = new function() {
+	var self=this;
+	this.blockpref="extensions.handy_dictionary_ext.blocklist";
+	this.allowpref="extensions.handy_dictionary_ext.allowlist";
+	this.autopref="extensions.handy_dictionary_ext.autorun";
+	
+	this._add=function(prefVar, site) {
+		if (site == null || site.trim().length == 0) {
+			return;
+		}
+		site = site.trim().toLowerCase();
+		//try {
+			var resultStr=hd_alias.prefManager.getComplexValue(prefVar, Ci.nsISupportsString).data;
+			var resultAr=JSON.parse(resultStr);
+			if (resultAr == null) {
+				resultAr = new Array();
+			}
+			var index = resultAr.indexOf(site);
+			if (index == -1) {
+				resultAr[resultAr.length] = site;
+				self._updatePref(prefVar, resultAr);
+			}
+		//} catch (e) {}
+	};
+	
+	this._updatePref=function(prefVar, resultAr) {
+		var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+		updatedVal.data = JSON.stringify(resultAr);
+		hd_alias.prefManager.setComplexValue(prefVar, Ci.nsISupportsString, updatedVal);
+	};
+	
+	this._remove=function(prefVar, site) {
+		if (site == null || site.trim().length == 0) {
+			return;
+		}
+		site = site.trim().toLowerCase();
+		//try {
+			var resultStr=hd_alias.prefManager.getComplexValue(prefVar, Ci.nsISupportsString).data;
+			var resultAr=JSON.parse(resultStr);
+			if (resultAr == null || resultAr.length == 0) {
+				return;
+			}
+			var index = resultAr.indexOf(site);
+			if (index != -1) {
+				resultAr.splice(index,1);
+				self._updatePref(prefVar, resultAr);
+			}
+		//} catch (e) {}
+	};
+	
+	this.block=function(site) {
+		self._remove(self.allowpref, site);
+		self._add(self.blockpref, site);
+	};
+	
+	this.allow=function(site) {
+		self._remove(self.blockpref, site);
+		self._add(self.allowpref, site);
+	};
+	
+	this.unblock=function(site) {
+		self._remove(self.blockpref, site);
+	};
+	
+	this.clear=function(site) {
+		self._remove(self.allowpref, site);
+	};
+	
+	this.process=function(site) {
+		
+	};
+};
+//-- end -- Sites Config -------
 })();
