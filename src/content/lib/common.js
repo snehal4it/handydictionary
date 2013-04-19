@@ -116,6 +116,26 @@ hd_alias.sc = new function() {
 		//} catch (e) {}
 	};
 	
+	this._exist=function(prefVar, site) {
+		if (site == null || site.trim().length == 0) {
+			return false;
+		}
+		site = site.trim().toLowerCase();
+		
+		//try {
+			var resultStr=hd_alias.prefManager.getComplexValue(prefVar, Ci.nsISupportsString).data;
+			var resultAr=JSON.parse(resultStr);
+			if (resultAr == null || resultAr.length == 0) {
+				return false;
+			}
+			var index = resultAr.indexOf(site);
+			if (index != -1) {
+				return true;
+			}
+		//} catch (e) {}
+		return false;
+	};
+	
 	this.block=function(site) {
 		self._remove(self.allowpref, site);
 		self._add(self.blockpref, site);
@@ -134,8 +154,22 @@ hd_alias.sc = new function() {
 		self._remove(self.allowpref, site);
 	};
 	
-	this.process=function(site) {
-		
+	this.isBlocked=function(site) {
+		return self._exist(self.blockpref, site);
+	};
+	
+	this.isAllowed=function(site) {
+		return self._exist(self.allowpref, site);
+	};
+	
+	// checks whether tool can be enabled for website
+	this.isEnabled=function(site) {
+		var autoRun = hd_alias.prefManager.getBoolPref(self.autopref);
+		if (autoRun) {
+			return !self.isBlocked(site);
+		} else {
+			return self.isAllowed(site);
+		}
 	};
 };
 //-- end -- Sites Config -------

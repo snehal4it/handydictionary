@@ -15,6 +15,8 @@ Handy Dictionary v0.6
 	- now css are extracted from response in order to display result in native look
 - auto close
 	- if selected pop-up will automatically close after specified time
+- enable/disable for website
+	- now user can enabled/disable tool for given website using context and toolbar menu
 - based on user feedback, add-on/status bar button is shortened and color-coding is used for current status
 - current dictionary label is displayed in title bar for classic mode
 - fix

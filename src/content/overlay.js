@@ -19,6 +19,15 @@ var cmd_pref = hd_alias.varname+".kbh.handlePreferrences(event);";
 var cmd_about = hd_alias.varname+".kbh.handleAboutDialog(event);";
 var cmd_manualLookup = hd_alias.varname+".kbh.lookupManually(event);";
 var cmd_manualLookup_cntx = hd_alias.varname+".lookupManually(event);";
+var cmd_block = hd_alias.varname+".MENU.handleDisableForWebsite(event);";
+var cmd_allow = hd_alias.varname+".MENU.handleEnableForWebsite(event);";
+
+// reference to id used for menus
+hd_alias.OId = {
+	toolbar_id:"menu_ToolsPopup",
+	block_id:"handy_dictionary_ext_block_submenu",
+	allow_id:"handy_dictionary_ext_allow_submenu"
+};
 
 // single object to handle init and cleanup
 // for all overlay elements
@@ -47,8 +56,6 @@ hd_alias.ContextMenuBuilder = new function() {
 	var self=this;
 	this.init=function() {
 		var contextMenu = document.getElementById("contentAreaContextMenu");
-		//var test=document.getElementById("stringbundleset");
-		//alert(test);
 		if (contextMenu == null) { return; }
 		
 		var options = document.createElement("menu");
@@ -64,7 +71,6 @@ hd_alias.ContextMenuBuilder = new function() {
 		var lookup = document.createElement("menuitem");
 		lookup.setAttribute("label", hd_alias.str("lookup_manual_label"));
 		lookup.setAttribute("key", kb_lookup_id);
-		//lookup.addEventListener("click",hd_alias.lookupManually,false);
 		lookup.setAttribute("oncommand", cmd_manualLookup_cntx);
 		lookup.setAttribute("accesskey", "m");
 		
@@ -72,7 +78,6 @@ hd_alias.ContextMenuBuilder = new function() {
 		var pref = document.createElement("menuitem");
 		pref.setAttribute("label", hd_alias.str("pref_label"));
 		pref.setAttribute("key", kb_pref_id);
-		//pref.addEventListener("click",hd_alias.kbh.handlePreferrences,false);
 		pref.setAttribute("oncommand", cmd_pref);
 		pref.setAttribute("accesskey", "p");
 		
@@ -80,7 +85,6 @@ hd_alias.ContextMenuBuilder = new function() {
 		var howto = document.createElement("menuitem");
 		howto.setAttribute("label", hd_alias.str("howto_label"));
 		howto.setAttribute("key", kb_about_id);
-		//howto.addEventListener("click",hd_alias.kbh.handleAboutDialog,false);
 		howto.setAttribute("oncommand", cmd_about);
 		howto.setAttribute("accesskey", "h");
 		
@@ -143,11 +147,9 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		enable.setAttribute("hidden", "false");
 		enable.setAttribute("key", kb_toggle_state_id);
 		enable.setAttribute("label", hd_alias.str("turnon_label"));
-		//enable.addEventListener("click",function() {
-		//	hd_alias.changeStateManually(true);
-		//},false);
 		enable.setAttribute("oncommand", cmd_toggleState);
 		enable.setAttribute("accesskey", "o");
+		enable.setAttribute("tooltiptext", hd_alias.str("toolbar_enable_tooltip"));
 		
 		// Disable Menu
 		var disable = document.createElement("menuitem");
@@ -155,11 +157,31 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		disable.setAttribute("hidden", "true");
 		disable.setAttribute("key", kb_toggle_state_id);
 		disable.setAttribute("label", hd_alias.str("turnoff_label"));
-		//disable.addEventListener("click",function() {
-		//	hd_alias.changeStateManually(false);
-		//},false);
 		disable.setAttribute("oncommand", cmd_toggleState);
 		disable.setAttribute("accesskey", "f");
+		disable.setAttribute("tooltiptext", hd_alias.str("toolbar_disable_tooltip"));
+		
+		// disable for website
+		var blockMenu = document.createElement("menuitem");
+		blockMenu.setAttribute("id", hd_alias.OId.block_id);
+		blockMenu.setAttribute("type", "checkbox");
+		blockMenu.setAttribute("hidden", "true");
+		//blockMenu.setAttribute("key", kb_toggle_state_id);
+		blockMenu.setAttribute("label", hd_alias.str("block_website_prefix"));
+		blockMenu.setAttribute("oncommand", cmd_block);
+		//blockMenu.setAttribute("accesskey", "f");
+		blockMenu.setAttribute("tooltiptext", hd_alias.str("block_website_tooltip"));
+		
+		// enable for website
+		var allowMenu = document.createElement("menuitem");
+		allowMenu.setAttribute("id", hd_alias.OId.allow_id);
+		allowMenu.setAttribute("type", "checkbox");
+		allowMenu.setAttribute("hidden", "true");
+		//allowMenu.setAttribute("key", kb_toggle_state_id);
+		allowMenu.setAttribute("label", hd_alias.str("enable_website_prefix"));
+		allowMenu.setAttribute("oncommand", cmd_allow);
+		//allowMenu.setAttribute("accesskey", "f");
+		allowMenu.setAttribute("tooltiptext", hd_alias.str("enable_website_tooltip"));
 		
 		// Preferrences
 		var pref = document.createElement("menuitem");
@@ -177,6 +199,8 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		
 		mainMenuPopup.appendChild(enable);
 		mainMenuPopup.appendChild(disable);
+		mainMenuPopup.appendChild(blockMenu);
+		mainMenuPopup.appendChild(allowMenu);
 		mainMenuPopup.appendChild(pref);
 		mainMenuPopup.appendChild(howto);
 		

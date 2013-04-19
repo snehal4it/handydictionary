@@ -7,6 +7,7 @@ if ("undefined" == typeof(handy_dictionary_ext_ns_id123)) {
 
 (function() {
 var hd_alias=handy_dictionary_ext_ns_id123;
+var util=hd_alias.UTIL;
 hd_alias.CNTX = new function() {
 	var self=this;
 	var util=hd_alias.UTIL;
@@ -190,20 +191,26 @@ hd_alias.MENU = new function() {
 	this.off=null;
 	this.stOn=null;
 	this.stOff=null;
+	this.block=null;
+	this.allow=null;
+	this.menuItemDataKey="siteargument";
 	
 	// cache references
 	this.init=function(){
 		self.on=document.getElementById("handy_dictionary_ext_enable_submenu");
 		self.off=document.getElementById("handy_dictionary_ext_disable_submenu");
-		
 		self.on.hidden=false;
 		self.off.hidden=true;
 		
 		self.stOn=document.getElementById("handy_dictionary_ext_status_bar_on");
 		self.stOff=document.getElementById("handy_dictionary_ext_status_bar_off");
-		
 		self.stOn.hidden=false;
 		self.stOff.hidden=true;
+		
+		self.block=document.getElementById(hd_alias.OId.block_id);
+		self.allow=document.getElementById(hd_alias.OId.allow_id);
+		self.block.hidden=true;
+		self.allow.hidden=true;
 	};
 	
 	// remove all references
@@ -212,6 +219,8 @@ hd_alias.MENU = new function() {
 		self.off=null;
 		self.stOn=null;
 		self.stOff=null;
+		self.block=null;
+		self.allow=null;
 	};
 	
 	// for each tab, status is maintained and accordingly
@@ -222,6 +231,68 @@ hd_alias.MENU = new function() {
 		
 		self.stOn.hidden=flag;
 		self.stOff.hidden=!flag;
+		
+		self.updatesc();
+	};
+	
+	this.updatesc=function() {
+		var site = content.location.hostname;
+		if (site != null && site.trim().length != 0) {
+			self.block.setAttribute("label", hd_alias.str("block_website_prefix") + ' "' + site + '"');
+			self.block.setAttribute("checked", hd_alias.sc.isBlocked(site));
+			self.block.setUserData(self.menuItemDataKey, site, null);
+			self.block.hidden=false;
+			
+			self.allow.setAttribute("label", hd_alias.str("enable_website_prefix") + ' "' + site + '"');
+			self.allow.setAttribute("checked", hd_alias.sc.isAllowed(site));
+			self.allow.setUserData(self.menuItemDataKey, site, null);
+			self.allow.hidden=false;
+		} else {
+			self.block.setAttribute("label", hd_alias.str("block_website_prefix"));
+			self.block.setUserData(self.menuItemDataKey, null, null);
+			self.block.hidden=true;
+			
+			self.allow.setAttribute("label", hd_alias.str("enable_website_prefix"));
+			self.allow.setUserData(self.menuItemDataKey, null, null);
+			self.allow.hidden=true;
+		}
+	};
+	
+	this.handleDisableForWebsite=function(eventObj) {
+		var flag = self.block.getAttribute("checked");
+		var site = self.block.getUserData(self.menuItemDataKey);
+		
+		if (flag) {
+			hd_alias.sc.block(site);
+		} else {
+			hd_alias.sc.unblock(site);
+		}
+		self.refreshToolStatus(site);
+	};
+	
+	this.handleEnableForWebsite=function(eventObj) {
+		var flag = self.allow.getAttribute("checked");
+		var site = self.allow.getUserData(self.menuItemDataKey);
+		
+		if (flag) {
+			hd_alias.sc.allow(site);
+		} else {
+			hd_alias.sc.clear(site);
+		}
+		self.refreshToolStatus(site);
+	};
+	
+	// update tool status after website configuration is changed
+	this.refreshToolStatus=function(site) {
+		var flag = hd_alias.sc.isEnabled(site);
+		var on = util.isExtEnabled(content.document);
+		// update only if there is change in state
+		if (on != flag) {
+			hd_alias.changeStateManually(flag);
+		} else {
+			// refresh sc menus
+			self.updatesc();
+		}
 	};
 };
 })();

@@ -29,40 +29,73 @@ hd_alias.gClean=function() {
 // updates status of already opened tab based on user preferences
 // flag: enable or cleanup
 hd_alias.updateOpenedTab=function(flag){
-	var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
-	// incase of cleanup, no need to check autorun
-	if (flag && !autoRun) {
-		return;
-	}
-	//var numTabs = gBrowser.browsers.length;
 	var numTabs = gBrowser.tabContainer.childNodes.length;
+	var selectedTabFlag = false;
 	for (var i = 0; i < numTabs; i++) {
 		var currentTab = gBrowser.tabContainer.childNodes[i];
-		if (gBrowser.selectedTab == currentTab) {
-			hd_alias.changeStateManually(flag);
-		} else {
-			var currentBrowser = gBrowser.getBrowserForTab(currentTab);
-			var doc=currentBrowser.contentDocument;
-			if (flag) {
-				hd_alias.enableListener({originalTarget:doc});
-			} else {
-				hd_alias.disableListener({originalTarget:doc});
+		var currentBrowser = gBrowser.getBrowserForTab(currentTab);
+		var doc=currentBrowser.contentDocument;
+		if (flag) {
+			var enabled = hd_alias.sc.isEnabled(currentBrowser.currentURI.host);
+			if (gBrowser.selectedTab == currentTab) {
+				selectedTabFlag = enabled;
 			}
-			
-			// apply on frames if any
+			if (enabled) {
+				// process only if tool can be enabled for given website in tab
+				// no need to disable, as shutdown would have disabled already
+				hd_alias.enableListener({originalTarget:doc});
+				hd_alias.enableForFrames(doc, enabled);
+			}
+		} else {
+			// incase of shutdown disable from all tabs
+			hd_alias.disableListener({originalTarget:doc});
 			hd_alias.enableForFrames(doc, flag);
-		}	
+		}
+	}
+	
+	// update current tab status for menu
+	menu.updateStatus(selectedTabFlag);
+	if (selectedTabFlag) {
+		cntx.enable();
+	} else {
+		cntx.disable();
 	}
 };
 
 hd_alias.domListener=function(eventObj) {
-	var autoRun = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.autorun");
-	if (autoRun) {
+	var site = "";
+	if (eventObj && eventObj.originalTarget) {
+		var windowObj = eventObj.originalTarget.defaultView;
+		if (windowObj.frameElement) {
+			// handle frame separately
+			hd_alias.frameDOMHandler(windowObj);
+			return;
+		}
+		site = windowObj.location.hostname;
+	} else {
+		site = content.location.hostname;
+	}
+	var flag = hd_alias.sc.isEnabled(site);
+	if (flag) {
 		hd_alias.enableListener(eventObj);
 	} else {
 		hd_alias.disableListener(eventObj);
 	}
-	menu.updateStatus(autoRun);
+	menu.updateStatus(flag);
+};
+
+// document loaded for frame
+hd_alias.frameDOMHandler=function(windowObj){
+	if (windowObj.location.href == "about:blank") {
+		// for internal popup always enable
+		hd_alias.handleFrames([windowObj.frameElement], true);
+	} else {
+		// for frame check owning site
+		var frFlag = hd_alias.sc.isEnabled(windowObj.top.location.hostname);
+		if (frFlag) {
+			hd_alias.handleFrames([windowObj.frameElement], frFlag);
+		}
+	}
 };
 
 hd_alias.tabSelectListener=function(eventObj) {
