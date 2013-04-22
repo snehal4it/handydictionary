@@ -23,7 +23,6 @@ hd_alias.contextMenuPos=[0,0];
 hd_alias.cntxItemsLimit=20;
 
 hd_alias.defaultDictURL='http://dictionary.cambridge.org/search/british/direct/?q=';
-hd_alias.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 hd_alias.userDataKey="handy_dict_ext_doc_key987";
 
@@ -65,12 +64,121 @@ hd_alias.CustomLocale = new function() {
 // handles internationalization
 hd_alias.str=hd_alias.CustomLocale.str;
 
+//-- start -- Preference Handler -----
+hd_alias.ph=new function(){
+	var self=this;
+	this.prefs=null;
+	this.blockpref="blocklist";
+	this.allowpref="allowlist";
+	
+	this.init=function(){
+		self.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch("extensions.handy_dictionary_ext.");
+		// This is only necessary prior to Gecko 13
+		if (!("addObserver" in self.prefs)) {
+			self.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+		}
+		self.prefs.addObserver("", self, false);
+	};
+	
+	this.clean=function(){
+		self.prefs.removeObserver("", self);
+	};
+	
+	this.observe=function(aSubject, aTopic, aData){
+		switch (aData) {
+			case self.blockpref:
+			case self.allowpref:
+				// updates enable/disable for website menus
+				hd_alias.MENU.updatesc();
+				break;
+		}
+	};
+	
+	//----- preferences used ---------
+	this.getDictionaryId=function(){
+		var dict_id = 0;
+		try {
+			dict_id=self.prefs.getIntPref("dict");
+		} catch(e) {}
+		return dict_id;
+	};
+	
+	this.getDisplayMode=function(){
+		var mode = 0;
+		try {
+			mode=self.prefs.getIntPref("mode");
+		} catch(e) {}
+		return mode;
+	};
+	// compact mode fail safe flag
+	this.isFailSafe=function(){
+		var failsafe_flag = true;
+		try {
+			failsafe_flag = self.prefs.getBoolPref("failsafe");
+		} catch(e) {}
+		return failsafe_flag;
+	};
+	
+	// classic mode fail safe flag
+	this.isCLFailSafe=function(){
+		var failsafe_flag = true;
+		try {
+			failsafe_flag = self.prefs.getBoolPref("cl_failsafe");
+		} catch(e) {}
+		return failsafe_flag;
+	};
+	
+	this.isAutoRun=function(){
+		var autoRun = true;
+		try {
+			autoRun = self.prefs.getBoolPref("autorun");
+		} catch(e) {}
+		return autoRun;
+	};
+	
+	this.getAutoClose=function(){
+		var autoClose = 8;
+		try {
+			autoClose=self.prefs.getIntPref("autoclose");
+		} catch(e) {}
+		if (autoClose < 0 || autoClose > 60) {
+			autoClose = 8;
+		}
+		return autoClose;
+	};
+	
+	this.getCLAutoClose=function(){
+		var autoClose = 12;
+		try {
+			autoClose=self.prefs.getIntPref("cl_autoclose");
+		} catch(e) {}
+		if (autoClose < 0 || autoClose > 60) {
+			autoClose = 12;
+		}
+		return autoClose;
+	};
+	
+	// retrieves complex value for sites configuration
+	this.getSCComplexValue=function(prefVar){
+		return self.prefs.getComplexValue(prefVar, Ci.nsISupportsString).data;
+	};
+	
+	this.setSCComplexValue=function(prefVar, valueStr){
+		var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+		updatedVal.data = valueStr;
+		self.prefs.setComplexValue(prefVar, Ci.nsISupportsString, updatedVal);
+	};
+	//----- preferences used ---------
+};
+//-- end -- Preference Handler -------
+
 //-- start -- Sites Config -------
 hd_alias.sc = new function() {
 	var self=this;
-	this.blockpref="extensions.handy_dictionary_ext.blocklist";
-	this.allowpref="extensions.handy_dictionary_ext.allowlist";
-	this.autopref="extensions.handy_dictionary_ext.autorun";
+	this.blockpref=hd_alias.ph.blockpref;
+	this.allowpref=hd_alias.ph.allowpref;
 	
 	this._add=function(prefVar, site) {
 		if (site == null || site.trim().length == 0) {
@@ -78,7 +186,7 @@ hd_alias.sc = new function() {
 		}
 		site = site.trim().toLowerCase();
 		//try {
-			var resultStr=hd_alias.prefManager.getComplexValue(prefVar, Ci.nsISupportsString).data;
+			var resultStr=hd_alias.ph.getSCComplexValue(prefVar);
 			var resultAr=JSON.parse(resultStr);
 			if (resultAr == null) {
 				resultAr = new Array();
@@ -92,9 +200,8 @@ hd_alias.sc = new function() {
 	};
 	
 	this._updatePref=function(prefVar, resultAr) {
-		var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
-		updatedVal.data = JSON.stringify(resultAr);
-		hd_alias.prefManager.setComplexValue(prefVar, Ci.nsISupportsString, updatedVal);
+		var valueStr = JSON.stringify(resultAr);
+		hd_alias.ph.setSCComplexValue(prefVar, valueStr);
 	};
 	
 	this._remove=function(prefVar, site) {
@@ -103,7 +210,7 @@ hd_alias.sc = new function() {
 		}
 		site = site.trim().toLowerCase();
 		//try {
-			var resultStr=hd_alias.prefManager.getComplexValue(prefVar, Ci.nsISupportsString).data;
+			var resultStr=hd_alias.ph.getSCComplexValue(prefVar);
 			var resultAr=JSON.parse(resultStr);
 			if (resultAr == null || resultAr.length == 0) {
 				return;
@@ -123,7 +230,7 @@ hd_alias.sc = new function() {
 		site = site.trim().toLowerCase();
 		
 		//try {
-			var resultStr=hd_alias.prefManager.getComplexValue(prefVar, Ci.nsISupportsString).data;
+			var resultStr=hd_alias.ph.getSCComplexValue(prefVar);
 			var resultAr=JSON.parse(resultStr);
 			if (resultAr == null || resultAr.length == 0) {
 				return false;
@@ -164,7 +271,7 @@ hd_alias.sc = new function() {
 	
 	// checks whether tool can be enabled for website
 	this.isEnabled=function(site) {
-		var autoRun = hd_alias.prefManager.getBoolPref(self.autopref);
+		var autoRun = hd_alias.ph.isAutoRun();
 		if (autoRun) {
 			return !self.isBlocked(site);
 		} else {

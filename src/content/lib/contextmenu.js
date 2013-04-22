@@ -289,10 +289,12 @@ hd_alias.MENU = new function() {
 		// update only if there is change in state
 		if (on != flag) {
 			hd_alias.changeStateManually(flag);
-		} else {
-			// refresh sc menus
-			self.updatesc();
 		}
+		// handled in pref observer
+		//else {
+		//	// refresh sc menus
+		//	self.updatesc();
+		//}
 	};
 };
 })();

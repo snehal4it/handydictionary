@@ -13,6 +13,7 @@ var util=hd_alias.UTIL;
 var menu=hd_alias.MENU;
 
 hd_alias.gInit=function() {
+	hd_alias.ph.init();
 	cntx.init();
 	menu.init();
 	gBrowser.addEventListener("DOMContentLoaded", hd_alias.domListener, false);
@@ -22,6 +23,7 @@ hd_alias.gInit=function() {
 hd_alias.gClean=function() {
 	cntx.clean();
 	menu.clean();
+	hd_alias.ph.clean();
 	gBrowser.removeEventListener("DOMContentLoaded", hd_alias.domListener, false);
 	gBrowser.tabContainer.removeEventListener("TabSelect", hd_alias.tabSelectListener, false);
 };

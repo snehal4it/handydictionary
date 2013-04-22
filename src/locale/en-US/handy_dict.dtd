@@ -33,3 +33,8 @@
 
 <!ENTITY autoclose_label "Auto Close :">
 <!ENTITY autoclose_desc "Automatically close popup after given seconds. Enter 0 to disabled this feature, maximum value is 60 seconds">
+
+<!ENTITY blocklist_label "Block List">
+<!ENTITY blocklist_desc "Always disable for following websites. For editing use toolbar menu while browsing">
+<!ENTITY allowlist_label "Allow List">
+<!ENTITY allowlist_desc "Always enable for following websites. For editing use toolbar menu while browsing">

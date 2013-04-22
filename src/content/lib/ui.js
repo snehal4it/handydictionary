@@ -386,7 +386,7 @@ hd_alias.popupHandler = function() {
 				self.handleNoDataFound();
 			}
 
-			var failsafe_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.cl_failsafe");
+			var failsafe_flag = hd_alias.ph.isCLFailSafe();
 			if (self.autoSearchFlag == false && failsafe_flag == true) {
 				var autoSearchDiv = self.doc.createElement("div");
 				var autoSearchStyle = "position:absolute;left:100px;top:80px;height:30px;width:280px;";
@@ -903,7 +903,7 @@ hd_alias.compactPopup=function() {
 	// or open settings window
 	// returns true if auto switch is enabled else false
 	this.handleDataIssue=function(docFragment, dynaCSSAr) {
-		var failsafe_flag = hd_alias.prefManager.getBoolPref("extensions.handy_dictionary_ext.failsafe");
+		var failsafe_flag = hd_alias.ph.isFailSafe();
 		if (failsafe_flag == true) {
 			self.switchMode(docFragment,dynaCSSAr);
 			// call to switchMode already invalidated this popup

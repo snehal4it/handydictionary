@@ -8,6 +8,7 @@ if ("undefined" == typeof(handy_dictionary_ext_ns_id123)) {
 //single anonymous block to contain all objects
 (function() {
 var hd_alias = handy_dictionary_ext_ns_id123;
+var util=hd_alias.UTIL;
 hd_alias.ANALYZER=function(popupVar){
 	var self=this;
 	this.popup=popupVar;
@@ -142,16 +143,10 @@ hd_alias.TIMER=function(uiElemVar, popupVar){
 		if (self.uiElem == null || self.closeFlag == true) { return; }
 		self.clear();
 		
-		var autoCloseVal = 10;
-		if (self.popup instanceof hd_alias.popupHandler) {
-			autoCloseVal = hd_alias.prefManager.getIntPref("extensions.handy_dictionary_ext.cl_autoclose"); 
-		} else if (self.popup instanceof hd_alias.compactPopup) {
-			autoCloseVal = hd_alias.prefManager.getIntPref("extensions.handy_dictionary_ext.autoclose");
-		}
-		if (autoCloseVal == null || autoCloseVal <= 0) {
+		var autoCloseVal = util.getAutoClose(self.popup);
+		if (autoCloseVal <= 0) {
 			return;
 		}
-		
 		try {
 			self.popup.doc.addEventListener("mousemove", self.curmoved, false);
 			self.popup.doc.addEventListener("mouseout", self.curout, false);

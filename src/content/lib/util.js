@@ -43,10 +43,7 @@ hd_alias.UTIL=new function(){
 	
 	// retrieves current dictionary
 	this.getDictionary=function(){
-		var dict_id = 0;
-		try {
-			dict_id=hd_alias.prefManager.getIntPref("extensions.handy_dictionary_ext.dict");
-		} catch(e) {}
+		var dict_id = hd_alias.ph.getDictionaryId();
 		if (dict_id==null || dict_id < 0 || dict_id >= hd_alias.dicts.length) {
 			dict_id=0;
 		}
@@ -55,11 +52,7 @@ hd_alias.UTIL=new function(){
 	
 	// retrieves pop-up based on display mode
 	this.getPopup=function(){
-		var mode = 0;
-		try {
-			mode=hd_alias.prefManager.getIntPref("extensions.handy_dictionary_ext.mode");
-		} catch(e) {}
-		
+		var mode = hd_alias.ph.getDisplayMode();
 		var popup = null;
 		if (mode==1) {
 			popup = new hd_alias.compactPopup();
@@ -68,6 +61,17 @@ hd_alias.UTIL=new function(){
 		}
 		
 		return popup;
+	};
+	
+	// retrieves auto close value based on popup type
+	this.getAutoClose=function(popup){
+		var autoCloseVal = 10;
+		if (popup instanceof hd_alias.popupHandler) {
+			autoCloseVal = hd_alias.ph.getCLAutoClose();
+		} else if (popup instanceof hd_alias.compactPopup) {
+			autoCloseVal = hd_alias.ph.getAutoClose();
+		}
+		return autoCloseVal;
 	};
 	
 	this.getAbsoluteLocations=function(eventObj){

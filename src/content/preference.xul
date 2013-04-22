@@ -8,6 +8,23 @@
 	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	 xmlns:html="http://www.w3.org/1999/xhtml"
 	 buttons="accept,cancel" buttonpack="center">
+	 
+	<script type="text/javascript">
+		function clearList1() {
+			var textbox = document.getElementById("handy_dictionary_ext_cntrl_blocklist");
+			var prefElem = document.getElementById("handy_dictionary_ext_pref_blocklist");
+			clearList(textbox,prefElem);
+		}
+		function clearList2() {
+			var textbox = document.getElementById("handy_dictionary_ext_cntrl_allowlist");
+			var prefElem = document.getElementById("handy_dictionary_ext_pref_allowlist");
+			clearList(textbox,prefElem);
+		}
+		function clearList(textbox, prefElem) {
+			textbox.value="[]";
+			prefElem.value="[]";
+		}
+	</script>
 
 	<prefpane label="&pref_title;">
 		<preferences>
@@ -18,6 +35,8 @@
 			<preference id="handy_dictionary_ext_pref_cl_failsafe" name="extensions.handy_dictionary_ext.cl_failsafe" type="bool"/>
 			<preference id="handy_dictionary_ext_pref_autoclose" name="extensions.handy_dictionary_ext.autoclose" type="int"/>
 			<preference id="handy_dictionary_ext_pref_cl_autoclose" name="extensions.handy_dictionary_ext.cl_autoclose" type="int"/>
+			<preference id="handy_dictionary_ext_pref_blocklist" name="extensions.handy_dictionary_ext.blocklist" type="string"/>
+			<preference id="handy_dictionary_ext_pref_allowlist" name="extensions.handy_dictionary_ext.allowlist" type="string"/>
 		</preferences>
 
 		<groupbox>
@@ -28,6 +47,22 @@
 					<row>
 						<label control="handy_dictionary_ext_cntrl_checkbox" value="&autorun_label;"/>
 						<checkbox label="&autorun_desc;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" accesskey="a" />
+					</row>
+					<row>
+						<label value="&blocklist_label;"/>
+						<vbox>
+							<description>&blocklist_desc;</description>
+							<textbox id="handy_dictionary_ext_cntrl_blocklist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_blocklist" />
+							<hbox><button label="Clear" oncommand="clearList1();" /></hbox>
+						</vbox>
+					</row>
+					<row>
+						<label value="&allowlist_label;"/>
+						<vbox>
+							<description>&allowlist_desc;</description>
+							<textbox id="handy_dictionary_ext_cntrl_allowlist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_allowlist" />
+							<hbox><button label="Clear" oncommand="clearList2();" /></hbox>
+						</vbox>
 					</row>
 					<spacer flex="1" style="min-height:10px;"/>
 					<row>
