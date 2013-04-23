@@ -39,96 +39,93 @@
 			<preference id="handy_dictionary_ext_pref_allowlist" name="extensions.handy_dictionary_ext.allowlist" type="string"/>
 		</preferences>
 
-		<groupbox>
-			<caption label="&settings_label;"/>
-			<grid>
-				<columns><column /><column /></columns>
-				<rows>
-					<row>
-						<label control="handy_dictionary_ext_cntrl_checkbox" value="&autorun_label;"/>
-						<checkbox label="&autorun_desc;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" accesskey="a" />
-					</row>
-					<row>
-						<label value="&blocklist_label;"/>
-						<vbox>
-							<description>&blocklist_desc;</description>
-							<textbox id="handy_dictionary_ext_cntrl_blocklist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_blocklist" />
-							<hbox><button label="Clear" oncommand="clearList1();" /></hbox>
-						</vbox>
-					</row>
-					<row>
-						<label value="&allowlist_label;"/>
-						<vbox>
-							<description>&allowlist_desc;</description>
-							<textbox id="handy_dictionary_ext_cntrl_allowlist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_allowlist" />
-							<hbox><button label="Clear" oncommand="clearList2();" /></hbox>
-						</vbox>
-					</row>
-					<spacer flex="1" style="min-height:10px;"/>
-					<row>
-						<label control="handy_dictionary_ext_cntrl_select_dict" value="&select_dict_label;"/>
-						<radiogroup id="handy_dictionary_ext_cntrl_select_dict" orient="vertical" preference="handy_dictionary_ext_pref_dict">
-							<hbox>
-								<radio label="Cambridge Dictionary" value="0" accesskey="C" />
-								<description style="padding-top:4px;">
-									<html:a href="http://dictionary.cambridge.org/" target="_blank" style="color:blue;">http://dictionary.cambridge.org/</html:a>
-								</description>
-							</hbox>
-							<hbox>
-								<radio label="Oxford Dictionary" value="1" accesskey="O" />
-								<description style="padding-top:4px;">
-									<html:a href="http://oxforddictionaries.com/" target="_blank" style="color:blue;">http://oxforddictionaries.com/</html:a>
-								</description>
-							</hbox>
-							<hbox>
-								<radio label="Dictionary.com" value="2" accesskey="D"/>
-								<description style="padding-top:4px;">
-									<html:a href="http://dictionary.reference.com/" target="_blank" style="color:blue;">http://dictionary.reference.com/</html:a>
-								</description>
-							</hbox>
-							<hbox>
-								<radio label="Merriam-Webster Dictionary" value="3" accesskey="M" />
-								<description style="padding-top:4px;">
-									<html:a href="http://www.merriam-webster.com/" target="_blank" style="color:blue;">http://www.merriam-webster.com/</html:a>
-								</description>
-							</hbox>
-							<hbox>
-								<radio label="The Free Dictionary" value="4" accesskey="T"/>
-								<description style="padding-top:4px;">
-									<html:a href="http://www.thefreedictionary.com/" target="_blank" style="color:blue;">http://www.thefreedictionary.com/</html:a>
-								</description>
-							</hbox>
-						</radiogroup>
-					</row>
-					<spacer flex="1" style="min-height:10px;"/>
-					<row>
-						<label control="handy_dictionary_ext_cntrl_select_mode" value="&select_mode_label;"/>
-						<radiogroup id="handy_dictionary_ext_cntrl_select_mode" orient="vertical" preference="handy_dictionary_ext_pref_mode">
-							<hbox>
-								<radio label="&classic_mode_label;" value="0" accesskey="i"/>
-								<description style="padding-top:4px;">&classic_mode_desc;</description>
-							</hbox>
-							<checkbox label="&failsafe_flag_label; : &cl_failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_cl_failsafe" />
-							<hbox style="margin-left:25px;">
-								<textbox type="number" min="0" max="60" size="2" style="width:30px;" preference="handy_dictionary_ext_pref_cl_autoclose"/>
-								<label style="margin-top:10px;">&autoclose_label;</label>
-								<description style="width:320px;">&autoclose_desc;</description>
-							</hbox>
-							<hbox>
-								<radio label="&compact_mode_label;" value="1" accesskey="p" />
-								<description style="padding-top:4px;">&compact_mode_desc;</description>
-							</hbox>
-							<checkbox label="&failsafe_flag_label; : &failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_failsafe" />
-							<hbox style="margin-left:25px;margin-bottom:5px;">
-								<textbox type="number" min="0" max="60" size="2" style="width:30px;" preference="handy_dictionary_ext_pref_autoclose"/>
-								<label style="margin-top:10px;">&autoclose_label;</label>
-								<description style="width:320px;">&autoclose_desc;</description>
-							</hbox>
-						</radiogroup>
-					</row>
-				</rows>
-			</grid>
-		</groupbox>
+		<grid style="background-color:white;border:solid 1px #cccccc;margin-bottom:20px;">
+			<columns style="background-color:white;"><column /><column /></columns>
+			<rows style="background-color:white;">
+				<row>
+					<label control="handy_dictionary_ext_cntrl_checkbox" value="&autorun_label;"/>
+					<checkbox label="&autorun_desc;" id="handy_dictionary_ext_cntrl_checkbox" preference="handy_dictionary_ext_pref_autorun" accesskey="a" />
+				</row>
+				<row>
+					<label value="&blocklist_label;"/>
+					<vbox>
+						<description>&blocklist_desc;</description>
+						<textbox id="handy_dictionary_ext_cntrl_blocklist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_blocklist" />
+						<hbox><button label="Clear" oncommand="clearList1();" /></hbox>
+					</vbox>
+				</row>
+				<row>
+					<label value="&allowlist_label;"/>
+					<vbox>
+						<description>&allowlist_desc;</description>
+						<textbox id="handy_dictionary_ext_cntrl_allowlist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_allowlist" />
+						<hbox><button label="Clear" oncommand="clearList2();" /></hbox>
+					</vbox>
+				</row>
+				<spacer flex="1" style="min-height:1px;border-top:solid 1px #cccccc;"/>
+				<row>
+					<label control="handy_dictionary_ext_cntrl_select_dict" value="&select_dict_label;"/>
+					<radiogroup id="handy_dictionary_ext_cntrl_select_dict" orient="vertical" preference="handy_dictionary_ext_pref_dict">
+						<hbox>
+							<radio label="Cambridge Dictionary" value="0" accesskey="C" />
+							<description style="padding-top:4px;">
+								<html:a href="http://dictionary.cambridge.org/" target="_blank" style="color:blue;">http://dictionary.cambridge.org/</html:a>
+							</description>
+						</hbox>
+						<hbox>
+							<radio label="Oxford Dictionary" value="1" accesskey="O" />
+							<description style="padding-top:4px;">
+								<html:a href="http://oxforddictionaries.com/" target="_blank" style="color:blue;">http://oxforddictionaries.com/</html:a>
+							</description>
+						</hbox>
+						<hbox>
+							<radio label="Dictionary.com" value="2" accesskey="D"/>
+							<description style="padding-top:4px;">
+								<html:a href="http://dictionary.reference.com/" target="_blank" style="color:blue;">http://dictionary.reference.com/</html:a>
+							</description>
+						</hbox>
+						<hbox>
+							<radio label="Merriam-Webster Dictionary" value="3" accesskey="M" />
+							<description style="padding-top:4px;">
+								<html:a href="http://www.merriam-webster.com/" target="_blank" style="color:blue;">http://www.merriam-webster.com/</html:a>
+							</description>
+						</hbox>
+						<hbox>
+							<radio label="The Free Dictionary" value="4" accesskey="T"/>
+							<description style="padding-top:4px;">
+								<html:a href="http://www.thefreedictionary.com/" target="_blank" style="color:blue;">http://www.thefreedictionary.com/</html:a>
+							</description>
+						</hbox>
+					</radiogroup>
+				</row>
+				<spacer flex="1" style="min-height:1px;border-top:solid 1px #cccccc;"/>
+				<row>
+					<label control="handy_dictionary_ext_cntrl_select_mode" value="&select_mode_label;"/>
+					<radiogroup id="handy_dictionary_ext_cntrl_select_mode" orient="vertical" preference="handy_dictionary_ext_pref_mode">
+						<hbox>
+							<radio label="&classic_mode_label;" value="0" accesskey="i"/>
+							<description style="padding-top:4px;">&classic_mode_desc;</description>
+						</hbox>
+						<checkbox label="&failsafe_flag_label; : &cl_failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_cl_failsafe" />
+						<hbox style="margin-left:25px;">
+							<textbox type="number" min="0" max="60" size="2" style="width:30px;" preference="handy_dictionary_ext_pref_cl_autoclose"/>
+							<label style="margin-top:10px;">&autoclose_label;</label>
+							<description style="width:320px;">&autoclose_desc;</description>
+						</hbox>
+						<hbox>
+							<radio label="&compact_mode_label;" value="1" accesskey="p" />
+							<description style="padding-top:4px;">&compact_mode_desc;</description>
+						</hbox>
+						<checkbox label="&failsafe_flag_label; : &failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_failsafe" />
+						<hbox style="margin-left:25px;margin-bottom:5px;">
+							<textbox type="number" min="0" max="60" size="2" style="width:30px;" preference="handy_dictionary_ext_pref_autoclose"/>
+							<label style="margin-top:10px;">&autoclose_label;</label>
+							<description style="width:320px;">&autoclose_desc;</description>
+						</hbox>
+					</radiogroup>
+				</row>
+			</rows>
+		</grid>
 	</prefpane>
 
 </prefwindow>

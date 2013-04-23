@@ -19,14 +19,17 @@ var cmd_pref = hd_alias.varname+".kbh.handlePreferrences(event);";
 var cmd_about = hd_alias.varname+".kbh.handleAboutDialog(event);";
 var cmd_manualLookup = hd_alias.varname+".kbh.lookupManually(event);";
 var cmd_manualLookup_cntx = hd_alias.varname+".lookupManually(event);";
-var cmd_block = hd_alias.varname+".MENU.handleDisableForWebsite(event);";
-var cmd_allow = hd_alias.varname+".MENU.handleEnableForWebsite(event);";
+var cmd_block = hd_alias.varname+".MENU.handleDisableForWebsite(event, this);";
+var cmd_allow = hd_alias.varname+".MENU.handleEnableForWebsite(event, this);";
 
 // reference to id used for menus
 hd_alias.OId = {
 	toolbar_id:"menu_ToolsPopup",
 	block_id:"handy_dictionary_ext_block_submenu",
-	allow_id:"handy_dictionary_ext_allow_submenu"
+	allow_id:"handy_dictionary_ext_allow_submenu",
+	st_block_id:"handy_dictionary_ext_st_block_submenu",
+	st_allow_id:"handy_dictionary_ext_st_allow_submenu",
+	st_opt_id:"handy_dictionary_ext_status_bar_opt"
 };
 
 // single object to handle init and cleanup
@@ -169,7 +172,6 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		//blockMenu.setAttribute("key", kb_toggle_state_id);
 		blockMenu.setAttribute("label", hd_alias.str("block_website_prefix"));
 		blockMenu.setAttribute("oncommand", cmd_block);
-		//blockMenu.setAttribute("accesskey", "f");
 		blockMenu.setAttribute("tooltiptext", hd_alias.str("block_website_tooltip"));
 		
 		// enable for website
@@ -180,7 +182,6 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		//allowMenu.setAttribute("key", kb_toggle_state_id);
 		allowMenu.setAttribute("label", hd_alias.str("enable_website_prefix"));
 		allowMenu.setAttribute("oncommand", cmd_allow);
-		//allowMenu.setAttribute("accesskey", "f");
 		allowMenu.setAttribute("tooltiptext", hd_alias.str("enable_website_tooltip"));
 		
 		// Preferrences
@@ -245,9 +246,50 @@ hd_alias.StatusbarMenuBuilder = new function() {
 		offBtn.setAttribute("tooltiptext", hd_alias.str("turnoff_tooltip"));
 		offBtn.setAttribute("hidden", "true");
 		
+		var optPopup = document.createElement("menupopup");
+		optPopup.setAttribute("position", "before_end");
+		
+		var optBtn = document.createElement("statusbarpanel");
+		optBtn.setAttribute("id", hd_alias.OId.st_opt_id);
+		var optBtnStyle = "border-top:solid 7px white;border-bottom:solid 7px white;";
+		optBtnStyle += "border-left:solid 2px white;border-right:solid 2px white;";
+		optBtnStyle += "background-color:black;width:10px;padding:0px;";
+		optBtn.setAttribute("style", optBtnStyle);
+		optBtn.setAttribute("class", "statusbarpanel-menu-iconic");
+		optBtn.addEventListener("mouseover",function(eventObj) {
+			//anchor,position,x,y,isContextMenu,attributesOverride,triggerEvent
+			optPopup.openPopup(optBtn,"",0,0,false,false,eventObj);
+		},false);
+		optBtn.setAttribute("hidden", "true");
+		
+		// disable for website
+		var blockMenu = document.createElement("menuitem");
+		blockMenu.setAttribute("id", hd_alias.OId.st_block_id);
+		blockMenu.setAttribute("type", "checkbox");
+		blockMenu.setAttribute("hidden", "true");
+		//blockMenu.setAttribute("key", kb_toggle_state_id);
+		blockMenu.setAttribute("label", hd_alias.str("block_website_prefix"));
+		blockMenu.setAttribute("oncommand", cmd_block);
+		blockMenu.setAttribute("tooltiptext", hd_alias.str("block_website_tooltip"));
+		
+		// enable for website
+		var allowMenu = document.createElement("menuitem");
+		allowMenu.setAttribute("id", hd_alias.OId.st_allow_id);
+		allowMenu.setAttribute("type", "checkbox");
+		allowMenu.setAttribute("hidden", "true");
+		//allowMenu.setAttribute("key", kb_toggle_state_id);
+		allowMenu.setAttribute("label", hd_alias.str("enable_website_prefix"));
+		allowMenu.setAttribute("oncommand", cmd_allow);
+		allowMenu.setAttribute("tooltiptext", hd_alias.str("enable_website_tooltip"));
+		
+		optPopup.appendChild(blockMenu);
+		optPopup.appendChild(allowMenu);
+		optBtn.appendChild(optPopup);
+		
 		// all appended child to be removed in cleanup
 		statusbar.appendChild(onBtn);
 		statusbar.appendChild(offBtn);
+		statusbar.appendChild(optBtn);
 	};
 	
 	this.clean=function() {
@@ -259,6 +301,9 @@ hd_alias.StatusbarMenuBuilder = new function() {
 		
 		var offBtn = statusbar.querySelector("#handy_dictionary_ext_status_bar_off");
 		statusbar.removeChild(offBtn);
+		
+		var optBtn = statusbar.querySelector("#"+hd_alias.OId.st_opt_id);
+		statusbar.removeChild(optBtn);
 	};
 };
 

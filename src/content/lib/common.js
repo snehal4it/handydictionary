@@ -185,7 +185,7 @@ hd_alias.sc = new function() {
 			return;
 		}
 		site = site.trim().toLowerCase();
-		//try {
+		try {
 			var resultStr=hd_alias.ph.getSCComplexValue(prefVar);
 			var resultAr=JSON.parse(resultStr);
 			if (resultAr == null) {
@@ -196,7 +196,7 @@ hd_alias.sc = new function() {
 				resultAr[resultAr.length] = site;
 				self._updatePref(prefVar, resultAr);
 			}
-		//} catch (e) {}
+		} catch (e) {}
 	};
 	
 	this._updatePref=function(prefVar, resultAr) {
@@ -209,7 +209,7 @@ hd_alias.sc = new function() {
 			return;
 		}
 		site = site.trim().toLowerCase();
-		//try {
+		try {
 			var resultStr=hd_alias.ph.getSCComplexValue(prefVar);
 			var resultAr=JSON.parse(resultStr);
 			if (resultAr == null || resultAr.length == 0) {
@@ -220,7 +220,7 @@ hd_alias.sc = new function() {
 				resultAr.splice(index,1);
 				self._updatePref(prefVar, resultAr);
 			}
-		//} catch (e) {}
+		} catch (e) {}
 	};
 	
 	this._exist=function(prefVar, site) {
@@ -229,7 +229,7 @@ hd_alias.sc = new function() {
 		}
 		site = site.trim().toLowerCase();
 		
-		//try {
+		try {
 			var resultStr=hd_alias.ph.getSCComplexValue(prefVar);
 			var resultAr=JSON.parse(resultStr);
 			if (resultAr == null || resultAr.length == 0) {
@@ -239,7 +239,7 @@ hd_alias.sc = new function() {
 			if (index != -1) {
 				return true;
 			}
-		//} catch (e) {}
+		} catch (e) {}
 		return false;
 	};
 	

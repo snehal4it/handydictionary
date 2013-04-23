@@ -191,8 +191,13 @@ hd_alias.MENU = new function() {
 	this.off=null;
 	this.stOn=null;
 	this.stOff=null;
+	// tool bar
 	this.block=null;
 	this.allow=null;
+	// status bar
+	this.stblock=null;
+	this.stallow=null;
+	this.optBtn=null;
 	this.menuItemDataKey="siteargument";
 	
 	// cache references
@@ -211,6 +216,13 @@ hd_alias.MENU = new function() {
 		self.allow=document.getElementById(hd_alias.OId.allow_id);
 		self.block.hidden=true;
 		self.allow.hidden=true;
+		
+		self.optBtn=document.getElementById(hd_alias.OId.st_opt_id);
+		self.stblock=document.getElementById(hd_alias.OId.st_block_id);
+		self.stallow=document.getElementById(hd_alias.OId.st_allow_id);
+		self.optBtn.hidden=true;
+		self.stblock.hidden=true;
+		self.stallow.hidden=true;
 	};
 	
 	// remove all references
@@ -221,6 +233,9 @@ hd_alias.MENU = new function() {
 		self.stOff=null;
 		self.block=null;
 		self.allow=null;
+		self.stblock=null;
+		self.stallow=null;
+		self.optBtn=null;
 	};
 	
 	// for each tab, status is maintained and accordingly
@@ -237,30 +252,48 @@ hd_alias.MENU = new function() {
 	
 	this.updatesc=function() {
 		var site = content.location.hostname;
+		var blockLbl = hd_alias.str("block_website_prefix");
+		var allowLbl = hd_alias.str("enable_website_prefix");
+		var usrData = null;
+		var hiddenFlag = true;
+		
 		if (site != null && site.trim().length != 0) {
-			self.block.setAttribute("label", hd_alias.str("block_website_prefix") + ' "' + site + '"');
-			self.block.setAttribute("checked", hd_alias.sc.isBlocked(site));
-			self.block.setUserData(self.menuItemDataKey, site, null);
-			self.block.hidden=false;
+			var siteStr = ' "' + site + '"';
+			blockLbl += siteStr;
+			allowLbl += siteStr;
+			usrData = site;
+			hiddenFlag = false;
 			
-			self.allow.setAttribute("label", hd_alias.str("enable_website_prefix") + ' "' + site + '"');
-			self.allow.setAttribute("checked", hd_alias.sc.isAllowed(site));
-			self.allow.setUserData(self.menuItemDataKey, site, null);
-			self.allow.hidden=false;
-		} else {
-			self.block.setAttribute("label", hd_alias.str("block_website_prefix"));
-			self.block.setUserData(self.menuItemDataKey, null, null);
-			self.block.hidden=true;
-			
-			self.allow.setAttribute("label", hd_alias.str("enable_website_prefix"));
-			self.allow.setUserData(self.menuItemDataKey, null, null);
-			self.allow.hidden=true;
+			var isBlocked = hd_alias.sc.isBlocked(site);
+			var isAllowed = hd_alias.sc.isAllowed(site);
+			self.block.setAttribute("checked", isBlocked);
+			self.allow.setAttribute("checked", isAllowed);
+			self.stblock.setAttribute("checked", isBlocked);
+			self.stallow.setAttribute("checked", isAllowed);
 		}
+		
+		self.block.setAttribute("label", blockLbl);
+		self.block.setUserData(self.menuItemDataKey, usrData, null);
+		self.block.hidden=hiddenFlag;
+		
+		self.allow.setAttribute("label", allowLbl);
+		self.allow.setUserData(self.menuItemDataKey, usrData, null);
+		self.allow.hidden=hiddenFlag;
+		
+		self.stblock.setAttribute("label", blockLbl);
+		self.stblock.setUserData(self.menuItemDataKey, usrData, null);
+		self.stblock.hidden=hiddenFlag;
+		
+		self.stallow.setAttribute("label", allowLbl);
+		self.stallow.setUserData(self.menuItemDataKey, usrData, null);
+		self.stallow.hidden=hiddenFlag;
+		
+		self.optBtn.hidden=hiddenFlag;
 	};
 	
-	this.handleDisableForWebsite=function(eventObj) {
-		var flag = self.block.getAttribute("checked");
-		var site = self.block.getUserData(self.menuItemDataKey);
+	this.handleDisableForWebsite=function(eventObj, elem) {
+		var flag = elem.getAttribute("checked");
+		var site = elem.getUserData(self.menuItemDataKey);
 		
 		if (flag) {
 			hd_alias.sc.block(site);
@@ -270,9 +303,9 @@ hd_alias.MENU = new function() {
 		self.refreshToolStatus(site);
 	};
 	
-	this.handleEnableForWebsite=function(eventObj) {
-		var flag = self.allow.getAttribute("checked");
-		var site = self.allow.getUserData(self.menuItemDataKey);
+	this.handleEnableForWebsite=function(eventObj, elem) {
+		var flag = elem.getAttribute("checked");
+		var site = elem.getUserData(self.menuItemDataKey);
 		
 		if (flag) {
 			hd_alias.sc.allow(site);
@@ -290,11 +323,6 @@ hd_alias.MENU = new function() {
 		if (on != flag) {
 			hd_alias.changeStateManually(flag);
 		}
-		// handled in pref observer
-		//else {
-		//	// refresh sc menus
-		//	self.updatesc();
-		//}
 	};
 };
 })();
