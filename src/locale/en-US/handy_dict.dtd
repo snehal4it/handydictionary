@@ -32,7 +32,7 @@
 <!ENTITY cl_failsafe_flag_desc "Automatically search other dictionary if details not available">
 
 <!ENTITY autoclose_label "Auto Close :">
-<!ENTITY autoclose_desc "Automatically close popup after given seconds. Enter 0 to disabled this feature, maximum value is 60 seconds">
+<!ENTITY autoclose_desc "Automatically close popup after given seconds. Enter 0 to disable this feature, maximum value is 60 seconds">
 
 <!ENTITY blocklist_label "Block List">
 <!ENTITY blocklist_desc "Always disable for following websites. For editing use toolbar menu while browsing">

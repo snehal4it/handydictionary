@@ -1,6 +1,7 @@
 <!-- About -->
 <!ENTITY how_to_use_title "How to use?">
 <!ENTITY using_handy_dict "Using Handy Dictionary!">
+<!ENTITY dialog_accept_btn_label "OK">
 
 <!ENTITY how_to_use_lbl "How to use:">
 <!ENTITY how_to_use_txt1 "&quot;Double&quot; click on any word and inline popup is displayed,">
@@ -8,56 +9,109 @@
 <!ENTITY how_to_use_txt3 "Or select any word/phrase manually and then right click.">
 <!ENTITY how_to_use_txt4 "Use &quot;escape&quot; key to close or click on &quot;X&quot; button">
 
-<!ENTITY how_to_use_desc1 "Note: Kindly take a note that this tool provides just interface, actual dictionary service">
-<!ENTITY how_to_use_desc2 "is provided by public interface of selected dictionary.">
+<!ENTITY handy_dict_more_details_desc1 "Click here to visit home page for more details.">
+<!ENTITY handy_dict_more_details_desc2 "Kindly share your valuable feedback: kbatu.patel@gmail.com">
 
-<!ENTITY turn_on_lbl "Turn On:">
-<!ENTITY turn_on_desc "Enables tool for current page in tab.">
+<!-- tabs -->
+<!ENTITY toolbar_label "Toolbar Menus">
+<!ENTITY cntx_menu_label "Context Menus">
+<!ENTITY pref_label "Preferences">
+<!ENTITY addon_bar_label "Addonbar Menus">
+<!ENTITY shortcut_key_label "Shortcut Keys">
 
-<!ENTITY turn_off_lbl "Turn Off:">
-<!ENTITY turn_off_desc "Disables tool for current page in tab.">
+<!-- Toolbar -->
+<!ENTITY turn_on_lbl "Turn On">
+<!ENTITY turn_on_desc "Temporary enable tool for current page in tab.">
+<!ENTITY turn_off_lbl "Turn Off">
+<!ENTITY turn_off_desc "Temporary disable tool for current page in tab.">
+<!ENTITY block_website_lbl "Disable for &quot;&lt;website&gt;&quot;">
+<!ENTITY block_website_desc1 "Always disable tool for given website, i.e. even if &quot;Always On&quot; flag is on,">
+<!ENTITY block_website_desc2 "for given website tool will be always disabled.">
+<!ENTITY block_website_desc3 "Useful for the case where tool needs to be disabled only for few websites,">
+<!ENTITY block_website_desc4 "while for all other websites tool needs to be enabled by default.">
+<!ENTITY block_website_desc5 "If the website is already in block list then menu will be checked.">
+<!ENTITY block_website_desc6 "If already checked then clicking menu removes website from block list.">
+<!ENTITY allow_website_lbl "Enable for &quot;&lt;website&gt;&quot;">
+<!ENTITY allow_website_desc1 "Always enable tool for given website, i.e. even if &quot;Always On&quot; flag is off,">
+<!ENTITY allow_website_desc2 "for given website tool will be always enabled.">
+<!ENTITY allow_website_desc3 "Useful for the case where tool needs to be enabled only for few websites,">
+<!ENTITY allow_website_desc4 "while for all other websites tool needs to be disabled by default.">
+<!ENTITY allow_website_desc5 "If the website is already in allow list then menu will be checked.">
+<!ENTITY allow_website_desc6 "If already checked then clicking menu removes website from allow list.">
+<!ENTITY goto_pref_desc "Go to &quot;Preferences&quot; tab for more details">
 
-<!ENTITY always_on_lbl "Always On:">
+<!-- Context Menu -->
+<!ENTITY handydict_opt_label "HandyDict:Options">
+<!ENTITY lookup_manual_label "Lookup Manually">
+<!ENTITY lookup_manual_desc1 "Allows user to enter word in textbox manually for lookup">
+<!ENTITY lookup_manual_desc2 "incase desired word cannot be clicked or not present on current page.">
+<!ENTITY handydict_lookup_label "HandyDict:Lookup">
+<!ENTITY handydict_lookup_desc1 "When you right click on any link this option gets enabled automatically">
+<!ENTITY handydict_lookup_desc2 "and sub-menu contains list of words to lookup from link">
+<!ENTITY handydict_lookup_sel_label "HandyDict:Lookup &quot;&lt;selected word&gt;&quot;">
+<!ENTITY handydict_lookup_sel_desc1 "Manually select the word or phrase for lookup and right click. Context menu will display">
+<!ENTITY handydict_lookup_sel_desc2 "word to lookup. This is useful incase double click is not working.">
+
+<!-- Preferences -->
+<!ENTITY always_on_lbl "Always On">
 <!ENTITY always_on_desc1 "Enables tool for all newly opened pages/urls.">
 <!ENTITY always_on_desc2 "Already opened pages are not affected.">
-
-<!ENTITY select_dict_lbl "Select Dictionary:">
+<!ENTITY blocklist_label "Block List">
+<!ENTITY blocklist_desc1 "Always disable tool for websites displayed in textbox,">
+<!ENTITY blocklist_desc2 "i.e. even if &quot;Always On&quot; flag is on, if website is in this list then tool will be disabled.">
+<!ENTITY blk_allw_list_desc3 "At present this is non-editable field, &quot;Clear&quot; button will clear all websites from this field.">
+<!ENTITY blk_allw_list_desc4 "To add/remove individual website kindly use toolbar/statusbar menus.">
+<!ENTITY allowlist_label "Allow List">
+<!ENTITY allowlist_desc1 "Always enable tool for websites displayed in textbox,">
+<!ENTITY allowlist_desc2 "i.e. even if &quot;Always On&quot; flag is off, if website is in this list then tool will be enabled.">
+<!ENTITY select_dict_lbl "Select Dictionary">
 <!ENTITY select_dict_desc1 "Default dictionary is">
 <!ENTITY select_dict_desc2 " Cambridge Dictionary">
 <!ENTITY select_dict_desc3 ", select your favourite dictionary from list.">
-
-<!ENTITY pref_label "Preferences">
-<!ENTITY toolbar_label "Toolbar Menus">
-
-<!-- 20130125 -->
-<!ENTITY cntx_menu_label "Context Menus">
-<!ENTITY shortcut_key_label "Shortcut Keys">
-<!ENTITY lookup_manual_label "Lookup Manually">
-<!ENTITY handydict_opt_label "HandyDict:Options">
-<!ENTITY handydict_lookup_label "HandyDict:Lookup">
-<!ENTITY handydict_lookup_sel_label "HandyDict:Lookup &quot;&lt;selected word&gt;&quot;">
 <!ENTITY display_mode_label "Select Display Mode">
 <!ENTITY classic_mode_label "Classic Mode">
+<!ENTITY classic_mode_desc1 "Default option, displays word definition with full details.">
+<!ENTITY failsafe_flag_label1 "Fail-safe">
+<!ENTITY failsafe_flag_label2 "Mode">
+<!ENTITY cl_failsafe_flag_desc1 "If flag is on, then automatically search other dictionary if details not available for given">
+<!ENTITY cl_failsafe_flag_desc2 "word in currently selected dictionary.">
+<!ENTITY cl_failsafe_flag_desc3 "If flag is off then word suggestions are displayed if found in the response, user can click">
+<!ENTITY cl_failsafe_flag_desc4 "on the suggested word to perform look-up in current dictionary. Also dictionary list">
+<!ENTITY cl_failsafe_flag_desc5 "is displayed, user can click on the link to search given word in that dictionary.">
+<!ENTITY autoclose_label1 "Auto">
+<!ENTITY autoclose_label2 "Close">
+<!ENTITY autoclose_desc1 "Automatically close popup after given seconds. Enter 0 to disable this feature,">
+<!ENTITY autoclose_desc2 "maximum value is 60 seconds">
 <!ENTITY compact_mode_label "Compact Mode">
+<!ENTITY compact_mode_desc1 "Displays simple definition of the word in compact view.">
+<!ENTITY failsafe_flag_desc1 "If flag is on, automatically switch to Classic Mode if details not available for given word">
+<!ENTITY failsafe_flag_desc2 "in currently selected dictionary.">
+<!ENTITY failsafe_flag_desc3 "If flag is off then, link is displayed to switch to classic mode manually or">
+<!ENTITY failsafe_flag_desc4 "display the preference dialog to change settings">
+
+<!-- Addon bar -->
+<!ENTITY addon_bar_desc1 "Use the keyboard shortcut Ctrl + / to show/hide addon bar">
+<!ENTITY addon_bar_status_label "HDi Status Button">
+<!ENTITY addon_bar_status_desc1 "Button with label &quot;HDi&quot; displays current status of the tool.">
+<!ENTITY addon_bar_status_desc2 "Green background indicates tool is enabled, if user clicks on the button then tool is">
+<!ENTITY addon_bar_status_desc3 "temporary disabled for current page.">
+<!ENTITY addon_bar_status_desc4 "Red background indicates tool is disabled, if user clicks on the button then tool is">
+<!ENTITY addon_bar_status_desc5 "temporary enabled for current page.">
+<!ENTITY addon_bar_opt_label "Options Button">
+<!ENTITY addon_bar_opt_desc1 "This is the button with small black square background, next to &quot;HDi&quot; status button.">
+<!ENTITY addon_bar_opt_desc2 "It is displayed only for pages with valid domain/host name.">
+<!ENTITY addon_bar_opt_desc3 "When mouse is hovered over or clicked on button then popup menu is displayed.">
+<!ENTITY addon_bar_opt_desc4 "Popup menu contains options to enable/disable tool for given website.">
+<!ENTITY addon_bar_opt_desc5 "Please refer Disable for webiste and Enable for website menus under Toolbar menus tab.">
+
+<!-- Shortcuts -->
 <!ENTITY kb_command_label "Command">
 <!ENTITY kb_key_seq_label "Key Sequence">
 <!ENTITY kb_disp_help_label "Display Help">
 <!ENTITY kb_toggle_state_label "Toggle State">
-<!ENTITY kb_close_popup_label "Close dictionary popup">
-<!ENTITY dialog_accept_btn_label "OK">
-
-<!ENTITY goto_pref_desc "Go to &quot;Preferences&quot; tab for more details">
-<!ENTITY lookup_manual_desc1 "Allows user to enter word in textbox manually for lookup">
-<!ENTITY lookup_manual_desc2 "incase desired word cannot be clicked or not present on current page.">
-<!ENTITY handydict_lookup_desc1 "When you right click on any link this option gets enabled automatically">
-<!ENTITY handydict_lookup_desc2 "and sub-menu contains list of words to lookup from link">
-<!ENTITY handydict_lookup_sel_desc1 "Manually select the word or phrase for lookup and right click. Context menu will display">
-<!ENTITY handydict_lookup_sel_desc2 "word to lookup. This is useful incase double click is not working.">
-<!ENTITY classic_mode_desc1 "Default option, displays word definition with full details.">
-<!ENTITY compact_mode_desc1 "Displays simple definition of the word in compact view.">
 <!ENTITY kb_toggle_state_desc1 "Enable/Disable tool for current page">
+<!ENTITY kb_close_popup_label "Close dictionary popup">
 
-<!ENTITY handy_dict_more_details_desc1 "Visit home page for more details.">
-<!ENTITY handy_dict_more_details_desc2 "Kindly share your valuable feedback: kbatu.patel@gmail.com">
-
-
+<!-- footer -->
+<!ENTITY how_to_use_desc1 "Note: Kindly take a note that this tool provides just interface, actual dictionary service">
+<!ENTITY how_to_use_desc2 "is provided by public interface of selected dictionary.">

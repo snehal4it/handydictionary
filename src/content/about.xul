@@ -13,127 +13,279 @@
 		<description>&how_to_use_txt1; &how_to_use_txt2;</description>
 		<description>&how_to_use_txt3;</description>
 		<description>&how_to_use_txt4;</description>
-		<description><html:a href="http://sourceforge.net/p/handydictionary/wiki/Home/" target="_blank" style="color:blue;">&handy_dict_more_details_desc1;</html:a></description>
-		<description><html:a href="mailto:kbatu.patel@gmail.com" target="_blank" style="color:blue;">&handy_dict_more_details_desc2;</html:a></description>
-		<spacer flex="1" style="min-height: 5px;"/>
-
+		<description>
+			<html:a href="http://sourceforge.net/p/handydictionary/wiki/Home/" target="_blank" style="color:blue;">&handy_dict_more_details_desc1;</html:a>
+			<html:a href="mailto:kbatu.patel@gmail.com" target="_blank" style="color:blue;">&handy_dict_more_details_desc2;</html:a>
+		</description>
 		<tabbox id="handy_dictionary_ext_cust_tabbox_id">
 			<tabs>
 				<tab label="&toolbar_label;" accesskey="T"/>
 				<tab label="&cntx_menu_label;" accesskey="C"/>
 				<tab label="&pref_label;" accesskey="P"/>
+				<tab label="&addon_bar_label;" accesskey="A"/>
 				<tab label="&shortcut_key_label;" accesskey="S"/>
 			</tabs>
 			<tabpanels>
-				<tabpanel>
+				<tabpanel style="height:240px;width:570px;overflow:auto;">
 					<!-- Toolbar -->
-					<vbox align="left" style="margin-top:5px;">
-					<hbox>
-						<description style="font-weight:bold;">&turn_on_lbl;</description>
-						<description>&turn_on_desc;</description>
-					</hbox>
-					<hbox>
-						<description style="font-weight:bold;">&turn_off_lbl;</description>
-						<description>&turn_off_desc;</description>
-					</hbox>
-					<hbox>
-						<description style="font-weight:bold;">&pref_label;:</description>
-						<description>
-							<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">&goto_pref_desc;</html:a>
-						</description>
-					</hbox>
-					</vbox>
+					<grid style="border:solid 1px #cccccc;">
+						<columns><column style="border-right:solid 1px #cccccc;"/><column/></columns>
+						<rows>
+						<row>
+							<description style="font-weight:bold;color:#555555;">&turn_on_lbl;</description>
+							<description>&turn_on_desc;</description>
+						</row>
+						<row style="border-top:solid 1px #cccccc;">
+							<description style="font-weight:bold;color:#555555;">&turn_off_lbl;</description>
+							<description>&turn_off_desc;</description>
+						</row>
+						<row style="border-top:solid 1px #cccccc;">
+							<description style="font-weight:bold;color:#555555;">&block_website_lbl;</description>
+							<vbox>
+								<description>&block_website_desc1;</description>
+								<description>&block_website_desc2;</description>
+								<description>&block_website_desc3;</description>
+								<description>&block_website_desc4;</description>
+								<description>&block_website_desc5;</description>
+								<description>&block_website_desc6;</description>
+							</vbox>
+						</row>
+						<row style="border-top:solid 1px #cccccc;">
+							<description style="font-weight:bold;color:#555555;">&allow_website_lbl;</description>
+							<vbox>
+								<description>&allow_website_desc1;</description>
+								<description>&allow_website_desc2;</description>
+								<description>&allow_website_desc3;</description>
+								<description>&allow_website_desc4;</description>
+								<description>&allow_website_desc5;</description>
+								<description>&allow_website_desc6;</description>
+							</vbox>
+						</row>
+						<row style="border-top:solid 1px #cccccc;">
+							<description style="font-weight:bold;color:#555555;">&pref_label;</description>
+							<description>
+								<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">&goto_pref_desc;</html:a>
+							</description>
+						</row>
+						</rows>
+					</grid>
 				</tabpanel>
 				<tabpanel>
 					<!-- Context Menu -->
-					<vbox align="left">
-						<groupbox><caption style="font-weight:bold;" label="&handydict_opt_label;" />
+					<grid>
+						<columns><column/></columns>
+						<rows>
+						<row>
+						<groupbox><caption style="font-weight:bold;color:#555555;" label="&handydict_opt_label;" />
 						<vbox style="margin-left:15px;">
 							<vbox>
 								<hbox>
-								<description style="font-weight:bold;">&lookup_manual_label;:</description>
+								<description style="font-weight:bold;color:#555555;">&lookup_manual_label;:</description>
 								<description>&lookup_manual_desc1;</description>
 								</hbox>
 								<description>&lookup_manual_desc2;</description>
 							</vbox>
 							<hbox>
-								<description style="font-weight:bold;">&pref_label;:</description>
+								<description style="font-weight:bold;color:#555555;">&pref_label;:</description>
 								<description>
 									<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">&goto_pref_desc;</html:a>
 								</description>
 							</hbox>
 						</vbox>
 						</groupbox>
-						<spacer flex="1" style="min-height: 5px;"/>
-						<groupbox><caption style="font-weight:bold;" label="&handydict_lookup_label;" />
+						</row>
+						<row>
+						<groupbox><caption style="font-weight:bold;color:#555555;" label="&handydict_lookup_label;" />
 						<vbox style="margin-left:15px;">
 						<description>&handydict_lookup_desc1;</description>
 						<description>&handydict_lookup_desc2;</description>
 						</vbox>
 						</groupbox>
-						
-						<spacer flex="1" style="min-height: 5px;"/>
-						<groupbox><caption style="font-weight:bold;" label="&handydict_lookup_sel_label;" />
+						</row>
+						<row>
+						<groupbox><caption style="font-weight:bold;color:#555555;" label="&handydict_lookup_sel_label;" />
 						<vbox style="margin-left:15px;">
 						<description>&handydict_lookup_sel_desc1;</description>
 						<description>&handydict_lookup_sel_desc2;</description>
 						</vbox>
 						</groupbox>
-					</vbox>
+						</row>
+						</rows>
+					</grid>
+				</tabpanel>
+				<tabpanel style="height:240px;width:570px;overflow:auto;">
+					<!-- Preferences -->
+					<grid>
+						<columns><column/></columns>
+						<rows>
+						<row>
+							<groupbox>
+							<grid>
+								<columns><column style="border-right:solid 1px #cccccc;" /><column /></columns>
+								<rows>
+									<row>
+										<description style="font-weight:bold;color:#555555;">&always_on_lbl;</description>
+										<hbox>
+											<description>&always_on_desc1;</description>
+											<description>&always_on_desc2;</description>
+										</hbox>
+									</row>
+									<row style="border-top:solid 1px #cccccc;">
+										<description style="font-weight:bold;color:#555555;">&blocklist_label;</description>
+										<vbox>
+											<description>&blocklist_desc1;</description>
+											<description>&blocklist_desc2;</description>
+											<description>&blk_allw_list_desc3;</description>
+											<description>&blk_allw_list_desc4;</description>
+										</vbox>
+									</row>
+									<row style="border-top:solid 1px #cccccc;">
+										<description style="font-weight:bold;color:#555555;">&allowlist_label;</description>
+										<vbox>
+											<description>&allowlist_desc1;</description>
+											<description>&allowlist_desc2;</description>
+											<description>&blk_allw_list_desc3;</description>
+											<description>&blk_allw_list_desc4;</description>
+										</vbox>
+									</row>
+								</rows>
+							</grid>
+							</groupbox>
+						</row>
+						<row>
+							<groupbox><caption style="font-weight:bold;color:#555555;" label="&select_dict_lbl;" />
+								<hbox>
+									<description>&select_dict_desc1;
+										<html:a href="http://dictionary.cambridge.org/dictionary/british/" target="_blank" style="color:blue;">&select_dict_desc2;</html:a>
+										&select_dict_desc3;
+									</description>
+								</hbox>
+							</groupbox>
+						</row>
+						<row>
+							<groupbox><caption style="font-weight:bold;color:#555555;" label="&display_mode_label;" />
+								<groupbox><caption style="font-weight:bold;color:#555555;" label="&classic_mode_label;" />
+									<hbox><description>&classic_mode_desc1;</description></hbox>
+									<grid>
+										<columns><column style="border-right:solid 1px #cccccc;"/><column/></columns>
+										<rows>
+										<row style="border-top:solid 1px #cccccc;">
+											<vbox>
+											<description style="font-weight:bold;color:#555555;">&failsafe_flag_label1;</description>
+											<description style="font-weight:bold;color:#555555;">&failsafe_flag_label2;</description>
+											</vbox>
+											<vbox>
+												<description>&cl_failsafe_flag_desc1;</description>
+												<description>&cl_failsafe_flag_desc2;</description>
+												<description>&cl_failsafe_flag_desc3;</description>
+												<description>&cl_failsafe_flag_desc4;</description>
+												<description>&cl_failsafe_flag_desc5;</description>
+											</vbox>
+										</row>
+										<row style="border-top:solid 1px #cccccc;">
+											<vbox>
+											<description style="font-weight:bold;color:#555555;">&autoclose_label1;</description>
+											<description style="font-weight:bold;color:#555555;">&autoclose_label2;</description>
+											</vbox>
+											<vbox>
+												<description>&autoclose_desc1;</description>
+												<description>&autoclose_desc2;</description>
+											</vbox>
+										</row>
+										</rows>
+									</grid>
+								</groupbox>
+								<groupbox style="margin-top:10px;"><caption style="font-weight:bold;color:#555555;" label="&compact_mode_label;" />
+									<hbox><description>&compact_mode_desc1;</description></hbox>
+									<grid>
+										<columns><column style="border-right:solid 1px #cccccc;"/><column/></columns>
+										<rows>
+										<row style="border-top:solid 1px #cccccc;">
+											<vbox>
+											<description style="font-weight:bold;color:#555555;">&failsafe_flag_label1;</description>
+											<description style="font-weight:bold;color:#555555;">&failsafe_flag_label2;</description>
+											</vbox>
+											<vbox>
+												<description>&failsafe_flag_desc1;</description>
+												<description>&failsafe_flag_desc2;</description>
+												<description>&failsafe_flag_desc3;</description>
+												<description>&failsafe_flag_desc4;</description>
+											</vbox>
+										</row>
+										<row style="border-top:solid 1px #cccccc;">
+											<vbox>
+											<description style="font-weight:bold;color:#555555;">&autoclose_label1;</description>
+											<description style="font-weight:bold;color:#555555;">&autoclose_label2;</description>
+											</vbox>
+											<vbox>
+												<description>&autoclose_desc1;</description>
+												<description>&autoclose_desc2;</description>
+											</vbox>
+										</row>
+										</rows>
+									</grid>
+								</groupbox>
+							</groupbox>
+						</row>
+					</rows>
+					</grid>
 				</tabpanel>
 				<tabpanel>
-					<!-- Preferences -->
-					<vbox align="left" style="margin-top:5px;">
-					<hbox>
-						<description style="font-weight:bold;">&always_on_lbl;</description>
-						<description>&always_on_desc1;</description>
-						<description>&always_on_desc2;</description>
-					</hbox>
-					<hbox>
-						<description style="font-weight:bold;">&select_dict_lbl;</description>
-						<description>&select_dict_desc1;
-							<html:a href="http://dictionary.cambridge.org/dictionary/british/" target="_blank" style="color:blue;">&select_dict_desc2;</html:a>
-							&select_dict_desc3;
-						</description>
-					</hbox>
-					
-					<groupbox><caption style="font-weight:bold;" label="&display_mode_label;" />
-					<hbox>
-					<description style="font-weight:bold;">&classic_mode_label;:</description>
-					<description>&classic_mode_desc1;</description>
-					</hbox>
-					<spacer flex="1" style="min-height: 5px;"/>
-					<hbox>
-					<description style="font-weight:bold;">&compact_mode_label;:</description>
-					<description>&compact_mode_desc1;</description>
-					</hbox>
-					</groupbox>
-					
+					<!-- Addon-bar -->
+					<vbox>
+					<description>&addon_bar_desc1;</description>
+					<grid style="border:solid 1px #cccccc;">
+						<columns><column style="border-right:solid 1px #cccccc;"/><column/></columns>
+						<rows>
+						<row>
+							<description style="font-weight:bold;color:#555555;">&addon_bar_status_label;</description>
+							<vbox>
+								<description>&addon_bar_status_desc1;</description>
+								<description>&addon_bar_status_desc2;</description>
+								<description>&addon_bar_status_desc3;</description>
+								<description>&addon_bar_status_desc4;</description>
+								<description>&addon_bar_status_desc5;</description>
+							</vbox>
+						</row>
+						<row style="border-top:solid 1px #cccccc;">
+							<description style="font-weight:bold;color:#555555;">&addon_bar_opt_label;</description>
+							<vbox>
+								<description>&addon_bar_opt_desc1;</description>
+								<description>&addon_bar_opt_desc2;</description>
+								<description>&addon_bar_opt_desc3;</description>
+								<description>&addon_bar_opt_desc4;</description>
+								<description>
+									<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='0';" style="color:blue;">&addon_bar_opt_desc5;</html:a>
+								</description>
+							</vbox>
+						</row>
+						</rows>
+					</grid>
 					</vbox>
 				</tabpanel>
 				<tabpanel>
 					<!-- Shortcuts -->
 					<vbox align="left" style="margin-top:5px;">
-					<html:table border="1" style="border-collapse:collapse;width:100%;">
+					<html:table style="border:solid 1px #cccccc;border-collapse:collapse;width:100%;">
 						<html:thead>
 						<html:tr>
-							<html:th style="width:250px;">&kb_command_label;</html:th><html:th>&kb_key_seq_label;</html:th>
+							<html:th style="width:250px;color:#555555;border:solid 1px #cccccc;">&kb_command_label;</html:th><html:th style="color:#555555;border:solid 1px #cccccc;">&kb_key_seq_label;</html:th>
 						</html:tr>
 						</html:thead>
 						<html:tbody>
-						<html:tr><html:td>&lookup_manual_label;</html:td><html:td>Ctrl + M</html:td></html:tr>
-						<html:tr><html:td>&pref_label;</html:td><html:td>ALT + Q</html:td></html:tr>
-						<html:tr><html:td>&kb_disp_help_label;</html:td><html:td>ALT + Ctrl + H</html:td></html:tr>
+						<html:tr><html:td style="border:solid 1px #cccccc;">&lookup_manual_label;</html:td><html:td style="border:solid 1px #cccccc;">Ctrl + M</html:td></html:tr>
+						<html:tr><html:td style="border:solid 1px #cccccc;">&pref_label;</html:td><html:td style="border:solid 1px #cccccc;">ALT + Q</html:td></html:tr>
+						<html:tr><html:td style="border:solid 1px #cccccc;">&kb_disp_help_label;</html:td><html:td style="border:solid 1px #cccccc;">ALT + Ctrl + H</html:td></html:tr>
 						<html:tr>
-							<html:td>
+							<html:td style="border:solid 1px #cccccc;">
 							<vbox>
 								<description>&kb_toggle_state_label;</description>
 								<description>&kb_toggle_state_desc1;</description>
 							</vbox>
 							</html:td>
-							<html:td>Alt + O</html:td>
+							<html:td style="border:solid 1px #cccccc;">Alt + O</html:td>
 						</html:tr>
-						<html:tr><html:td>&kb_close_popup_label;</html:td><html:td>Escape</html:td></html:tr>
+						<html:tr><html:td style="border:solid 1px #cccccc;">&kb_close_popup_label;</html:td><html:td style="border:solid 1px #cccccc;">Escape</html:td></html:tr>
 						</html:tbody>
 					</html:table>
 					</vbox>
