@@ -17,8 +17,13 @@ Handy Dictionary v0.6
 	- if selected pop-up will automatically close after specified time
 - enable/disable for website
 	- now user can enabled/disable tool for given website using statusbar and toolbar menu
-- based on user feedback, add-on/status bar button is shortened and color-coding is used for current status
-- current dictionary label is displayed in title bar for classic mode
+- status bar changes
+	- based on user feedback, add-on/status bar button is shortened and color-coding is used for current status
+	- for valid website/host one more button next to status button which can be used to enable/disable tool for given website
+- popup changes for classic mode
+	- current dictionary label is displayed in title bar
+	- "Preferences" link is displayed on title of popup
+	- "Open in new tab" renamed to "more"
 - fix
 	- fix for manual search, now phrase can be searched
 	- some minor fix for cambridge dictionary after website interface is changed

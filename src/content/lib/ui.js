@@ -124,8 +124,10 @@ popupbase.prototype.close = function() {
 	this.winObj.document.removeEventListener("keypress",this.closeFunct,false);
 	this.frm.contentDocument.removeEventListener("keypress",this.closeFunct,false);
 	
-	this.dragdropref.close();
-	this.dragdropref=null;
+	if (this.dragdropref != null) {
+		this.dragdropref.close();
+		this.dragdropref=null;
+	}
 	
 	if (this.closeTimer != null) {
 		this.closeTimer.close();
@@ -214,6 +216,7 @@ hd_alias.popupHandler = function() {
 	this.autoSearchFlag=false;
 	this.analyzer=null;
 	this.winObj=content;
+	this.autoSearchInc=null;
 	
 	// returns true if ui created
 	this.init = function(posArr, selectedText) {
@@ -275,6 +278,7 @@ hd_alias.popupHandler = function() {
 			alert(msg);
 			return;
 		}
+		self._clearAutoSearch();
 		// fix the case where user entered phrase
 		//selectedText=selectedText.replace(/\s/g, "");
 		selectedText=selectedText.trim();
@@ -300,12 +304,20 @@ hd_alias.popupHandler = function() {
 			if (selText != null) {
 				selText = selText.trim();
 				if (selText.length > 0) {
+					self._clearAutoSearch();
 					self.reload(selText);
 					return;
 				}
 			}
 		}
 		alert(hd_alias.str("ui_cl_error_spell"));
+	};
+	
+	this._clearAutoSearch=function(eventObj) {
+		if (self.autoSearchFlag == true && self.analyzer != null) {
+			self.autoSearchFlag = false;
+			self.analyzer.close();
+		}
 	};
 	
 	// toggle display of search manual option
@@ -394,14 +406,14 @@ hd_alias.popupHandler = function() {
 				autoSearchStyle += "text-align:center;font-weight:bold;padding-top:12px;";
 				autoSearchDiv.setAttribute("style", autoSearchStyle);
 				var autoSearchTxt = self.doc.createTextNode(hd_alias.str("ui_cl_auto_search_msg"));
-				var autoSearchInc = self.doc.createTextNode("");
+				self.autoSearchInc = self.doc.createTextNode("");
 				autoSearchDiv.appendChild(autoSearchTxt);
-				autoSearchDiv.appendChild(autoSearchInc);
+				autoSearchDiv.appendChild(self.autoSearchInc);
 				self.contentdiv.appendChild(autoSearchDiv);
 				
 				self.autoSearchFlag=true;
 				self.analyzer = new hd_alias.ANALYZER(self);
-				self.analyzer.autoSearch(autoSearchInc);
+				self.analyzer.autoSearch(self.autoSearchInc);
 			}
 		}
 	};
@@ -409,20 +421,23 @@ hd_alias.popupHandler = function() {
 	// called when auto search operation ends
 	this.autoSearchResult=function(result) {
 		// if popup closed already then return
-		if (self == null) { return; }
+		if (self == null || self.autoSearchFlag == false) { return; }
 		if (result.type == 1) {
 			// result found
 			self.dict = result.dict;
 			self.dictTitleLbl.nodeValue=self.dict.lbl;
 			self.updateSelectedText(self.selectedText);
+			self.autoSearchInc = null;
 			self.updateresult(result.docFrag, result.dCSSAr);
 		} else {
 			setTimeout(function(){
 				// dead object
 				try {
 				if (self != null && self.contentdiv != null
-						&& self.contentdiv.lastChild != null) {
-					self.contentdiv.removeChild(self.contentdiv.lastChild);
+						&& self.autoSearchInc != null) {
+					var tempRef = self.autoSearchInc.parentNode;
+					self.autoSearchInc = null;
+					self.contentdiv.removeChild(tempRef);
 				}
 				} catch(e) {}
 			}, 1500);
@@ -505,6 +520,7 @@ hd_alias.popupHandler = function() {
 					}
 					if (dict != null) {
 						// change current dictionary
+						self._clearAutoSearch();
 						self.dict = dict;
 						self.dictTitleLbl.nodeValue=dictAr[i].lbl;
 						self.reload(self.selectedText);
@@ -533,6 +549,7 @@ hd_alias.popupHandler = function() {
 			self.analyzer = null;
 		}
 		
+		self.autoSearchInc=null;
 		self.searchdiv=null;
 		self.searchcontroldiv=null;
 		self.searchcontroldisplayed=false;
@@ -836,11 +853,13 @@ hd_alias.compactPopup=function() {
 			var titleAr = result[0];
 			for (var i = 0; i < titleAr.length; i++) {
 				if (titleAr[i] == null) { continue; }
-				if (i == 0) {
-					titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;");
-				}
 				titleAr[i].style.display="inline";
 				titleDiv.appendChild(titleAr[i]);
+				if (i == 0) {
+					titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;");
+					// fix the case where word selection spans next element
+					titleDiv.appendChild(self.doc.createTextNode(" "));
+				}
 			}
 			
 			var defDiv = self.doc.createElement("div");

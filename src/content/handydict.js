@@ -38,7 +38,7 @@ hd_alias.updateOpenedTab=function(flag){
 		var currentBrowser = gBrowser.getBrowserForTab(currentTab);
 		var doc=currentBrowser.contentDocument;
 		if (flag) {
-			var enabled = hd_alias.sc.isEnabled(currentBrowser.currentURI.host);
+			var enabled = hd_alias.sc.isEnabled(doc.defaultView.location.hostname);
 			if (gBrowser.selectedTab == currentTab) {
 				selectedTabFlag = enabled;
 			}

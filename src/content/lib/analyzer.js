@@ -138,6 +138,7 @@ hd_alias.TIMER=function(uiElemVar, popupVar){
 	this.popup=popupVar;
 	this.timerVar=null;
 	this.closeFlag=false;
+	this.initFlag=false;
 	
 	this.start=function() {
 		if (self.uiElem == null || self.closeFlag == true) { return; }
@@ -148,8 +149,11 @@ hd_alias.TIMER=function(uiElemVar, popupVar){
 			return;
 		}
 		try {
-			self.popup.doc.addEventListener("mousemove", self.curmoved, false);
-			self.popup.doc.addEventListener("mouseout", self.curout, false);
+			if (self.initFlag == false) {
+				self.initFlag = true;
+				self.popup.doc.body.addEventListener("mousemove", self.curmoved, false);
+				self.popup.doc.body.addEventListener("mouseout", self.curout, false);
+			}
 			self.uiElem.nodeValue=autoCloseVal;
 		} catch (e) {
 			// dead object
@@ -192,12 +196,6 @@ hd_alias.TIMER=function(uiElemVar, popupVar){
 		try {
 			if (self.uiElem != null) {
 				self.uiElem.nodeValue=0;
-				return;
-			}
-			
-			if (self.popup != null && self.popup.doc != null) {
-				self.popup.doc.removeEventListener("mousemove", self.curmoved, false);
-				self.popup.doc.removeEventListener("mouseout", self.curout, false);
 			}
 		} catch (e) {
 			//dead object
@@ -208,15 +206,28 @@ hd_alias.TIMER=function(uiElemVar, popupVar){
 		self.closeFlag = true;
 		self.clear();
 		self.uiElem = null;
+		try {
+			if (self.popup != null && self.popup.doc != null) {
+				self.popup.doc.body.removeEventListener("mousemove", self.curmoved, false);
+				self.popup.doc.body.removeEventListener("mouseout", self.curout, false);
+			}
+		} catch (e) {}
 		self.popup = null;
 	};
 	
 	this.curmoved=function() {
+		// only invoke if timer is set
+		if (self.timerVar == null) {return;}
 		self.clear();
 	};
 	
-	this.curout=function() {
-		self.start();
+	this.curout=function(eventObj) {
+		try {
+			// gets fired on div,span etc, invoked only if out of pop-up 
+			if (eventObj.relatedTarget == null || self.popup.doc.body == eventObj.target) {		
+				self.start();
+			}
+		} catch (e) {}
 	};
 };
 })();
