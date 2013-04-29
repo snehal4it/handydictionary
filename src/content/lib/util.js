@@ -74,6 +74,23 @@ hd_alias.UTIL=new function(){
 		return autoCloseVal;
 	};
 	
+	this.getKeyConfig=function(){
+		// replace string val with array object
+		var kbObj = hd_alias.ph.getKBObj();
+		for(key in kbObj) {
+			var kbAr=null;
+			//try {
+				kbAr=JSON.parse(kbObj[key]);
+			//} catch (e) { }
+			if (kbAr == null) {
+				// disable key in case error
+				kbAr=[[], ""];
+			}
+			kbObj[key]=kbAr;
+		}
+		return kbObj;
+	};
+	
 	this.getAbsoluteLocations=function(eventObj){
 		var currentX = eventObj.clientX + content.pageXOffset + 5;
 		var currentY = eventObj.clientY + content.pageYOffset + 20;

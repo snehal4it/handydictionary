@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/"?>
+<!DOCTYPE window SYSTEM "chrome://handy_dictionary_ext/locale/about.dtd">
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+    title="&cust_key_title;" onload="init();"
+    buttons="accept,cancel" buttonlabelaccept="&dialog_accept_btn_label;"
+    buttonaccesskeyaccept="K" buttonpack="center">
+    
+    <script type="text/javascript">
+    	const Cc = Components.classes;
+		const Ci = Components.interfaces;
+		const Cu = Components.utils;
+		Cu.import("resource://gre/modules/Services.jsm");
+		
+		var branch = Services.prefs.getBranch("extensions.handy_dictionary_ext.key.");
+		var defaultBranch = Services.prefs.getDefaultBranch("extensions.handy_dictionary_ext.key.");
+		var modifiersObj = {"Alt":"alt", "Control":"accel", "Shift":"shift"};
+		// keycode - keyname mappings
+		var keyMap=[];
+		var modified = false;
+		
+		function init() {
+			initKeyMap();
+			var defaultKB = window.arguments[0];
+			var util = window.arguments[1];
+			var keyConfig = util.getKeyConfig();
+			
+			for (key in keyConfig) {
+				var keyValAr = keyConfig[key];
+				var modAr = keyValAr[0];
+				
+				var ctrlElem = document.getElementById(key+"_ctrl");
+				for(var k=0;k &lt; 3;k++){
+					var menulist = document.createElement("menulist");
+					var menupopup = document.createElement("menupopup");
+					
+					menulist.appendChild(menupopup);
+					ctrlElem.appendChild(menulist);
+					for (lbl in modifiersObj) {
+						var menuItem = menulist.appendItem(lbl, modifiersObj[lbl], "");
+						if (modifiersObj[lbl] == modAr[k]) {
+							menulist.selectedItem=menuItem;
+						}
+					}
+				}
+				var txtElem = document.createElement("textbox");
+				txtElem.setAttribute("size", "12");
+				txtElem.setAttribute("value", keyValAr[1]);
+				ctrlElem.appendChild(txtElem);
+				ctrlElem.addEventListener("keydown", updateKey, false);
+				
+				var elem = document.getElementById(key);
+				elem.setAttribute("value", getReadableValue(keyValAr));
+			}
+		}
+		
+		function getReadableValue(keyValAr) {
+			var tempAr = new Array();
+			var modAr = keyValAr[0];
+			for (var i=0;i&lt;modAr.length;i++){
+				if (modAr[i] != null &amp;&amp; modAr[i] != "") {
+					tempAr.push(modAr[i]);
+				}
+			}
+			if (keyValAr[1] != null &amp;&amp; keyValAr[1] != "") {
+				tempAr.push(keyValAr[1]);
+			}
+			return tempAr;
+		}
+		
+		function initKeyMap() {
+			for (var key in KeyEvent) {
+				keyMap[KeyEvent[key]] = key.replace("DOM_", "");
+			}
+		}
+		
+		function updateKey(eventObj) {
+			modified = true;
+			
+			var keyName = keyMap[eventObj.keyCode];
+			if (!keyName) { return; }
+			if ((eventObj.keyCode &gt;= 48 &amp;&amp; eventObj.keyCode &lt;= 57)
+				|| (eventObj.keyCode &gt;= 65 &amp;&amp; eventObj.keyCode &lt;= 90)) {
+				//eventObj.target.value=eventObj.char;
+				eventObj.target.value="";
+			} else {
+				eventObj.target.value=keyName;
+				
+				eventObj.preventDefault();
+				eventObj.stopPropagation();
+			}
+		}
+    </script>
+	
+	<vbox style="background-color:white;margin-bottom:20px;">
+	<grid style="border:solid 1px #cccccc;">
+		<columns>
+			<column style="border-right:solid 1px #cccccc;" />
+			<column style="border-right:solid 1px #cccccc;" />
+			<column />
+		</columns>
+		<rows>
+			<row style="color:#555555;font-weight:bold;">
+				<label>&kb_command_label;</label>
+				<label>&kb_key_seq_label;</label>
+				<label>&cust_keyvalue_lbl;</label>
+			</row>
+			<row style="border-top:solid 1px #cccccc;">
+				<label>&lookup_manual_label;</label>
+				<hbox id="key_lookup_ctrl"></hbox>
+				<label id="key_lookup"></label>
+			</row>
+			<row style="border-top:solid 1px #cccccc;">
+				<label>&pref_label;</label>
+				<hbox id="key_pref_ctrl"></hbox>
+				<label id="key_pref"></label>
+			</row>
+			<row style="border-top:solid 1px #cccccc;">
+				<label>&kb_disp_help_label;</label>
+				<hbox id="key_about_ctrl"></hbox>
+				<label id="key_about"></label>
+			</row>
+			<row style="border-top:solid 1px #cccccc;">
+				<vbox><label>&kb_toggle_state_label;</label><label>&kb_toggle_state_desc1;</label></vbox>
+				<hbox id="key_toggle_ctrl"></hbox>
+				<label id="key_toggle"></label>
+			</row>
+			<row style="border-top:solid 1px #cccccc;">
+				<label>&kb_close_popup_label;</label>
+				<label></label>
+				<label>Escape</label>
+			</row>
+		</rows>
+	</grid>
+	</vbox>
+</dialog>
+	
+

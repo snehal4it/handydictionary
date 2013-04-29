@@ -7,3 +7,7 @@ pref("extensions.handy_dictionary_ext.autoclose", 0);
 pref("extensions.handy_dictionary_ext.cl_autoclose", 0);
 pref("extensions.handy_dictionary_ext.blocklist", "[]");
 pref("extensions.handy_dictionary_ext.allowlist", "[]");
+pref("extensions.handy_dictionary_ext.key_lookup", '[["accel"], "M"]');
+pref("extensions.handy_dictionary_ext.key_pref", '[["alt"], "Q"]');
+pref("extensions.handy_dictionary_ext.key_about", '[["alt","accel"], "H"]');
+pref("extensions.handy_dictionary_ext.key_toggle", '[["alt"], "O"]');

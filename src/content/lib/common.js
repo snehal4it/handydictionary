@@ -26,6 +26,13 @@ hd_alias.defaultDictURL='http://dictionary.cambridge.org/search/british/direct/?
 
 hd_alias.userDataKey="handy_dict_ext_doc_key987";
 
+hd_alias.defaultKB={
+	"key_lookup":'[["accel"], "", "M"]',
+	"key_pref":'[["alt"], "Q"]',
+	"key_about":'[["alt","accel"], "H"]',
+	"key_toggle":'[["alt"], "O"]'
+};
+
 //-- start-- Locale handler
 hd_alias.CustomLocale = new function() {
 	var self=this;
@@ -169,6 +176,24 @@ hd_alias.ph=new function(){
 		var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
 		updatedVal.data = valueStr;
 		self.prefs.setComplexValue(prefVar, Ci.nsISupportsString, updatedVal);
+	};
+	
+	this.getKBObj=function(){
+		var kbObj = {};
+		for (key in hd_alias.defaultKB) {
+			//try {
+			kbObj[key]=self.prefs.getComplexValue(key, Ci.nsISupportsString).data;
+			//} catch (e) {
+			//kbObj[key]=hd_alias.defaultKB[key];
+			//}
+		}
+		return kbObj;
+	};
+	
+	this.setKBObj=function(prefVar, valueStr){
+		//var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+		//updatedVal.data = valueStr;
+		//self.prefs.setComplexValue(prefVar, Ci.nsISupportsString, updatedVal);
 	};
 	//----- preferences used ---------
 };

@@ -16,6 +16,7 @@ var tb_enable_id = "handy_dictionary_ext_enable_submenu";
 
 var cmd_toggleState = hd_alias.varname+".kbh.handleToggleState(event);";
 var cmd_pref = hd_alias.varname+".kbh.handlePreferrences(event);";
+var cmd_cust_key = hd_alias.varname+".kbh.customizeShortcuts(event);";
 var cmd_about = hd_alias.varname+".kbh.handleAboutDialog(event);";
 var cmd_manualLookup = hd_alias.varname+".kbh.lookupManually(event);";
 var cmd_manualLookup_cntx = hd_alias.varname+".lookupManually(event);";
@@ -191,6 +192,12 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		pref.setAttribute("oncommand", cmd_pref);
 		pref.setAttribute("accesskey", "p");
 		
+		// customize key
+		var custKey = document.createElement("menuitem");
+		custKey.setAttribute("label", hd_alias.str("cust_key_label"));
+		custKey.setAttribute("oncommand", cmd_cust_key);
+		custKey.setAttribute("accesskey", "c");
+		
 		// about
 		var howto = document.createElement("menuitem");
 		howto.setAttribute("label", hd_alias.str("howto_label"));
@@ -203,6 +210,7 @@ hd_alias.ToolbarMenuBuilder = new function() {
 		mainMenuPopup.appendChild(blockMenu);
 		mainMenuPopup.appendChild(allowMenu);
 		mainMenuPopup.appendChild(pref);
+		mainMenuPopup.appendChild(custKey);
 		mainMenuPopup.appendChild(howto);
 		
 		mainMenu.appendChild(mainMenuPopup);
@@ -331,7 +339,7 @@ hd_alias.kbh = new function() {
 		var aboutKey = document.createElement("key");
 		aboutKey.setAttribute("id", kb_about_id);
 		aboutKey.setAttribute("modifiers", "alt,accel");
-		aboutKey.setAttribute("keycode", "h");
+		aboutKey.setAttribute("key", "h");
 		aboutKey.setAttribute("oncommand", cmd_about);
 		keyset.appendChild(aboutKey);
 		
@@ -373,6 +381,11 @@ hd_alias.kbh = new function() {
 	this.handlePreferrences=function(eventObj) {
 		window.openDialog('chrome://handy_dictionary_ext/content/preference.xul',
 				'handy_dictionary_ext_dialog_pref','chrome,centerscreen');
+	};
+	
+	this.customizeShortcuts=function(eventObj) {
+		window.openDialog('chrome://handy_dictionary_ext/content/customkey.xul',
+				'customkey','chrome,centerscreen', hd_alias.defaultKB, hd_alias.UTIL);
 	};
 	
 	this.handleAboutDialog=function(eventObj) {

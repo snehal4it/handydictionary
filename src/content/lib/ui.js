@@ -260,7 +260,11 @@ hd_alias.popupHandler = function() {
 		if (eventObj.keyCode == 27) {
 			eventObj.stopImmediatePropagation();
 			if (self == null) {	return;	}
-			self.close();
+			if (self.autoSearchFlag == true && self.analyzer != null) {
+				self._cancelAutoSearch();
+			} else {
+				self.close();
+			}
 		}
 		return false;
 	};
@@ -313,7 +317,25 @@ hd_alias.popupHandler = function() {
 		alert(hd_alias.str("ui_cl_error_spell"));
 	};
 	
-	this._clearAutoSearch=function(eventObj) {
+	// user cancels auto search
+	this._cancelAutoSearch=function(eventObj) {
+		self._clearAutoSearch();
+		self._removeAutoSearchUI();
+	};
+	
+	this._removeAutoSearchUI=function() {
+		// dead object
+		try {
+			if (self != null && self.contentdiv != null
+					&& self.autoSearchInc != null) {
+				var tempRef = self.autoSearchInc.parentNode;
+				self.autoSearchInc = null;
+				self.contentdiv.removeChild(tempRef);
+			}
+		} catch(e) {}
+	};
+	
+	this._clearAutoSearch=function() {
 		if (self.autoSearchFlag == true && self.analyzer != null) {
 			self.autoSearchFlag = false;
 			self.analyzer.close();
@@ -400,15 +422,7 @@ hd_alias.popupHandler = function() {
 
 			var failsafe_flag = hd_alias.ph.isCLFailSafe();
 			if (self.autoSearchFlag == false && failsafe_flag == true) {
-				var autoSearchDiv = self.doc.createElement("div");
-				var autoSearchStyle = "position:absolute;left:100px;top:80px;height:30px;width:280px;";
-				autoSearchStyle += "border-radius:6px;color:blue;background-color:#cccccc;";
-				autoSearchStyle += "text-align:center;font-weight:bold;padding-top:12px;";
-				autoSearchDiv.setAttribute("style", autoSearchStyle);
-				var autoSearchTxt = self.doc.createTextNode(hd_alias.str("ui_cl_auto_search_msg"));
-				self.autoSearchInc = self.doc.createTextNode("");
-				autoSearchDiv.appendChild(autoSearchTxt);
-				autoSearchDiv.appendChild(self.autoSearchInc);
+				var autoSearchDiv = self._getAutoSearchUI();
 				self.contentdiv.appendChild(autoSearchDiv);
 				
 				self.autoSearchFlag=true;
@@ -430,17 +444,7 @@ hd_alias.popupHandler = function() {
 			self.autoSearchInc = null;
 			self.updateresult(result.docFrag, result.dCSSAr);
 		} else {
-			setTimeout(function(){
-				// dead object
-				try {
-				if (self != null && self.contentdiv != null
-						&& self.autoSearchInc != null) {
-					var tempRef = self.autoSearchInc.parentNode;
-					self.autoSearchInc = null;
-					self.contentdiv.removeChild(tempRef);
-				}
-				} catch(e) {}
-			}, 1500);
+			setTimeout(self._removeAutoSearchUI, 1500);
 		}
 		self.autoSearchFlag=false;
 	};
@@ -558,6 +562,32 @@ hd_alias.popupHandler = function() {
 		self.dictTitleLbl=null;
 		self.winObj=null;
 		self=null;
+	};
+	
+	// label text for auto search
+	this._getAutoSearchUI=function() {
+		var autoSearchDiv = self.doc.createElement("div");
+		var autoSearchStyle = "position:absolute;left:100px;top:80px;width:290px;";
+		autoSearchStyle += "border-radius:6px;color:blue;background-color:#cccccc;";
+		autoSearchStyle += "text-align:center;font-weight:bold;height:40px;line-height:38px;";
+		autoSearchDiv.setAttribute("style", autoSearchStyle);
+		var autoSearchTxt = self.doc.createTextNode(hd_alias.str("ui_cl_auto_search_msg"));
+		self.autoSearchInc = self.doc.createTextNode("");
+		
+		var cancelDiv = self.doc.createElement("div");
+		var cancelDivStyle = "border:solid 1px white;border-radius:3px;color:white;";
+		cancelDivStyle += "float:right;width:20px;height:17px;line-height:16px;";
+		cancelDivStyle += "cursor:pointer;margin-right:10px;margin-top:10px;";
+		cancelDiv.setAttribute("style", cancelDivStyle);
+		cancelDiv.setAttribute("title", hd_alias.str("ui_cl_cancel_auto_search"));
+		cancelDiv.addEventListener("click", self._cancelAutoSearch, false);
+		cancelDiv.appendChild(self.doc.createTextNode("X"));
+		
+		autoSearchDiv.appendChild(autoSearchTxt);
+		autoSearchDiv.appendChild(self.autoSearchInc);
+		autoSearchDiv.appendChild(cancelDiv);
+		
+		return autoSearchDiv;
 	};
 	
 	// creates and returns container for searching the word using other dictionary

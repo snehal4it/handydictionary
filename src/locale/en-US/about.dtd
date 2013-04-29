@@ -115,3 +115,7 @@
 <!-- footer -->
 <!ENTITY how_to_use_desc1 "Note: Kindly take a note that this tool provides just interface, actual dictionary service">
 <!ENTITY how_to_use_desc2 "is provided by public interface of selected dictionary.">
+
+<!-- Customize keyboard shortcut -->
+<!ENTITY cust_key_title "Customize Keyboard Shortcuts">
+<!ENTITY cust_keyvalue_lbl "Updated Keys">
