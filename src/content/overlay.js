@@ -7,10 +7,11 @@ if ("undefined" == typeof(handy_dictionary_ext_ns_id123)) {
 
 (function() {
 var hd_alias=handy_dictionary_ext_ns_id123;
-var kb_lookup_id = "handy_dictionary_ext_kb_lookup";
-var kb_pref_id = "handy_dictionary_ext_kb_pref";
-var kb_about_id = "handy_dictionary_ext_kb_about";
-var kb_toggle_state_id = "handy_dictionary_ext_kb_toggle_state";
+var kb_prefix = "handy_dictionary_ext_";
+var kb_lookup_id = kb_prefix + "key_lookup";
+var kb_pref_id = kb_prefix + "key_pref";
+var kb_about_id = kb_prefix + "key_about";
+var kb_toggle_state_id = kb_prefix + "key_toggle";
 
 var tb_enable_id = "handy_dictionary_ext_enable_submenu";
 
@@ -327,6 +328,7 @@ hd_alias.kbh = new function() {
 		lookupKey.setAttribute("modifiers", "accel");
 		lookupKey.setAttribute("key", "m");
 		lookupKey.setAttribute("oncommand", cmd_manualLookup);
+		lookupKey.setAttribute("disabled", "true");
 		keyset.appendChild(lookupKey);
 		
 		var prefKey = document.createElement("key");
@@ -334,6 +336,7 @@ hd_alias.kbh = new function() {
 		prefKey.setAttribute("modifiers", "alt");
 		prefKey.setAttribute("key", "q");
 		prefKey.setAttribute("oncommand", cmd_pref);
+		prefKey.setAttribute("disabled", "true");
 		keyset.appendChild(prefKey);
 		
 		var aboutKey = document.createElement("key");
@@ -341,6 +344,7 @@ hd_alias.kbh = new function() {
 		aboutKey.setAttribute("modifiers", "alt,accel");
 		aboutKey.setAttribute("key", "h");
 		aboutKey.setAttribute("oncommand", cmd_about);
+		aboutKey.setAttribute("disabled", "true");
 		keyset.appendChild(aboutKey);
 		
 		var toggleStateKey = document.createElement("key");
@@ -348,10 +352,54 @@ hd_alias.kbh = new function() {
 		toggleStateKey.setAttribute("modifiers", "alt");
 		toggleStateKey.setAttribute("key", "o");
 		toggleStateKey.setAttribute("oncommand", cmd_toggleState);
+		toggleStateKey.setAttribute("disabled", "true");
 		keyset.appendChild(toggleStateKey);
 		
 		// fix to apply changes without restart
+		//keyset.parentNode.insertBefore(keyset, keyset.nextSibling);
+	};
+	
+	this.refresh=function(key) {
+		var keyConfigObj = hd_alias.UTIL.getKeyConfig();
+		var keyset = document.getElementById("mainKeyset");
+		if (keyConfigObj == null || keyset == null) {return;}
+		if (key != null) {
+			self.refreshKey(key, keyConfigObj, keyset);
+		} else {
+			for (key in keyConfigObj) {
+				self.refreshKey(key, keyConfigObj, keyset);
+			}
+		}
+		// fix to apply changes without restart
 		keyset.parentNode.insertBefore(keyset, keyset.nextSibling);
+	};
+	
+	this.refreshKey=function(key, keyConfigObj, keyset) {
+		//try {
+		var cmdElem = keyset.querySelector("#"+kb_prefix+key);
+		
+		var disabledFlag="true";
+		var keyValAr = keyConfigObj[key];
+		var modStr = keyValAr[0].join(" ");
+		if (modStr.replace(/\s/g, "").length > 0) {
+			cmdElem.setAttribute("modifiers", modStr);
+			disabledFlag="false";
+		} else {
+			cmdElem.removeAttribute("modifiers");
+		}
+		
+		cmdElem.removeAttribute("keycode");
+		cmdElem.removeAttribute("key");
+		if (keyValAr[1] != null && keyValAr[1] != "") {
+			if (keyValAr[1].indexOf("VK_") != -1) {
+				cmdElem.setAttribute("keycode", keyValAr[1]);
+			} else {
+				cmdElem.setAttribute("key", keyValAr[1]);
+			}
+			disabledFlag="false";
+		}
+		cmdElem.setAttribute("disabled", disabledFlag);
+		//} catch(e) {}
 	};
 	
 	this.clean=function() {
@@ -385,7 +433,7 @@ hd_alias.kbh = new function() {
 	
 	this.customizeShortcuts=function(eventObj) {
 		window.openDialog('chrome://handy_dictionary_ext/content/customkey.xul',
-				'customkey','chrome,centerscreen', hd_alias.defaultKB, hd_alias.UTIL);
+				'customkey','chrome,centerscreen,resizable=yes', hd_alias.UTIL, hd_alias.str);
 	};
 	
 	this.handleAboutDialog=function(eventObj) {

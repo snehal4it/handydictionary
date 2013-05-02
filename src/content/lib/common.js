@@ -27,7 +27,7 @@ hd_alias.defaultDictURL='http://dictionary.cambridge.org/search/british/direct/?
 hd_alias.userDataKey="handy_dict_ext_doc_key987";
 
 hd_alias.defaultKB={
-	"key_lookup":'[["accel"], "", "M"]',
+	"key_lookup":'[["accel"], "M"]',
 	"key_pref":'[["alt"], "Q"]',
 	"key_about":'[["alt","accel"], "H"]',
 	"key_toggle":'[["alt"], "O"]'
@@ -94,6 +94,10 @@ hd_alias.ph=new function(){
 	};
 	
 	this.observe=function(aSubject, aTopic, aData){
+		if (hd_alias.defaultKB[aData] != null) {
+			hd_alias.kbh.refresh(aData);
+			return;
+		}
 		switch (aData) {
 			case self.blockpref:
 			case self.allowpref:
@@ -190,10 +194,15 @@ hd_alias.ph=new function(){
 		return kbObj;
 	};
 	
-	this.setKBObj=function(prefVar, valueStr){
-		//var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
-		//updatedVal.data = valueStr;
-		//self.prefs.setComplexValue(prefVar, Ci.nsISupportsString, updatedVal);
+	this.setKBObj=function(kbObj){
+		if (kbObj == null) {return;}
+		for (key in kbObj) {
+			//try {
+				var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
+				updatedVal.data = kbObj[key];
+				self.prefs.setComplexValue(key, Ci.nsISupportsString, updatedVal);
+			//} catch (e) {}
+		}
 	};
 	//----- preferences used ---------
 };

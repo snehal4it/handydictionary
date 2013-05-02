@@ -13,14 +13,17 @@ var util=hd_alias.UTIL;
 var menu=hd_alias.MENU;
 
 hd_alias.gInit=function() {
+	hd_alias.OverlayBuilder.init();
 	hd_alias.ph.init();
 	cntx.init();
 	menu.init();
+	hd_alias.kbh.refresh();
 	gBrowser.addEventListener("DOMContentLoaded", hd_alias.domListener, false);
 	gBrowser.tabContainer.addEventListener("TabSelect", hd_alias.tabSelectListener, false);
 };
 
 hd_alias.gClean=function() {
+	hd_alias.OverlayBuilder.clean();
 	cntx.clean();
 	menu.clean();
 	hd_alias.ph.clean();

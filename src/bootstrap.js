@@ -73,7 +73,7 @@ function doStartup(windowObj) {
 	}
 	
 	var hd = windowObj.handy_dictionary_ext_ns_id123;
-	hd.OverlayBuilder.init();
+	//hd.OverlayBuilder.init();
 	hd.gInit();
 }
 
@@ -93,7 +93,7 @@ function doShutdown(windowObj) {
 	updateOpenedTab(windowObj, false);
 	
 	var hd = windowObj.handy_dictionary_ext_ns_id123;
-	hd.OverlayBuilder.clean();
+	//hd.OverlayBuilder.clean();
 	hd.gClean();
 	
 	delete windowObj.handy_dictionary_ext_ns_id123;

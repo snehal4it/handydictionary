@@ -91,6 +91,40 @@ hd_alias.UTIL=new function(){
 		return kbObj;
 	};
 	
+	this.setKeyConfig=function(kbObj){
+		if (kbObj == null) {return;}
+		for(key in kbObj) {
+			var kbStr=null;
+			//try {
+				kbStr=JSON.stringify(kbObj[key]);
+			//} catch (e) { }
+			if (kbStr == null) {
+				// disable key in case error
+				kbStr='[[], ""]';
+			}
+			kbObj[key]=kbStr;
+		}
+		hd_alias.ph.setKBObj(kbObj);
+	};
+	
+	// returns object containing parsed value of default keys
+	this.getDefaultKeyConfig=function(){
+		var kbObj = {};
+		var defaultKBObj=hd_alias.defaultKB;
+		for(key in defaultKBObj) {
+			var kbAr=null;
+			//try {
+				kbAr=JSON.parse(defaultKBObj[key]);
+			//} catch (e) { }
+			if (kbAr == null) {
+				// disable key in case error
+				kbAr=[[], ""];
+			}
+			kbObj[key]=kbAr;
+		}
+		return kbObj;
+	};
+	
 	this.getAbsoluteLocations=function(eventObj){
 		var currentX = eventObj.clientX + content.pageXOffset + 5;
 		var currentY = eventObj.clientY + content.pageYOffset + 20;
