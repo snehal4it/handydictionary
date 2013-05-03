@@ -26,11 +26,12 @@ hd_alias.defaultDictURL='http://dictionary.cambridge.org/search/british/direct/?
 
 hd_alias.userDataKey="handy_dict_ext_doc_key987";
 
+// default shortcut keys
 hd_alias.defaultKB={
-	"key_lookup":'[["accel"], "M"]',
-	"key_pref":'[["alt"], "Q"]',
-	"key_about":'[["alt","accel"], "H"]',
-	"key_toggle":'[["alt"], "O"]'
+	key_lookup:'[["accel"], "M"]',
+	key_pref:'[["alt"], "Q"]',
+	key_about:'[["alt","accel"], "H"]',
+	key_toggle:'[["alt"], "O"]'
 };
 
 //-- start-- Locale handler
@@ -95,6 +96,7 @@ hd_alias.ph=new function(){
 	
 	this.observe=function(aSubject, aTopic, aData){
 		if (hd_alias.defaultKB[aData] != null) {
+			//handles keyboard shortcut changes
 			hd_alias.kbh.refresh(aData);
 			return;
 		}
@@ -182,18 +184,27 @@ hd_alias.ph=new function(){
 		self.prefs.setComplexValue(prefVar, Ci.nsISupportsString, updatedVal);
 	};
 	
-	this.getKBObj=function(){
+	// retrieves all keyboard shortcuts, if argument is not null then
+	// retrieves only specific shortcut
+	this.getKBObj=function(key){
 		var kbObj = {};
-		for (key in hd_alias.defaultKB) {
+		var defaultKBObjRef=hd_alias.defaultKB;
+		if (key != null) {
+			defaultKBObjRef = {};
+			defaultKBObjRef[key]="";
+		}
+		
+		for (keyProp in defaultKBObjRef) {
 			//try {
-			kbObj[key]=self.prefs.getComplexValue(key, Ci.nsISupportsString).data;
+			kbObj[keyProp]=self.prefs.getComplexValue(keyProp, Ci.nsISupportsString).data;
 			//} catch (e) {
-			//kbObj[key]=hd_alias.defaultKB[key];
+			//kbObj[keyProp]=hd_alias.defaultKB[keyProp];
 			//}
 		}
 		return kbObj;
 	};
 	
+	// updates keyboard shortcuts
 	this.setKBObj=function(kbObj){
 		if (kbObj == null) {return;}
 		for (key in kbObj) {

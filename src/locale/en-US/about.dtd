@@ -117,5 +117,18 @@
 <!ENTITY how_to_use_desc2 "is provided by public interface of selected dictionary.">
 
 <!-- Customize keyboard shortcut -->
+<!ENTITY cust_key_dlg_accept_btn "Update">
+<!ENTITY cust_key_dlg_cancel_btn "Cancel">
 <!ENTITY cust_key_title "Customize Keyboard Shortcuts">
-<!ENTITY cust_keyvalue_lbl "Updated Keys">
+<!ENTITY cust_key_seq_label "Select Key Sequence">
+<!ENTITY cust_keyvalue_lbl "Updated Key Sequence">
+<!ENTITY cust_key_imp_lbl "Important">
+<!ENTITY cust_key_imp_desc1 "After changing key-sequence, kindly check once if it is working, if it does not work then it is likely that given key-sequence is already used.">
+<!ENTITY cust_key_imp_desc2 "Key-sequence is defined by one or more modifiers from drop-down and a key from text-box.">
+<!ENTITY cust_key_imp_desc3 "If neither modifier nor key is selected then keyboard shortcut will be disabled.">
+<!ENTITY cust_key_modifier_lbl "Modifiers">
+<!ENTITY cust_key_modifier_desc1 "Drop-down contains list of modifiers that can be used. For different operating system, it's meaning differs.">
+<!ENTITY cust_key_kb_lbl "Key">
+<!ENTITY cust_key_kb_desc1 "To update, select the text-box with mouse which will clear existing value and then press the desired key.">
+<!ENTITY cust_key_kb_desc2 "Letters and numbers are represented as is in the text-box, while other keys are displayed in code name prefixed with &quot;VK_&quot;.">
+<!ENTITY cust_key_kb_desc3 "In some cases it is possible to define shortcut using only key (without modifiers) e.g. &quot;F9&quot;.">

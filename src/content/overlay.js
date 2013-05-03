@@ -360,15 +360,12 @@ hd_alias.kbh = new function() {
 	};
 	
 	this.refresh=function(key) {
-		var keyConfigObj = hd_alias.UTIL.getKeyConfig();
+		var keyConfigObj = hd_alias.UTIL.getKeyConfig(key);
 		var keyset = document.getElementById("mainKeyset");
 		if (keyConfigObj == null || keyset == null) {return;}
-		if (key != null) {
-			self.refreshKey(key, keyConfigObj, keyset);
-		} else {
-			for (key in keyConfigObj) {
-				self.refreshKey(key, keyConfigObj, keyset);
-			}
+
+		for (keyProp in keyConfigObj) {
+			self.refreshKey(keyProp, keyConfigObj, keyset);
 		}
 		// fix to apply changes without restart
 		keyset.parentNode.insertBefore(keyset, keyset.nextSibling);
@@ -376,7 +373,8 @@ hd_alias.kbh = new function() {
 	
 	this.refreshKey=function(key, keyConfigObj, keyset) {
 		//try {
-		var cmdElem = keyset.querySelector("#"+kb_prefix+key);
+		var cmdElemId=kb_prefix+key;
+		var cmdElem = keyset.querySelector("#"+cmdElemId);
 		
 		var disabledFlag="true";
 		var keyValAr = keyConfigObj[key];
@@ -397,6 +395,23 @@ hd_alias.kbh = new function() {
 				cmdElem.setAttribute("key", keyValAr[1]);
 			}
 			disabledFlag="false";
+		}
+
+		if (disabledFlag == "true") {
+			//If neither the key nor keycode attribute are used,
+			//the key element will handle all key events. However,
+			//if one of the attributes is set to an empty string,
+			//the element doesn't handle any key events
+			cmdElem.setAttribute("key", "");
+		}
+		
+		// fix to update shortcut for all menuitems which is using this key-element
+		var menuItems = document.querySelectorAll("menuitem[key="+cmdElemId+"]");
+		if (menuItems != null && menuItems.length > 0) {
+			for (var i = 0; i < menuItems.length; i++) {
+				menuItems[i].setAttribute("acceltext","");
+				menuItems[i].removeAttribute("acceltext");
+			}
 		}
 		cmdElem.setAttribute("disabled", disabledFlag);
 		//} catch(e) {}

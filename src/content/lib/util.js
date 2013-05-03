@@ -74,23 +74,26 @@ hd_alias.UTIL=new function(){
 		return autoCloseVal;
 	};
 	
-	this.getKeyConfig=function(){
+	// returns object containing all keyboard shortcuts,
+	// if argument is not null then returns object with specific shortcut
+	this.getKeyConfig=function(key){
 		// replace string val with array object
-		var kbObj = hd_alias.ph.getKBObj();
-		for(key in kbObj) {
+		var kbObj = hd_alias.ph.getKBObj(key);
+		for(keyProp in kbObj) {
 			var kbAr=null;
 			//try {
-				kbAr=JSON.parse(kbObj[key]);
+				kbAr=JSON.parse(kbObj[keyProp]);
 			//} catch (e) { }
 			if (kbAr == null) {
 				// disable key in case error
 				kbAr=[[], ""];
 			}
-			kbObj[key]=kbAr;
+			kbObj[keyProp]=kbAr;
 		}
 		return kbObj;
 	};
 	
+	// updates keyboard shortcut defined by passed in object
 	this.setKeyConfig=function(kbObj){
 		if (kbObj == null) {return;}
 		for(key in kbObj) {

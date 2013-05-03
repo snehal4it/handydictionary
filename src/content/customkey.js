@@ -1,10 +1,13 @@
 /* For licence details please refer license.txt */
 
 var modifiersObj = {"--Select--":"", "Alt":"alt", "Control":"accel", "Shift":"shift"};
+// for mac users alt is mapped to option key and control is mapped to Command key
+var modifiersMacObj = {"--Select--":"", "Option":"alt", "Command":"accel", "Shift":"shift"};
+
 var keyFilterAr = ["VK_SHIFT", "VK_CONTROL", "VK_ALT", "VK_WIN"];
 var ctrlSuffix = "_ctrl";
 
-// keycode - keyname mappings
+// keycode - keyname mapping
 var keyMap=[];
 
 var locale = null;
@@ -16,6 +19,7 @@ var defaultKeyObj=null;
 var keyConfig = null;
 
 function init() {
+	updateMacNotice();
 	initKeyMap();
 	
 	util = window.arguments[0];
@@ -71,12 +75,19 @@ function init() {
 		ctrlElem.appendChild(clearBtn);
 		
 		updateButtonStatus(ctrlElem);
-		
-		//var elem = document.getElementById(key);
-		//elem.setAttribute("value", getReadableValue(keyValAr));
 	}
 }
 
+// for mac platform use different set of modifiers
+function updateMacNotice() {
+	try {
+		if (window.navigator.platform.search("Mac") == 0) {
+			modifiersObj=modifiersMacObj;
+		}
+	} catch(e) {}
+}
+
+// display key-sequences in comma separated form
 function getReadableValue(keyValAr) {
 	var tempAr = new Array();
 	var modAr = keyValAr[0];
@@ -91,12 +102,14 @@ function getReadableValue(keyValAr) {
 	return tempAr;
 }
 
+// retrieves and init keycode to keyname mapping
 function initKeyMap() {
 	for (var key in KeyEvent) {
 		keyMap[KeyEvent[key]] = key.replace("DOM_", "");
 	}
 }
 
+// listen and display key selected by user in text-field
 function displayKey(eventObj) {
 	eventObj.stopPropagation();
 	eventObj.preventDefault();
@@ -106,24 +119,27 @@ function displayKey(eventObj) {
 		alert(keyName + " " + locale("cust_key_txt_field_err"));
 		return;
 	}
+	// if field is not empty then use backspace to clear the field
 	if (keyName == "VK_BACK_SPACE" && eventObj.target.value != "") {
 		eventObj.target.value="";
 		updateButtonStatus(eventObj.target.parentNode);
 		return;
 	}
+	// display numbers and letters in as is form
 	if ((eventObj.keyCode >= 48 && eventObj.keyCode <= 57)
 		|| (eventObj.keyCode >= 65 && eventObj.keyCode <= 90)) {
 		eventObj.target.value=keyName.replace("VK_", "");
 	} else {
+		// display other key using VK_ prefix
 		eventObj.target.value=keyName;
 	}
 	
 	updateShortcut(eventObj.target.parentNode);
 }
 
+// check and clear drop-down if duplicate modifiers selected
 function updateModifierControls(hBoxElem) {
 	var modAr = hBoxElem.getElementsByTagName("menulist");
-	//var keyAr = hBoxElem.getElementsByTagName("textbox");
 	if (modAr[0].selectedIndex > 0) {
 		if (modAr[0].selectedIndex == modAr[1].selectedIndex) {
 			modAr[1].selectedIndex=0;
@@ -136,23 +152,12 @@ function updateModifierControls(hBoxElem) {
 		&& modAr[1].selectedIndex == modAr[2].selectedIndex) {
 		modAr[2].selectedIndex=0;
 	}
-	//if (modAr[0].selectedIndex <= 0 && modAr[1].selectedIndex <= 0
-	//		&& modAr[2].selectedIndex <= 0) {
-	//	return false;
-	//}
 	return true;
 }
 
+// update shortcut of given command
 function updateShortcut(hBoxElem) {
 	updateModifierControls(hBoxElem);
-	//var flag = updateModifierControls(hBoxElem);
-	//if (!flag) {
-	//	hBoxElem.style.backgroundColor="red";
-	//	alert(locale("cust_key_dropdown_err"));
-	//	return;
-	//}
-	//hBoxElem.style.backgroundColor="white";
-	
 	updateButtonStatus(hBoxElem);
 }
 
@@ -161,6 +166,7 @@ function getKeyForControl(hBoxElem) {
 	return idAttr.replace(ctrlSuffix, "");
 }
 
+// set status for "reset" and "clear" button depending upon key-sequence
 function updateButtonStatus(hBoxElem) {
 	var modAr = hBoxElem.getElementsByTagName("menulist");
 	var keyAr = hBoxElem.getElementsByTagName("textbox");
@@ -188,6 +194,7 @@ function updateButtonStatus(hBoxElem) {
 	}
 }
 
+// disable shortcut
 function clearKeySequence(hBoxElem) {
 	var modAr = hBoxElem.getElementsByTagName("menulist");
 	var keyAr = hBoxElem.getElementsByTagName("textbox");
@@ -199,6 +206,7 @@ function clearKeySequence(hBoxElem) {
 	updateButtonStatus(hBoxElem);
 }
 
+// reset to default value
 function resetKeySequence(hBoxElem) {
 	var idAttr = getKeyForControl(hBoxElem);
 	var keyValAr = defaultKeyObj[idAttr];
@@ -225,6 +233,7 @@ function resetKeySequence(hBoxElem) {
 	updateButtonStatus(hBoxElem);
 }
 
+// gets changed value of key-sequence
 function getKeySequence(hBoxElem) {
 	var modAr = hBoxElem.getElementsByTagName("menulist");
 	var keyAr = hBoxElem.getElementsByTagName("textbox");
@@ -267,6 +276,7 @@ function compareKeySequence(keyAr1, keyAr2) {
 	return keyAr1[1] == keyAr2[1];
 }
 
+// persist user changes only if OK button is clicked
 function saveChanges() {
 	var updatedKeyConfig={};
 	var updateFlag=false;
@@ -274,7 +284,6 @@ function saveChanges() {
 		var keyValAr = keyConfig[key];
 		
 		var ctrlElem = document.getElementById(key+ctrlSuffix);
-		//updateModifierControls(ctrlElem);
 		var currentKeyAr = getKeySequence(ctrlElem);
 		
 		var modFlag = compareKeySequence(keyValAr, currentKeyAr);
@@ -285,6 +294,7 @@ function saveChanges() {
 		}
 	}
 	
+	// update preference only if keys are changed
 	if (updateFlag) {
 		util.setKeyConfig(updatedKeyConfig);
 	}

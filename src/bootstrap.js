@@ -72,9 +72,7 @@ function doStartup(windowObj) {
 		Services.scriptloader.loadSubScript(hdURL+scriptAr[i], windowObj);
 	}
 	
-	var hd = windowObj.handy_dictionary_ext_ns_id123;
-	//hd.OverlayBuilder.init();
-	hd.gInit();
+	windowObj.handy_dictionary_ext_ns_id123.gInit();
 }
 
 function updateOpenedTab(windowObj, flag) {
@@ -92,9 +90,7 @@ function doShutdown(windowObj) {
 	// first stop all dom listeners
 	updateOpenedTab(windowObj, false);
 	
-	var hd = windowObj.handy_dictionary_ext_ns_id123;
-	//hd.OverlayBuilder.clean();
-	hd.gClean();
+	windowObj.handy_dictionary_ext_ns_id123.gClean();
 	
 	delete windowObj.handy_dictionary_ext_ns_id123;
 }

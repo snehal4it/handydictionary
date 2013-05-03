@@ -4,14 +4,15 @@
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:html="http://www.w3.org/1999/xhtml"
-    title="&cust_key_title;" onload="init();"
-    ondialogaccept="return saveChanges();"
-    buttons="accept,cancel" buttonlabelaccept="&dialog_accept_btn_label;"
-    buttonaccesskeyaccept="K" buttonpack="center">
+    title="&cust_key_title;" onload="init();" ondialogaccept="return saveChanges();"
+    buttons="accept,cancel" buttonlabelaccept="&cust_key_dlg_accept_btn;"
+    buttonlabelcancel="&cust_key_dlg_cancel_btn;"
+    buttonaccesskeyaccept="U" buttonaccesskeycancel="C" buttonpack="center">
     
     <script type="application/x-javascript" src="chrome://handy_dictionary_ext/content/customkey.js" />
     
-	<vbox style="background-color:white;margin-bottom:20px;width:860px;height:200px;overflow:auto;">
+	<vbox style="margin-bottom:1px;width:860px;height:365px;overflow:auto;">
+	<vbox style="background-color:white;">
 	<grid style="border:solid 1px #cccccc;">
 		<columns>
 			<column style="border-right:solid 1px #cccccc;" />
@@ -21,7 +22,7 @@
 		<rows>
 			<row style="color:#555555;font-weight:bold;">
 				<label>&kb_command_label;</label>
-				<label>&kb_key_seq_label;</label>
+				<label>&cust_key_seq_label;</label>
 				<label>&cust_keyvalue_lbl;</label>
 			</row>
 			<row style="border-top:solid 1px #cccccc;">
@@ -52,6 +53,30 @@
 		</rows>
 	</grid>
 	</vbox>
-</dialog>
 	
-
+	<groupbox><caption style="margin-top:10px;" label="&cust_key_imp_lbl;" />
+		<vbox>
+			<description>- &cust_key_imp_desc1;</description>
+			<description>- &cust_key_imp_desc2;</description>
+			<description>- &cust_key_imp_desc3;</description>
+			<grid>
+			<columns><column /><column /></columns>
+			<rows>
+				<row>
+					<label>- &cust_key_modifier_lbl;</label>
+					<description>&cust_key_modifier_desc1;</description>
+				</row>
+				<row>
+					<label>- &cust_key_kb_lbl;</label>
+					<vbox>
+					<description>&cust_key_kb_desc1;</description>
+					<description>&cust_key_kb_desc2;</description>
+					<description>&cust_key_kb_desc3;</description>
+					</vbox>
+				</row>
+			</rows>
+			</grid>
+		</vbox>
+	</groupbox>
+	</vbox>
+</dialog>
