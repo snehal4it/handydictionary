@@ -371,7 +371,7 @@ hd_alias.dicts=[
 		this.resultId="entryContent";
 		// if word is not found, then suggestions container css selector
 		this.errId="div#cdo-spellcheck-container ul#cdo-spellcheck";
-		this.css=["http://dictionary.cambridge.org/common.css?version=2013-03-20-1149"];
+		this.css=["http://dictionary.cambridge.org/common.css?version=2013-04-16-1133"];
 		this.excludeCSS=[];
 		this.cssRules=["#" + self.resultId + " > div {display:block;}",
 		               "#" + self.resultId + " > p {margin:0px;}" ];
@@ -420,7 +420,7 @@ hd_alias.dicts=[
 		this.url=self.baseURL+"search/english/?direct=1&multi=1&q=";
 		this.resultId="mainContent";
 		this.errId="div#noSearchResults div#noresults";
-		this.css=["http://oxforddictionaries.com/common.css?version=2013-03-28-1205"];
+		this.css=["http://oxforddictionaries.com/common.css?version=2013-05-02-0954"];
 		this.excludeCSS=[];
 		// header, headTitleElem, translateElem, defElem
 		this.cssRules=["#" + self.resultId + " > header h1.pageTitle {margin:0px;line-height:1em;}",
@@ -470,7 +470,7 @@ hd_alias.dicts=[
 		this.url=self.baseURL+"dic?q=";
 		this.resultId="contentResults";
 		this.errId="div#nBL";
-		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90586.css"];
+		this.css=["http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90658.css"];
 		// remove css from dynamically generated css array
 		this.excludeCSS=[/http(.|\s)*?static\.sfdict\.com(.|\s)*?responsive\.css/i];
 		// title space, searched text, remove adds
@@ -567,7 +567,7 @@ hd_alias.dicts=[
 		this.url=self.baseURL;
 		this.resultId="MainTxt";
 		this.errId="table#ContentTable td:nth-child(2) div table";
-		this.css=["http://img.tfd.com/t.css?g"];
+		this.css=["http://img.tfd.com/t.css?e"];
 		this.cssRules=["TD{font-size:10pt;}"];
 		this.excludeCSS=[];
 		this.getURL=function(text) {
