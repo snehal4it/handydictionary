@@ -422,15 +422,21 @@ hd_alias.kbh = new function() {
 		if (keyset == null) { return; }
 		
 		var lookupKey = keyset.querySelector("#"+kb_lookup_id);
+		//Fix: even after removal of element, keyboard shortcut can cause
+		// reference error, so disable first
+		lookupKey.setAttribute("disabled", "true");
 		keyset.removeChild(lookupKey);
 		
 		var prefKey = keyset.querySelector("#"+kb_pref_id);
+		prefKey.setAttribute("disabled", "true");
 		keyset.removeChild(prefKey);
 		
 		var aboutKey = keyset.querySelector("#"+kb_about_id);
+		aboutKey.setAttribute("disabled", "true");
 		keyset.removeChild(aboutKey);
 		
 		var toggleStateKey = keyset.querySelector("#"+kb_toggle_state_id);
+		toggleStateKey.setAttribute("disabled", "true");
 		keyset.removeChild(toggleStateKey);
 	};
 	
