@@ -39,6 +39,8 @@
 <!ENTITY allow_website_desc5 "If the website is already in allow list then menu will be checked.">
 <!ENTITY allow_website_desc6 "If already checked then clicking menu removes website from allow list.">
 <!ENTITY goto_pref_desc "Go to &quot;Preferences&quot; tab for more details">
+<!ENTITY tb_cust_key_lbl "Customize Shortcuts">
+<!ENTITY tb_cust_key_desc "Allows user to Customize Keyboard Shortcuts used for this tool.">
 
 <!-- Context Menu -->
 <!ENTITY handydict_opt_label "HandyDict:Options">
@@ -105,12 +107,14 @@
 <!ENTITY addon_bar_opt_desc5 "Please refer Disable for webiste and Enable for website menus under Toolbar menus tab.">
 
 <!-- Shortcuts -->
+<!ENTITY kb_shortcut_desc1 "Following table list default value for shortcuts, to change use toolbar menu:">
 <!ENTITY kb_command_label "Command">
 <!ENTITY kb_key_seq_label "Key Sequence">
 <!ENTITY kb_disp_help_label "Display Help">
 <!ENTITY kb_toggle_state_label "Toggle State">
 <!ENTITY kb_toggle_state_desc1 "Enable/Disable tool for current page">
 <!ENTITY kb_close_popup_label "Close dictionary popup">
+<!ENTITY kb_shortcut_desc2 "Modifier keys like alt,ctrl differs for each platform, kindly refer following table.">
 
 <!-- footer -->
 <!ENTITY how_to_use_desc1 "Note: Kindly take a note that this tool provides just interface, actual dictionary service">

@@ -67,6 +67,10 @@
 								<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">&goto_pref_desc;</html:a>
 							</description>
 						</row>
+						<row style="border-top:solid 1px #cccccc;">
+							<description style="font-weight:bold;color:#555555;">&tb_cust_key_lbl;</description>
+							<description>&tb_cust_key_desc;</description>
+						</row>
 						</rows>
 					</grid>
 				</tabpanel>
@@ -263,10 +267,11 @@
 					</grid>
 					</vbox>
 				</tabpanel>
-				<tabpanel>
+				<tabpanel style="height:240px;width:570px;overflow:auto;">
 					<!-- Shortcuts -->
-					<vbox align="left" style="margin-top:5px;">
-					<html:table style="border:solid 1px #cccccc;border-collapse:collapse;width:100%;">
+					<vbox align="left">
+					<description>&kb_shortcut_desc1; &tb_cust_key_lbl;</description>
+					<html:table style="border:solid 1px #cccccc;border-collapse:collapse;width:100%;margin-left:5px;">
 						<html:thead>
 						<html:tr>
 							<html:th style="width:250px;color:#555555;border:solid 1px #cccccc;">&kb_command_label;</html:th><html:th style="color:#555555;border:solid 1px #cccccc;">&kb_key_seq_label;</html:th>
@@ -288,6 +293,21 @@
 						<html:tr><html:td style="border:solid 1px #cccccc;">&kb_close_popup_label;</html:td><html:td style="border:solid 1px #cccccc;">Escape</html:td></html:tr>
 						</html:tbody>
 					</html:table>
+					<description style="margin-top:10px;">&kb_shortcut_desc2;</description>
+					<grid style="border:solid 1px #cccccc;margin-left:5px;">
+						<columns>
+							<column style="border-right:solid 1px #cccccc;" />
+							<column style="border-right:solid 1px #cccccc;" />
+							<column style="border-right:solid 1px #cccccc;" />
+							<column />
+						</columns>
+						<rows>
+							<row style="color:#555555;font-weight:bold;"><label></label><label>Windows</label><label>Unix</label><label>Mac</label></row>
+							<row style="border-top:solid 1px #cccccc;"><label>accel(control for this tool)</label><label>Ctrl</label><label>Ctrl or Alt</label><label>Command</label></row>
+							<row style="border-top:solid 1px #cccccc;"><label>alt</label><label>Alt</label><label>Alt</label><label>Option</label></row>
+							<row style="border-top:solid 1px #cccccc;"><label>shift</label><label>Shift</label><label>Shift</label><label>Shift</label></row>
+						</rows>
+					</grid>
 					</vbox>
 				</tabpanel>
 			</tabpanels>

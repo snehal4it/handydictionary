@@ -81,9 +81,9 @@ hd_alias.UTIL=new function(){
 		var kbObj = hd_alias.ph.getKBObj(key);
 		for(keyProp in kbObj) {
 			var kbAr=null;
-			//try {
+			try {
 				kbAr=JSON.parse(kbObj[keyProp]);
-			//} catch (e) { }
+			} catch (e) { }
 			if (kbAr == null) {
 				// disable key in case error
 				kbAr=[[], ""];
@@ -98,9 +98,9 @@ hd_alias.UTIL=new function(){
 		if (kbObj == null) {return;}
 		for(key in kbObj) {
 			var kbStr=null;
-			//try {
+			try {
 				kbStr=JSON.stringify(kbObj[key]);
-			//} catch (e) { }
+			} catch (e) { }
 			if (kbStr == null) {
 				// disable key in case error
 				kbStr='[[], ""]';
@@ -116,9 +116,9 @@ hd_alias.UTIL=new function(){
 		var defaultKBObj=hd_alias.defaultKB;
 		for(key in defaultKBObj) {
 			var kbAr=null;
-			//try {
+			try {
 				kbAr=JSON.parse(defaultKBObj[key]);
-			//} catch (e) { }
+			} catch (e) { }
 			if (kbAr == null) {
 				// disable key in case error
 				kbAr=[[], ""];

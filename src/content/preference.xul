@@ -51,7 +51,7 @@
 					<vbox>
 						<description>&blocklist_desc;</description>
 						<textbox id="handy_dictionary_ext_cntrl_blocklist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_blocklist" />
-						<hbox><button label="Clear" oncommand="clearList1();" /></hbox>
+						<hbox><button label="Clear" oncommand="clearList1();" tooltiptext="&clear_btn_tooltip;" /></hbox>
 					</vbox>
 				</row>
 				<row>
@@ -59,7 +59,7 @@
 					<vbox>
 						<description>&allowlist_desc;</description>
 						<textbox id="handy_dictionary_ext_cntrl_allowlist" multiline="true" rows="1" cols="70" readonly="true" style="color:#cccccc;" preference="handy_dictionary_ext_pref_allowlist" />
-						<hbox><button label="Clear" oncommand="clearList2();" /></hbox>
+						<hbox><button label="Clear" oncommand="clearList2();" tooltiptext="&clear_btn_tooltip;" /></hbox>
 					</vbox>
 				</row>
 				<spacer flex="1" style="min-height:1px;border-top:solid 1px #cccccc;"/>

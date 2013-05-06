@@ -195,11 +195,11 @@ hd_alias.ph=new function(){
 		}
 		
 		for (keyProp in defaultKBObjRef) {
-			//try {
-			kbObj[keyProp]=self.prefs.getComplexValue(keyProp, Ci.nsISupportsString).data;
-			//} catch (e) {
-			//kbObj[keyProp]=hd_alias.defaultKB[keyProp];
-			//}
+			try {
+				kbObj[keyProp]=self.prefs.getComplexValue(keyProp, Ci.nsISupportsString).data;
+			} catch (e) {
+				kbObj[keyProp]=hd_alias.defaultKB[keyProp];
+			}
 		}
 		return kbObj;
 	};
@@ -208,11 +208,11 @@ hd_alias.ph=new function(){
 	this.setKBObj=function(kbObj){
 		if (kbObj == null) {return;}
 		for (key in kbObj) {
-			//try {
+			try {
 				var updatedVal = Cc["@mozilla.org/supports-string;1"].createInstance(Ci.nsISupportsString);
 				updatedVal.data = kbObj[key];
 				self.prefs.setComplexValue(key, Ci.nsISupportsString, updatedVal);
-			//} catch (e) {}
+			} catch (e) {}
 		}
 	};
 	//----- preferences used ---------

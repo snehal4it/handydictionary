@@ -372,7 +372,7 @@ hd_alias.kbh = new function() {
 	};
 	
 	this.refreshKey=function(key, keyConfigObj, keyset) {
-		//try {
+		try {
 		var cmdElemId=kb_prefix+key;
 		var cmdElem = keyset.querySelector("#"+cmdElemId);
 		
@@ -414,7 +414,7 @@ hd_alias.kbh = new function() {
 			}
 		}
 		cmdElem.setAttribute("disabled", disabledFlag);
-		//} catch(e) {}
+		} catch(e) {}
 	};
 	
 	this.clean=function() {
