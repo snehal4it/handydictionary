@@ -86,6 +86,12 @@ hd_alias.ContextMenuBuilder = new function() {
 		pref.setAttribute("oncommand", cmd_pref);
 		pref.setAttribute("accesskey", "p");
 		
+		// customize key
+		var custKey = document.createElement("menuitem");
+		custKey.setAttribute("label", hd_alias.str("cust_key_label"));
+		custKey.setAttribute("oncommand", cmd_cust_key);
+		custKey.setAttribute("accesskey", "c");
+		
 		// about
 		var howto = document.createElement("menuitem");
 		howto.setAttribute("label", hd_alias.str("howto_label"));
@@ -108,6 +114,7 @@ hd_alias.ContextMenuBuilder = new function() {
 		
 		optionsPopup.appendChild(lookup);
 		optionsPopup.appendChild(pref);
+		optionsPopup.appendChild(custKey);
 		optionsPopup.appendChild(howto);
 		options.appendChild(optionsPopup);
 		

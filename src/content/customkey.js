@@ -17,6 +17,7 @@ var util = null;
 var defaultKeyObj=null;
 // current key sequences
 var keyConfig = null;
+var nonWindowOS=false;
 
 function init() {
 	updateMacNotice();
@@ -42,6 +43,9 @@ function init() {
 			ctrlElem.appendChild(menulist);
 			for (lbl in modifiersObj) {
 				var menuItem = menulist.appendItem(lbl, modifiersObj[lbl], "");
+				if (nonWindowOS) {
+					menuItem.setAttribute("style", "font-size:11px;font-family:verdana;");
+				}
 				if (modifiersObj[lbl] == modAr[k]) {
 					menulist.selectedItem=menuItem;
 				}
@@ -50,6 +54,9 @@ function init() {
 				menulist.selectedIndex = 0;
 			}
 			menulist.setAttribute("oncommand","updateShortcut(this.parentNode);");
+			if (nonWindowOS) {
+				menulist.setAttribute("style", "margin:0px;font-size:11px;font-family:verdana;");
+			}
 		}
 		var txtElem = document.createElement("textbox");
 		txtElem.setAttribute("size", "12");
@@ -60,18 +67,27 @@ function init() {
 			eventObj.target.value="";
 			updateButtonStatus(eventObj.target.parentNode);
 		}, false);
+		if (nonWindowOS) {
+			txtElem.setAttribute("style", "margin:0px;");
+		}
 		ctrlElem.appendChild(txtElem);
 		
 		var resetBtn = document.createElement("button");
 		resetBtn.setAttribute("label", locale("cust_key_reset_btn"));
 		resetBtn.setAttribute("tooltiptext", locale("cust_key_reset_btn_tooltip"));
 		resetBtn.setAttribute("oncommand", "resetKeySequence(this.parentNode);");
+		if (nonWindowOS) {
+			resetBtn.setAttribute("style", "margin:0px;");
+		}
 		ctrlElem.appendChild(resetBtn);
 		
 		var clearBtn = document.createElement("button");
 		clearBtn.setAttribute("label", locale("cust_key_clear_btn"));
 		clearBtn.setAttribute("tooltiptext", locale("cust_key_clear_tooltip"));
 		clearBtn.setAttribute("oncommand", "clearKeySequence(this.parentNode);");
+		if (nonWindowOS) {
+			clearBtn.setAttribute("style", "margin:0px;");
+		}
 		ctrlElem.appendChild(clearBtn);
 		
 		updateButtonStatus(ctrlElem);
@@ -83,6 +99,15 @@ function updateMacNotice() {
 	try {
 		if (window.navigator.platform.search("Mac") == 0) {
 			modifiersObj=modifiersMacObj;
+		}
+		
+		if (window.navigator.platform.search("Win") == -1) {
+			// fix for non-window system where font size is larger
+			nonWindowOS = true;
+			var custKeyCont=document.getElementById("handy_dictionary_ext_cust_key_container");
+			custKeyCont.style.fontSize="11px";
+			custKeyCont.style.fontFamily="verdana";
+			custKeyCont.style.height="330px";
 		}
 	} catch(e) {}
 }

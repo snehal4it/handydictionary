@@ -11,7 +11,7 @@
     
     <script type="application/x-javascript" src="chrome://handy_dictionary_ext/content/customkey.js" />
     
-	<vbox style="margin-bottom:1px;width:860px;height:365px;overflow:auto;">
+	<vbox id="handy_dictionary_ext_cust_key_container" style="margin-bottom:1px;width:860px;height:365px;overflow:auto;">
 	<vbox style="background-color:white;">
 	<grid style="border:solid 1px #cccccc;">
 		<columns>
@@ -41,7 +41,10 @@
 				<label id="key_about"></label>
 			</row>
 			<row style="border-top:solid 1px #cccccc;">
-				<vbox><label>&kb_toggle_state_label;</label><label>&kb_toggle_state_desc1;</label></vbox>
+				<vbox tooltiptext="&kb_toggle_state_desc1;">
+					<label>&kb_toggle_state_label;-&cust_key_toggle_desc1;</label>
+					<label>&cust_key_toggle_desc2;</label>
+				</vbox>
 				<vbox><hbox id="key_toggle_ctrl"></hbox></vbox>
 				<label id="key_toggle"></label>
 			</row>

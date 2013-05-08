@@ -136,3 +136,5 @@
 <!ENTITY cust_key_kb_desc1 "To update, select the text-box with mouse which will clear existing value and then press the desired key.">
 <!ENTITY cust_key_kb_desc2 "Letters and numbers are represented as is in the text-box, while other keys are displayed in code name prefixed with &quot;VK_&quot;.">
 <!ENTITY cust_key_kb_desc3 "In some cases it is possible to define shortcut using only key (without modifiers) e.g. &quot;F9&quot;.">
+<!ENTITY cust_key_toggle_desc1 "Enable/Disable">
+<!ENTITY cust_key_toggle_desc2 "tool for current page">

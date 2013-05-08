@@ -39,7 +39,7 @@
 			<preference id="handy_dictionary_ext_pref_allowlist" name="extensions.handy_dictionary_ext.allowlist" type="string"/>
 		</preferences>
 
-		<grid style="background-color:white;border:solid 1px #cccccc;margin-bottom:20px;">
+		<grid style="background-color:white;border:solid 1px #cccccc;margin-bottom:20px;font-size:12px;">
 			<columns style="background-color:white;"><column /><column /></columns>
 			<rows style="background-color:white;">
 				<row>
@@ -108,9 +108,9 @@
 						</hbox>
 						<checkbox label="&failsafe_flag_label; : &cl_failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_cl_failsafe" />
 						<hbox style="margin-left:25px;">
-							<textbox type="number" min="0" max="60" size="2" style="width:30px;" preference="handy_dictionary_ext_pref_cl_autoclose"/>
+							<textbox type="number" min="0" max="60" size="2" style="width:45px;" preference="handy_dictionary_ext_pref_cl_autoclose"/>
 							<label style="margin-top:10px;">&autoclose_label;</label>
-							<description style="width:320px;">&autoclose_desc;</description>
+							<description style="width:350px;margin:0px;">&autoclose_desc;</description>
 						</hbox>
 						<hbox>
 							<radio label="&compact_mode_label;" value="1" accesskey="p" />
@@ -118,9 +118,9 @@
 						</hbox>
 						<checkbox label="&failsafe_flag_label; : &failsafe_flag_desc;" style="margin-left:25px;" preference="handy_dictionary_ext_pref_failsafe" />
 						<hbox style="margin-left:25px;margin-bottom:5px;">
-							<textbox type="number" min="0" max="60" size="2" style="width:30px;" preference="handy_dictionary_ext_pref_autoclose"/>
+							<textbox type="number" min="0" max="60" size="2" style="width:45px;" preference="handy_dictionary_ext_pref_autoclose"/>
 							<label style="margin-top:10px;">&autoclose_label;</label>
-							<description style="width:320px;">&autoclose_desc;</description>
+							<description style="width:350px;margin:0px;">&autoclose_desc;</description>
 						</hbox>
 					</radiogroup>
 				</row>

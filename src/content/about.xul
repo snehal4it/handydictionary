@@ -26,7 +26,7 @@
 				<tab label="&shortcut_key_label;" accesskey="S"/>
 			</tabs>
 			<tabpanels>
-				<tabpanel style="height:240px;width:570px;overflow:auto;">
+				<tabpanel style="height:240px;width:570px;overflow:auto;background-color:white;">
 					<!-- Toolbar -->
 					<grid style="border:solid 1px #cccccc;">
 						<columns><column style="border-right:solid 1px #cccccc;"/><column/></columns>
@@ -74,7 +74,7 @@
 						</rows>
 					</grid>
 				</tabpanel>
-				<tabpanel>
+				<tabpanel style="background-color:white;">
 					<!-- Context Menu -->
 					<grid>
 						<columns><column/></columns>
@@ -94,6 +94,10 @@
 								<description>
 									<html:a href="#" onclick="document.getElementById('handy_dictionary_ext_cust_tabbox_id').selectedIndex='2';" style="color:blue;">&goto_pref_desc;</html:a>
 								</description>
+							</hbox>
+							<hbox>
+								<description style="font-weight:bold;color:#555555;">&tb_cust_key_lbl;:</description>
+								<description>&tb_cust_key_desc;</description>
 							</hbox>
 						</vbox>
 						</groupbox>
@@ -117,7 +121,7 @@
 						</rows>
 					</grid>
 				</tabpanel>
-				<tabpanel style="height:240px;width:570px;overflow:auto;">
+				<tabpanel style="height:240px;width:570px;overflow:auto;background-color:white;">
 					<!-- Preferences -->
 					<grid>
 						<columns><column/></columns>
@@ -234,7 +238,7 @@
 					</rows>
 					</grid>
 				</tabpanel>
-				<tabpanel>
+				<tabpanel style="background-color:white;">
 					<!-- Addon-bar -->
 					<vbox>
 					<description>&addon_bar_desc1;</description>
@@ -267,7 +271,7 @@
 					</grid>
 					</vbox>
 				</tabpanel>
-				<tabpanel style="height:240px;width:570px;overflow:auto;">
+				<tabpanel style="height:240px;width:570px;overflow:auto;background-color:white;">
 					<!-- Shortcuts -->
 					<vbox align="left">
 					<description>&kb_shortcut_desc1; &tb_cust_key_lbl;</description>
