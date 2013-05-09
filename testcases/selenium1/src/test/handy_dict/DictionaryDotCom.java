@@ -1,6 +1,8 @@
 package test.handy_dict;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +13,7 @@ public class DictionaryDotCom extends Dictionary {
 	private static final String url = "http://dictionary.reference.com/dic?q=";
 	private static final String searchTxt = "flay";
 	
-	private static final String txtLocation = "div#Headserp h1";
+	private static final String txtLocation = "div#Headserp > span > span > h1#query_h1";
 	//private static final String topElemSel = "#top";
 	
 	
@@ -19,8 +21,7 @@ public class DictionaryDotCom extends Dictionary {
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
 	
 	//private static final String topElemSelInfo = "Looking for top element, remove adds:" +  topElemSel;
-	
-	private static final String[] css = new String[] {"http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90443.css"};
+	private static final String[] css = new String[] {"http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90658.css"};
 	
 	private static final String[] titleAr = new String[] {
 		"div#Headserp > span > span > h1#query_h1",
@@ -30,8 +31,16 @@ public class DictionaryDotCom extends Dictionary {
 	
 	private static final String[] defAr = new String[] {"div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > div.luna-Ent > div.dndata"};
 	
+	private static final Map<String, Object> dictMap = new HashMap<String, Object>();
+	static {
+		dictMap.put("baseURL", "http://dictionary.reference.com/");
+		dictMap.put("url", url);
+		dictMap.put("css", css);
+		dictMap.put("excludeCSS", new String[]{"/http(.|\\s)*?static\\.sfdict\\.com(.|\\s)*?responsive\\.css/i"});
+	}
+	
 	public DictionaryDotCom(WebDriver driver) {
-		super(driver, resultId, url+searchTxt, css);
+		super(driver, resultId, url+searchTxt, dictMap);
 	}
 	
 	protected void testother(WebElement resultElem) {

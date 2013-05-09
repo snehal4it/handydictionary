@@ -1,8 +1,10 @@
 package test.handy_dict;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -17,17 +19,76 @@ public class Dictionary {
 	
 	private String url;
 	
-	private String[] css;
+	private Map<String, Object> dictMap;
 	
 	protected Result result = new Result();
 	
 	private static final String infoTxtCommon = "Looking for:";
 	
-	public Dictionary(WebDriver driver, String resultId, String url, String[] css) {
+	private static final String extractCSSJS = "var html = arguments[0];"
+		+ "var links = new Array();"
+		+ "if (html == null || html == \"\") {" + "return links;" + "}"
+		+ "try {"
+		+ "var start = html.search(/<head>/i);"
+		+ "if (start == -1) {"	+ "start = 0;"	+ "}"
+		+ "var end = html.search(/<\\/head>/i);"
+		+ "if (end == -1) {" + "end = html.search(/<body/i);" + "}"
+		+ "if (end == -1) {" + "end = html.length;" + "}"
+		+ "var head = html.substring(start, end);"
+		+ "var result = head.match(/(<link)(.|\\s)*?>/ig);"
+		+ "if (result != null) {"
+		+ "var linkIndex=0;"
+		+ "for (var i = 0; i < result.length; i++) {"
+		+ "if (result[i].search(/rel=[\"'\\s]?stylesheet[\"'\\s]/i) != -1) {"
+		+ "var hrefAr = result[i].match(/href=[\"'\\s]?(?:.|\\s)*?[\"'\\s]/i);"
+		+ "if (hrefAr != null && hrefAr.length > 0 && hrefAr[0].length > 5) {"
+		+ "links[linkIndex++]=hrefAr[0].substr(5).replace(/(\"|')+/g, \"\");"
+		+ "} } } } } catch (e) {}"
+		+ "return links;";
+	
+	private static final String refinedCSSJS = "var cssAr = arguments[0];var dict = arguments[1];"
+		+ "if (cssAr == null || cssAr.length == 0) {" + "return dict.css;" + "}"
+		+ "var excludeCss = dict.excludeCSS;"
+		+ "var resultCssAr = new Array();"
+		+ "var resultIndex = 0;"
+		+ "for (var i = 0; i < cssAr.length; i++) {"
+		+ "var cssLink = cssAr[i];" + "if (cssLink == null) {continue;}"
+		+ "var exclude = false;"
+		+ "if (excludeCss != null) {"
+		+ "for (var j = 0; j < excludeCss.length; j++) {"
+		// fix for regular expression in string format
+		+ "excludeCss[j]=eval(excludeCss[j]);"
+		+ "if (cssLink.search(excludeCss[j]) != -1) {"
+		+ "exclude = true;"
+		+ "break;"
+		+ "} } } if (exclude) { continue; }"
+		+ "var pos = cssLink.search(/http/i);"
+		+ "if (pos != 0) {"
+		+ "if (cssLink.indexOf(\"/\") == 0) {"
+		+ "cssLink = dict.baseURL + cssLink;"
+		+ "} else {"
+		+ "var tempURL = dict.url;"
+		+ "try {"
+		+ "var qIndex = tempURL.indexOf(\"?\");"
+		+ "if (qIndex != -1) { tempURL = tempURL.substring(0, qIndex); }"
+		+ "var q1Index = tempURL.indexOf(\"/\")+1;"
+		+ "qIndex = tempURL.lastIndexOf(\"/\");"
+		+ "if (qIndex != -1 && qIndex != tempURL.length -1 && qIndex > q1Index) {"
+		+ "tempURL = tempURL.substring(0, qIndex+1);"
+		+ "} } catch(e) {}"
+		+ "cssLink = tempURL + cssLink;"
+		+ "} }"
+		+ "resultCssAr[resultIndex]=cssLink;"
+		+ "resultIndex++;"
+		+ "}"
+		+ "if (resultCssAr.length == 0) {return dict.css;}"
+		+ "return resultCssAr;";
+	
+	public Dictionary(WebDriver driver, String resultId, String url, Map<String, Object> dictMap) {
 		this.driver=driver;
 		this.resultId=resultId;
 		this.url=url;
-		this.css=css;
+		this.dictMap=dictMap;
 	}
 	
 	public Result test() {
@@ -51,32 +112,55 @@ public class Dictionary {
 		
 		testother(resultElem);
 		
-		testCSS();
+		testDynamicCSS();
+		//testCSS();
 		
 		return result;
 	}
 	
-	protected void testCSS() {
+	protected void testDynamicCSS() {
+		String html = driver.getPageSource();
+		if (driver instanceof JavascriptExecutor) {
+			JavascriptExecutor jsDriver = ((JavascriptExecutor)driver);
+			@SuppressWarnings("unchecked")
+			List<String> cssList = (List<String>) jsDriver.executeScript(extractCSSJS, html);
+			if (cssList == null || cssList.size() == 0) {
+				result.warn("Javascript:extractCSS return null or empty list");
+			}
+			
+			@SuppressWarnings("unchecked")
+			List<String> refinedCssList = (List<String>) jsDriver.executeScript(refinedCSSJS, cssList, dictMap);
+			if (cssList == null || cssList.size() == 0) {
+				result.warn("Javascript:getRefinedCSSList return null or empty list");
+			} else {
+				testCSS(refinedCssList);
+			}
+		} else {
+			result.warn("Could not test dynamic CSS as driver is not instance of JavascriptExecutor");
+		}
+	}
+	
+	protected void testCSS(List<String> cssList) {
 		result.info("------------------CSS File test------------------");
-		if (css == null || css.length == 0) {
-			result.info("No file to test------------------------------");
+		if (cssList == null || cssList.size() == 0) {
+			result.warn("No file to test------------------------------");
 			return;
 		}
 		
 		List<WebElement> elems = driver.findElements(By.tagName("link"));
-		for (int i =  0; i < css.length; i++) {
-			result.info("Checking file:" + css[i]);
+		for (String css : cssList) {
+			result.info("Checking file:" + css);
 			boolean flag = false;
 			for (WebElement elem: elems) {
 				String href = elem.getAttribute("href");
-				if (css[i].equalsIgnoreCase(href)) {
+				if (css.equalsIgnoreCase(href)) {
 					flag = true;
 					break;
 				}
 			}
 			
 			if (flag) {
-				result.info("File found");
+				result.info("File found in source");
 			} else {
 				result.warn("File not found");
 			}

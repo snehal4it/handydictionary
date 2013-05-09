@@ -14,7 +14,7 @@ import test.handy_dict.result.Result;
 import test.handy_dict.result.report.HtmlReport;
 
 public class HandyDictTest {
-	private static String PROXY = "43.88.65.10:8080";
+	private static String PROXY = "";
 	
 	/**
 	 * @param args
