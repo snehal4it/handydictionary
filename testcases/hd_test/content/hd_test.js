@@ -15,7 +15,7 @@ hd_alias.executeCompactModeTest=function() {
 
 hd_alias.CompactModeTest=function() {
 	var self=this;
-	this.testURL="file:///D:/snehal/ie_ext/bkup/dict_test.html";
+	this.testURL="";
 	this.doc=null;
 	this.resultAr=null;
 	this.count1=0;
