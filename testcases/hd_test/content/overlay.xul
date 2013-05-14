@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script src="hd_test.js" />
+
+	<menupopup id="menu_ToolsPopup">
+		<menuitem label="Test Handy Dictionary"
+			oncommand="handy_dictionary_ext_test_ns_id.executeTest();" />
+	</menupopup>
+</overlay>

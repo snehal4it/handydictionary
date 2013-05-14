@@ -1,0 +1,5 @@
+content hd_test content/
+content hd_test content/ contentaccessible=yes
+overlay chrome://browser/content/browser.xul chrome://hd_test/content/overlay.xul
+
+skin	hd_test	classic/1.0	skin/

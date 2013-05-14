@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/"?>
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+    title="Test Handy Dictionary"
+    onload="init();" ondialogaccept="return onExit();"
+    buttons="accept,cancel" buttonpack="center">
+    
+    <script type="application/x-javascript" src="chrome://hd_test/content/testdialog.js" />
+    
+	<vbox style="background-color:white;">
+	<grid style="border:solid 1px #cccccc;">
+		<columns>
+			<column style="border-right:solid 1px #cccccc;" />
+			<column />
+		</columns>
+		<rows>
+			<row style="color:#555555;font-weight:bold;">
+				<label></label>
+				<label>Command</label>
+			</row>
+		</rows>
+	</grid>
+	</vbox>
+	
+</dialog>
