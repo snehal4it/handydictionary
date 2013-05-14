@@ -5,6 +5,6 @@
 
 	<menupopup id="menu_ToolsPopup">
 		<menuitem label="Test Handy Dictionary"
-			oncommand="handy_dictionary_ext_test_ns_id.executeTest();" />
+			oncommand="handy_dictionary_ext_test_ns_id.executeCompactModeTest();" />
 	</menupopup>
 </overlay>

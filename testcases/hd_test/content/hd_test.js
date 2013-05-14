@@ -294,7 +294,7 @@ hd_alias.execute=function() {
 			}
 		}
 	}, false);
-	content.location.href="file:///D:/snehal/ie_ext/bkup/dict_test.html";
+	content.location.href="";
 };
 
 hd_alias.executeCompactModeTest1=function() {
