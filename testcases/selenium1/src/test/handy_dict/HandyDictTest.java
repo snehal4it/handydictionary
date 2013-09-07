@@ -6,25 +6,23 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import test.handy_dict.result.DictException;
 import test.handy_dict.result.Result;
 import test.handy_dict.result.report.HtmlReport;
 
 public class HandyDictTest {
-	private static String PROXY = "";
+	//private static String PROXY = "";
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
-		proxy.setHttpProxy(PROXY).setFtpProxy(PROXY).setSslProxy(PROXY);
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(CapabilityType.PROXY, proxy);
-		WebDriver driver = new FirefoxDriver(cap);
+		//org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
+		//proxy.setHttpProxy(PROXY).setFtpProxy(PROXY).setSslProxy(PROXY);
+		//DesiredCapabilities cap = new DesiredCapabilities();
+		//cap.setCapability(CapabilityType.PROXY, proxy);
+		WebDriver driver = new FirefoxDriver();
 		
 		List<Dictionary> dics = new ArrayList<Dictionary>();
 		dics.add(new Cambridge(driver));

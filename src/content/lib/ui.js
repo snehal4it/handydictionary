@@ -886,7 +886,7 @@ hd_alias.compactPopup=function() {
 				titleAr[i].style.display="inline";
 				titleDiv.appendChild(titleAr[i]);
 				if (i == 0) {
-					titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;");
+					titleAr[i].setAttribute("style", "font-size:20px;font-weight:bold;margin-top:0px;margin-bottom:0px;display:inline;");
 					// fix the case where word selection spans next element
 					titleDiv.appendChild(self.doc.createTextNode(" "));
 				}

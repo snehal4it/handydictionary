@@ -207,20 +207,58 @@ hd_alias.UTIL=new function(){
 	
 	// mark document, whether for current tab tool is enabled
 	this.markDocument=function(doc, flag){
-		if(doc && doc.setUserData){
+		if(doc == null){
+			return;
+		}
+		// bug 842372: The Node.getUserData and Node.setUserData methods are
+		// no longer available from Web contents, Obsolete since Gecko 22 (Firefox 22)
+		if(doc.setUserData){
 			if(flag){
 				doc.setUserData(hd_alias.userDataKey, true, null);
 			}else{
 				doc.setUserData(hd_alias.userDataKey, null, null);
 			}
+		} else {
+			try {
+				var markerMapRef = self.getWeakMapMarkerRef();
+				if (markerMapRef != null) {
+					if(flag){
+						markerMapRef.set(doc, true);
+					} else {
+						markerMapRef.delete(doc);
+					}
+				}
+			} catch(e) {}
 		}
+	};
+	
+	// returns default weak map to keep track of tool status for each tab
+	this.getWeakMapMarkerRef=function(){
+		if (hd_alias.weakMapMarkerRef==null
+				&& (typeof WeakMap)!='undefined') {
+			hd_alias.weakMapMarkerRef=new WeakMap();
+		}
+		return hd_alias.weakMapMarkerRef;
 	};
 	
 	// check document and return true if marked
 	this.isExtEnabled=function(doc){
-		if(doc && doc.getUserData){
+		if(doc == null){
+			return false;
+		}
+		// bug 842372: The Node.getUserData and Node.setUserData methods are
+		// no longer available from Web contents, Obsolete since Gecko 22 (Firefox 22)
+		if(doc.getUserData){
 			var flag=doc.getUserData(hd_alias.userDataKey);
 			if(flag==true){return true;}
+		} else {
+			try {
+				var markerMapRef = self.getWeakMapMarkerRef();
+				if (markerMapRef != null) {
+					var flag=markerMapRef.get(doc);
+					if(flag==true){return true;}
+				}
+			} catch(e) {}
 		}
 		return false;
 	};
@@ -423,7 +461,8 @@ hd_alias.dicts=[
 		this.css=["http://oxforddictionaries.com/common.css?version=2013-05-02-0954"];
 		this.excludeCSS=[];
 		// header, headTitleElem, translateElem, defElem
-		this.cssRules=["#" + self.resultId + " > header h1.pageTitle {margin:0px;line-height:1em;}",
+		this.cssRules=["#" + self.resultId + " > header h1.entryType {margin:0px;line-height:10px;font-size:10px;}",
+		    "#" + self.resultId + " > header .pageTitle {margin:0px;line-height:1em;}",
 		    "#" + self.resultId + " > div div > section.senseGroup > h3.partOfSpeech {margin:0px;}",
 		    "#" + self.resultId + " > div div > span.TranslationCrossLinks {display:none;}",
 		    "#" + self.resultId + " > div div > div.entryType {display:none;}"];
@@ -442,7 +481,7 @@ hd_alias.dicts=[
 			
 			var result = new Array();
 			var titleAr = new Array();
-			titleAr[0] = dictResultElem.querySelector("header > h1.pageTitle");
+			titleAr[0] = dictResultElem.querySelector("header > .pageTitle");
 			titleAr[1] = dictResultElem.querySelector("header > div.entryPronunciation > a");
 			if (titleAr[1] == null) {
 				titleAr[1] = dictResultElem.querySelector("div#entryPageContent > div > section.senseGroup > div.entryPronunciation > a");

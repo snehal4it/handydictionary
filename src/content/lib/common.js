@@ -25,6 +25,8 @@ hd_alias.cntxItemsLimit=20;
 hd_alias.defaultDictURL='http://dictionary.cambridge.org/search/british/direct/?q=';
 
 hd_alias.userDataKey="handy_dict_ext_doc_key987";
+// bug 842372: alternate option to node.getUserData and node.setUserData
+hd_alias.weakMapMarkerRef=null;
 
 // default shortcut keys
 hd_alias.defaultKB={

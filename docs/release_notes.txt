@@ -1,4 +1,14 @@
 ---------------------------------
+Handy Dictionary v0.7
+---------------------------------
+- fix for oxford dictionary compact mode
+	- compact mode was not displaying title after oxford dictionary website interface was changed
+- WeakMap is adopted in case Node.getUserData is not available
+	- bug 842372: The Node.getUserData and Node.setUserData methods are no longer available from Web contents
+	- Obsolete since Gecko 22 (Firefox 22)
+------------------------------------------------------------------------------------------------
+
+---------------------------------
 Handy Dictionary v0.6
 ---------------------------------
 - fail safe compact mode
