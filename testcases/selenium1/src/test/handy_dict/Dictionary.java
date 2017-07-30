@@ -94,13 +94,14 @@ public class Dictionary {
 	public Result test() {
 		result.info("Loading page:" + url);
 		
-		driver.get(url);
-		
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+			driver.get(url);
+			Thread.sleep(2000);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		applyFix(driver);
 		
 		result.info("Finding result element:" + resultId);
 		WebElement resultElem = findElement(driver, By.id(resultId));
@@ -116,6 +117,11 @@ public class Dictionary {
 		//testCSS();
 		
 		return result;
+	}
+	
+	// apply any fix before actual test starts
+	protected void applyFix(WebDriver driver) {
+		
 	}
 	
 	protected void testDynamicCSS() {

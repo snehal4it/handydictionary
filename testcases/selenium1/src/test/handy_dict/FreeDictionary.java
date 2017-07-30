@@ -11,7 +11,7 @@ public class FreeDictionary extends Dictionary {
 	private static final String url = "http://www.thefreedictionary.com/";
 	private static final String searchTxt = "flay";
 	
-	private static final String txtLocation = "table td > span.hw";
+	private static final String txtLocation = "div#Definition > section > h2";
 	
 	// messages
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
@@ -19,11 +19,11 @@ public class FreeDictionary extends Dictionary {
 	private static final String[] css = new String[] {"http://img.tfd.com/t.css?e"};
 	
 	private static final String[] titleAr = new String[] {
-		"table td > span.hw",
-		"table td > span.pron"
+		"div#Definition > section > h2",
+		"div#Definition > section > span.pron"
 	};
 	
-	private static final String[] defAr = new String[] {"table td > div.pseg > div.ds-list"};
+	private static final String[] defAr = new String[] {"div#Definition > section > div.pseg > div.ds-list"};
 	
 	private static final Map<String, Object> dictMap = new HashMap<String, Object>();
 	static {
