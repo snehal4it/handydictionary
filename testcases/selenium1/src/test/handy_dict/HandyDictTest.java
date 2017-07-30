@@ -12,16 +12,13 @@ import test.handy_dict.result.Result;
 import test.handy_dict.result.report.HtmlReport;
 
 public class HandyDictTest {
-	//private static String PROXY = "";
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
-		//proxy.setHttpProxy(PROXY).setFtpProxy(PROXY).setSslProxy(PROXY);
-		//DesiredCapabilities cap = new DesiredCapabilities();
-		//cap.setCapability(CapabilityType.PROXY, proxy);
+		System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckodriver18\\geckodriver.exe");
+		
 		WebDriver driver = new FirefoxDriver();
 		
 		List<Dictionary> dics = new ArrayList<Dictionary>();
