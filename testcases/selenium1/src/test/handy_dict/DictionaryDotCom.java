@@ -9,11 +9,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class DictionaryDotCom extends Dictionary {
-	private static final String resultId = "contentResults";
+	private static final String resultId = "source-luna";
 	private static final String url = "http://dictionary.reference.com/dic?q=";
 	private static final String searchTxt = "flay";
 	
-	private static final String txtLocation = "div#Headserp > span > span > h1#query_h1";
+	private static final String txtLocation = "section.luna-box > header h1.head-entry > span";
 	//private static final String topElemSel = "#top";
 	
 	
@@ -24,12 +24,12 @@ public class DictionaryDotCom extends Dictionary {
 	private static final String[] css = new String[] {"http://dictionary.reference.com/dcss/dictionary/v5/newSerpStylesTopHeavy.r90658.css"};
 	
 	private static final String[] titleAr = new String[] {
-		"div#Headserp > span > span > h1#query_h1",
-		"div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.header > span.pronset > span.show_spellpr > span.pron",
-		"div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > span.pg"
+		"section.luna-box > header > div.waypoint-wrapper > h1.head-entry > span",
+		"section.luna-box > header > div.pronounce > div > span.spellpron",
+		"section.luna-box > header > div.pronounce > div > span.ipapron"
 	};
 	
-	private static final String[] defAr = new String[] {"div#midRail > div#rpane > div > div.sep_top > div.KonaBody > div > div > div.body > div > div.luna-Ent > div.dndata"};
+	private static final String[] defAr = new String[] {"section.luna-box > div.source-data > div.def-list > section.def-pbk > div.def-set > div"};
 	
 	private static final Map<String, Object> dictMap = new HashMap<String, Object>();
 	static {

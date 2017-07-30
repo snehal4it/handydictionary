@@ -9,29 +9,27 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Oxford extends Dictionary {
-	private static final String resultId = "mainContent";
-	private static final String url = "http://oxforddictionaries.com/search/english/?direct=1&multi=1&q=";
+	private static final String resultId = "content";
+	private static final String url = "https://en.oxforddictionaries.com/definition/";
 	private static final String searchTxt = "flay";
 	
-	private static final String txtLocation = "header > .pageTitle";
+	private static final String txtLocation = "div.entryWrapper header > h2 > span";
 	
 	// messages
 	private static final String txt2 = "Looking for element that contains word used for lookup:" + txtLocation;
 	
-	private static final String[] css = new String[] {"http://oxforddictionaries.com/common.css?version=2013-05-02-0954"};
+	private static final String[] css = new String[] {"https://en.oxforddictionaries.com/common.css?version=2013-05-02-0954"};
 	
 	private static final String[] titleAr = new String[] {
-		"header > .pageTitle",
-		"header > div.entryPronunciation > a",
-		"div#entryPageContent > div > section.senseGroup > h3.partOfSpeech > span.partOfSpeech",
-		"div#entryPageContent > div > section.senseGroup > em"
+		"div.entryWrapper header > h2 > span",
+		"div.entryWrapper > section > h3 > span"
 	};
 	
-	private static final String[] defAr = new String[] {"div#entryPageContent > div > section.senseGroup > ul.sense-entry > li.sense > div.senseInnerWrapper > span.definition"};
+	private static final String[] defAr = new String[] {"div.entryWrapper > section > ul.semb > li > div > p"};
 	
 	private static final Map<String, Object> dictMap = new HashMap<String, Object>();
 	static {
-		dictMap.put("baseURL", "http://oxforddictionaries.com/");
+		dictMap.put("baseURL", "https://en.oxforddictionaries.com");
 		dictMap.put("url", url);
 		dictMap.put("css", css);
 		dictMap.put("excludeCSS", new String[]{});
