@@ -13,7 +13,7 @@ public class Cambridge extends Dictionary {
 	private static final String url = "http://dictionary.cambridge.org/search/british/direct/?q=";
 	private static final String searchTxt = "flay";
 	
-	private static final String txtLocation = "div.di > div.di-head > h1 > span";
+	private static final String txtLocation = "div.di div.di-body div.pos-header h3.di-title > span.headword > span.hw";
 	
 	// messages
 	//private static final String txt1 = "Looking for Ref Element:" + refElement;
@@ -22,12 +22,12 @@ public class Cambridge extends Dictionary {
 	private static final String[] css = new String[] {"http://dictionary.cambridge.org/common.css?version=2013-04-16-1133"};
 	
 	private static final String[] titleAr = new String[] {
-		"div.di > div.di-head > h1 > span",
-		"div.di > div.di-head > span.di-info span.posgram > span.pos",
-		"div.di > div.di-head > span.di-info span.pron"
+		"div.di div.di-body div.pos-header h3.di-title > span.headword > span.hw",
+		"div.di div.di-body div.pos-header h3.di-title > span.posgram",
+		"div.di div.di-body div.pos-header > span.pron-info"
 	};
 	
-	private static final String[] defAr = new String[] {"div.di > div.di-body div.sense-block > span.sense-body span.def-block > span.def-head > span.def"};
+	private static final String[] defAr = new String[] {"div.di div.di-body div.pos-body div.sense-body"};
 	
 	private static final Map<String, Object> dictMap = new HashMap<String, Object>();
 	static {

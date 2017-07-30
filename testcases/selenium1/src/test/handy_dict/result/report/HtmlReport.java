@@ -28,8 +28,8 @@ public class HtmlReport {
 	
 	private static final SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
 	private static final String OUTPUT_DIR = "output/reports";
-	private static final String SUMMARY_REPORT_TEMPLATE = "SummaryReport.xml";
-	private static final String DETAILED_REPORT_TEMPLATE = "DetailedReport.xml";
+	private static final String SUMMARY_REPORT_TEMPLATE = "/SummaryReport.xml";
+	private static final String DETAILED_REPORT_TEMPLATE = "/DetailedReport.xml";
 	
 	private Map<Dictionary, Result> entries = new LinkedHashMap<Dictionary, Result>();
 	
@@ -51,6 +51,7 @@ public class HtmlReport {
 	}
 	
 	public String generateDetailedReport(String path, Dictionary dictionary, Result result) {
+		System.out.println("--------" + this.getClass().getResource(DETAILED_REPORT_TEMPLATE).getPath());
 		InputStream in = this.getClass().getResourceAsStream(DETAILED_REPORT_TEMPLATE);
 		System.out.println("Details:InputStream:" + in);
 		String title = dictionary.getClass().getSimpleName();
