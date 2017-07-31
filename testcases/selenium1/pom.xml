@@ -38,14 +38,6 @@
 	</dependencies>
 	
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<outputDirectory>target</outputDirectory>
-		<resources>
-			<resource>
-				<directory>resource</directory>
-			</resource>
-		</resources>
-		
 		<plugins>
 	      <plugin>
 	        <artifactId>maven-assembly-plugin</artifactId>
