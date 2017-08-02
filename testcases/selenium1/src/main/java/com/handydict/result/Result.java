@@ -1,4 +1,4 @@
-package test.handy_dict.result;
+package com.handydict.result;
 
 import java.util.ArrayList;
 import java.util.List;

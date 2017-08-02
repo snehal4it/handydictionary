@@ -1,4 +1,4 @@
-package test.handy_dict.result;
+package com.handydict.result;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

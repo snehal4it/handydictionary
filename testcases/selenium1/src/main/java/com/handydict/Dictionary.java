@@ -1,4 +1,4 @@
-package test.handy_dict;
+package com.handydict;
 
 import java.util.List;
 import java.util.Map;
@@ -8,8 +8,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import test.handy_dict.result.DictException;
-import test.handy_dict.result.Result;
+import com.handydict.result.DictException;
+import com.handydict.result.Result;
 
 public class Dictionary {
 	protected static final String SPACE = " ";

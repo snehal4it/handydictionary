@@ -1,4 +1,4 @@
-package test.handy_dict;
+package com.handydict;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import test.handy_dict.result.DictException;
+import com.handydict.result.DictException;
 
 public class Cambridge extends Dictionary {
 	private static final String resultId = "entryContent";
