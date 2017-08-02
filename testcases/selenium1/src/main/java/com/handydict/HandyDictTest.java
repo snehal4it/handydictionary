@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -11,12 +13,17 @@ import com.handydict.result.DictException;
 import com.handydict.result.Result;
 import com.handydict.result.report.HtmlReport;
 
+/**
+ * Main application class, to test all supported dictionary
+ * @author snehal patel
+ */
 public class HandyDictTest {
+	private static final Logger LOGGER = LogManager.getLogger(HandyDictTest.class);
 	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
+		LOGGER.info("Dictionary Test Started");
+		
+		// path to gecko driver
 		System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckodriver18\\geckodriver.exe");
 		
 		WebDriver driver = new FirefoxDriver();
@@ -34,10 +41,10 @@ public class HandyDictTest {
 			try {
 				Result result = dict.test();
 				report.add(dict, result);
-				//System.out.println("result:" + result);
+				LOGGER.debug("result for dictionary={}, result={}", dict, result);
 			} catch (DictException e) {
 				report.add(dict, e.getResult());
-				e.printStackTrace();
+				LOGGER.error("Error in testing dictionary, {}", dict, e);
 			}
 		}
 		
@@ -47,10 +54,10 @@ public class HandyDictTest {
 			File summaryFile = new File(summaryFileStr);
 			driver.get("file:///" + summaryFile.getAbsolutePath());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Error while preparing report", e);
 		}
 		
-		
+		LOGGER.info("Dictionary Test Completed");
 		//driver.close();
 	}
 
