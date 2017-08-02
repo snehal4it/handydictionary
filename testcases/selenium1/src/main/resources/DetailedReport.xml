@@ -8,7 +8,7 @@
 	<parameter name="title" class="java.lang.String"/>
 
 	<field name="desc" class="java.lang.String" />
-	<field name="type" class="test.handy_dict.result.RecordType" />
+	<field name="type" class="com.handydict.result.RecordType" />
 	
 	<title>
 		<band height="50">
@@ -24,21 +24,21 @@
 		<band height="16">
 			<textField isStretchWithOverflow="true">
                 <reportElement x="0" y="0" width="920" height="16" isPrintWhenDetailOverflows="true"  forecolor="#555555">
-                	<printWhenExpression><![CDATA[$F{type} == test.handy_dict.result.RecordType.INFO]]></printWhenExpression>
+                	<printWhenExpression><![CDATA[$F{type} == com.handydict.result.RecordType.INFO]]></printWhenExpression>
                 </reportElement>
                 <textElement textAlignment="Left"><font size="12"/></textElement>
                 <textFieldExpression class="java.lang.String"><![CDATA[$F{desc}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true">
                 <reportElement x="0" y="0" width="920" height="16" isPrintWhenDetailOverflows="true" forecolor="blue">
-                	<printWhenExpression><![CDATA[$F{type} == test.handy_dict.result.RecordType.WARN]]></printWhenExpression>
+                	<printWhenExpression><![CDATA[$F{type} == com.handydict.result.RecordType.WARN]]></printWhenExpression>
                 </reportElement>
                 <textElement textAlignment="Left"><font size="12"/></textElement>
                 <textFieldExpression class="java.lang.String"><![CDATA[$F{desc}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true">
                 <reportElement x="0" y="0" width="920" height="16" isPrintWhenDetailOverflows="true" forecolor="red">
-                	<printWhenExpression><![CDATA[$F{type} == test.handy_dict.result.RecordType.ERROR]]></printWhenExpression>
+                	<printWhenExpression><![CDATA[$F{type} == com.handydict.result.RecordType.ERROR]]></printWhenExpression>
                 </reportElement>
                 <textElement textAlignment="Left"><font size="12"/></textElement>
                 <textFieldExpression class="java.lang.String"><![CDATA[$F{desc}]]></textFieldExpression>
@@ -46,4 +46,4 @@
 		</band>
 	</detail>
 	
-	</jasperReport>
+</jasperReport>
