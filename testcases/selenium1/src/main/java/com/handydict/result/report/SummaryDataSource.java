@@ -1,14 +1,15 @@
-package test.handy_dict.result.report;
+package com.handydict.result.report;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.handydict.Dictionary;
+import com.handydict.result.Result;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JRRewindableDataSource;
-import test.handy_dict.Dictionary;
-import test.handy_dict.result.Result;
 
 public class SummaryDataSource implements JRRewindableDataSource {
 	

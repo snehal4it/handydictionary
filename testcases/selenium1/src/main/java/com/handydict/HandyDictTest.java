@@ -1,4 +1,4 @@
-package test.handy_dict;
+package com.handydict;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,9 +7,9 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import test.handy_dict.result.DictException;
-import test.handy_dict.result.Result;
-import test.handy_dict.result.report.HtmlReport;
+import com.handydict.result.DictException;
+import com.handydict.result.Result;
+import com.handydict.result.report.HtmlReport;
 
 public class HandyDictTest {
 	

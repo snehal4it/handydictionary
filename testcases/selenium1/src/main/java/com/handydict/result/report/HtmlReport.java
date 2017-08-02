@@ -1,4 +1,4 @@
-package test.handy_dict.result.report;
+package com.handydict.result.report;
 
 import java.io.File;
 import java.io.InputStream;
@@ -12,16 +12,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.handydict.Cambridge;
+import com.handydict.Dictionary;
+import com.handydict.Oxford;
+import com.handydict.result.Result;
+
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import test.handy_dict.Cambridge;
-import test.handy_dict.Dictionary;
-import test.handy_dict.Oxford;
-import test.handy_dict.result.Result;
 
 public class HtmlReport {
 	private static final String SUMMARY_REPORT = "summary.html";

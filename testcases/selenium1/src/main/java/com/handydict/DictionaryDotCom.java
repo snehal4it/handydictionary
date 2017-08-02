@@ -1,4 +1,4 @@
-package test.handy_dict;
+package com.handydict;
 
 import java.util.HashMap;
 import java.util.List;

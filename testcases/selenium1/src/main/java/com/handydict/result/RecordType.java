@@ -1,4 +1,4 @@
-package test.handy_dict.result;
+package com.handydict.result;
 
 public enum RecordType {
 	INFO, WARN, ERROR

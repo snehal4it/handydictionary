@@ -45,7 +45,7 @@
 	        <configuration>
 	        	<archive>
             <manifest>
-              <mainClass>test.handy_dict.HandyDictTest</mainClass>
+              <mainClass>com.handydict.HandyDictTest</mainClass>
             </manifest>
           </archive>
 	          <descriptorRefs>
