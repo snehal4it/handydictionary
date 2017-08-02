@@ -3,6 +3,8 @@ package com.handydict;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +13,13 @@ import org.openqa.selenium.WebElement;
 import com.handydict.result.DictException;
 import com.handydict.result.Result;
 
+/**
+ * Base class that contains common test operations for all dictionary
+ * @author snehal patel
+ */
 public class Dictionary {
+	private static final Logger LOGGER = LogManager.getLogger(Dictionary.class);
+	
 	protected static final String SPACE = " ";
 	protected WebDriver driver = null; 
 	
@@ -98,7 +106,7 @@ public class Dictionary {
 			driver.get(url);
 			Thread.sleep(2000);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Error in loading page:", e);
 		}
 		
 		applyFix(driver);

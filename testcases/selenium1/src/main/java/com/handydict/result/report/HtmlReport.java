@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.handydict.Cambridge;
 import com.handydict.Dictionary;
 import com.handydict.Oxford;
@@ -25,6 +28,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class HtmlReport {
+	private static final Logger LOGGER = LogManager.getLogger(HtmlReport.class);
+	
 	private static final String SUMMARY_REPORT = "summary.html";
 	
 	private static final SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
@@ -52,25 +57,24 @@ public class HtmlReport {
 	}
 	
 	public String generateDetailedReport(String path, Dictionary dictionary, Result result) {
-		System.out.println("--------" + this.getClass().getResource(DETAILED_REPORT_TEMPLATE).getPath());
 		InputStream in = this.getClass().getResourceAsStream(DETAILED_REPORT_TEMPLATE);
-		System.out.println("Details:InputStream:" + in);
+		LOGGER.debug("Details:InputStream ={}", in);
 		String title = dictionary.getClass().getSimpleName();
 		String outputFile = path + title + ".html";
 		try {
 			JasperReport jasperReport = JasperCompileManager.compileReport(in);
-			System.out.println("Details:report:" + jasperReport);
+			LOGGER.debug("Details:report:{}", jasperReport);
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("title", title);
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(
 					jasperReport, parameters, new JRBeanCollectionDataSource(result.getRecords()));
-			System.out.println(jasperPrint);
+			LOGGER.debug("jasperPrint={}", jasperPrint);
 			
 			JasperExportManager.exportReportToHtmlFile(jasperPrint, outputFile);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Error in generateDetailedReport", e);
 		}
 		return outputFile;
 	}
@@ -80,7 +84,7 @@ public class HtmlReport {
 		if (!file.exists()) {
 			boolean result = file.mkdirs();
 			if (!result) {
-				System.out.println("Unable to create output directories:");
+				LOGGER.warn("Unable to create output directories");
 			}
 		}
 		
@@ -89,10 +93,11 @@ public class HtmlReport {
 		String path = OUTPUT_DIR + File.separator + outputDirStr + File.separator;
 		
 		File outputDir = new File(path);
-		System.out.println("Creating output dir:" + path);
+		LOGGER.info("Creating output dir: path={}", path);
+		
 		boolean result = outputDir.mkdir();
 		if (!result) {
-			System.out.println("Unable to create output directory:"+path);
+			LOGGER.error("Unable to create output directory: {}", path);
 		}
 		
 		return path;
@@ -101,22 +106,22 @@ public class HtmlReport {
 		
 	public String generateSummaryReport(String path) {
 		InputStream in = this.getClass().getResourceAsStream(SUMMARY_REPORT_TEMPLATE);
-		System.out.println("InputStream:" + in);
+		LOGGER.debug("InputStream: ={}", in);
 		String outputFile = path + SUMMARY_REPORT;
 		
 		try {
 			JasperReport jasperReport = JasperCompileManager.compileReport(in);
-			System.out.println("report:" + jasperReport);
+			LOGGER.debug("report: ={}", jasperReport);
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(
 					jasperReport, parameters, new SummaryDataSource(entries));
-			System.out.println(jasperPrint);
+			LOGGER.debug("jasperPrint: ={}", jasperPrint);
 			
 			JasperExportManager.exportReportToHtmlFile(jasperPrint, outputFile);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("error in generateSummaryReport", e);
 		}
 		return outputFile;
 	}
