@@ -1,13 +1,16 @@
-package com.handydict;
+package com.handydict.dict;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.handydict.result.DictException;
 
+@Component
 public class Cambridge extends Dictionary {
 	private static final String resultId = "entryContent";
 	private static final String url = "http://dictionary.cambridge.org/search/british/direct/?q=";
@@ -37,12 +40,8 @@ public class Cambridge extends Dictionary {
 		dictMap.put("excludeCSS", new String[]{});
 	}
 	
-	public Cambridge(WebDriver driver) {
+	public Cambridge(@Autowired WebDriver driver) {
 		super(driver, resultId, url+searchTxt, dictMap);
-	}
-	
-	public Cambridge(WebDriver driver, String str) {
-		super(driver, resultId, url+str, dictMap);
 	}
 	
 	protected void testother(WebElement resultElem) {

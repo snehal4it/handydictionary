@@ -1,4 +1,4 @@
-package com.handydict;
+package com.handydict.dict;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +7,10 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Oxford extends Dictionary {
 	private static final String resultId = "content";
 	private static final String url = "https://en.oxforddictionaries.com/definition/";
@@ -35,7 +38,7 @@ public class Oxford extends Dictionary {
 		dictMap.put("excludeCSS", new String[]{});
 	}
 	
-	public Oxford(WebDriver driver) {
+	public Oxford(@Autowired WebDriver driver) {
 		super(driver, resultId, url+searchTxt, dictMap);
 	}
 	

@@ -15,9 +15,7 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.handydict.Cambridge;
-import com.handydict.Dictionary;
-import com.handydict.Oxford;
+import com.handydict.dict.Dictionary;
 import com.handydict.result.Result;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -37,10 +35,10 @@ public class HtmlReport {
 	private static final String SUMMARY_REPORT_TEMPLATE = "/SummaryReport.xml";
 	private static final String DETAILED_REPORT_TEMPLATE = "/DetailedReport.xml";
 	
-	private Map<Dictionary, Result> entries = new LinkedHashMap<Dictionary, Result>();
+	private Map<Dictionary, Result> dictionaryResult = new LinkedHashMap<Dictionary, Result>();
 	
-	public void add(Dictionary dict, Result result) {
-		entries.put(dict, result);
+	public HtmlReport(Map<Dictionary, Result> dictionaryResult) {
+		this.dictionaryResult = dictionaryResult;
 	}
 	
 	public List<String> generate() {
@@ -49,7 +47,7 @@ public class HtmlReport {
 		String resultPath = generateSummaryReport(path);
 		paths.add(resultPath);
 		
-		for (Entry<Dictionary,Result> entry : entries.entrySet()) {
+		for (Entry<Dictionary,Result> entry : dictionaryResult.entrySet()) {
 			resultPath = generateDetailedReport(path, entry.getKey(), entry.getValue());
 			paths.add(resultPath);
 		}
@@ -116,7 +114,7 @@ public class HtmlReport {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(
-					jasperReport, parameters, new SummaryDataSource(entries));
+					jasperReport, parameters, new SummaryDataSource(dictionaryResult));
 			LOGGER.debug("jasperPrint: ={}", jasperPrint);
 			
 			JasperExportManager.exportReportToHtmlFile(jasperPrint, outputFile);
@@ -124,30 +122,5 @@ public class HtmlReport {
 			LOGGER.error("error in generateSummaryReport", e);
 		}
 		return outputFile;
-	}
-	
-	public static void main(String[] args) {
-		Dictionary dict1 = new Cambridge(null);
-		Dictionary dict2 = new Oxford(null);
-		
-		HtmlReport report = new HtmlReport();
-		Result result1 = new Result();
-		result1.info("Dictionary1");
-		result1.error("Dictionary 1 error1");
-		report.add(dict1, result1);
-		
-		
-		Result result2 = new Result();
-		result2.info("Dictionary2");
-		result2.info("Entry1");
-		result2.warn("Dictionary2 warning");
-		for (int i = 0; i < 100; i++) {
-			result2.info("Dictionary2::" + i + "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------==================================================================================================================================================================================END");
-		}
-
-		report.add(dict2, result2);
-		
-		report.generate();
-	}
-	
+	}	
 }
