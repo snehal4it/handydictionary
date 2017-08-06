@@ -1,11 +1,14 @@
-package com.handydict;
+package com.handydict.dict;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FreeDictionary extends Dictionary {
 	private static final String resultId = "MainTxt";
 	private static final String url = "http://www.thefreedictionary.com/";
@@ -33,7 +36,7 @@ public class FreeDictionary extends Dictionary {
 		dictMap.put("excludeCSS", new String[]{});
 	}
 	
-	public FreeDictionary(WebDriver driver) {
+	public FreeDictionary(@Autowired WebDriver driver) {
 		super(driver, resultId, url+searchTxt, dictMap);
 	}
 	

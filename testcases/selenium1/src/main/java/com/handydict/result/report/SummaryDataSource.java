@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.handydict.Dictionary;
+import com.handydict.dict.Dictionary;
 import com.handydict.result.Result;
 
 import net.sf.jasperreports.engine.JRException;

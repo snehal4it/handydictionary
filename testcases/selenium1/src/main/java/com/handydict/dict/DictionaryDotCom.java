@@ -1,4 +1,4 @@
-package com.handydict;
+package com.handydict.dict;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +7,10 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DictionaryDotCom extends Dictionary {
 	private static final String resultId = "source-luna";
 	private static final String url = "http://dictionary.reference.com/dic?q=";
@@ -39,7 +42,7 @@ public class DictionaryDotCom extends Dictionary {
 		dictMap.put("excludeCSS", new String[]{"/http(.|\\s)*?static\\.sfdict\\.com(.|\\s)*?responsive\\.css/i"});
 	}
 	
-	public DictionaryDotCom(WebDriver driver) {
+	public DictionaryDotCom(@Autowired WebDriver driver) {
 		super(driver, resultId, url+searchTxt, dictMap);
 	}
 	

@@ -1,4 +1,4 @@
-package com.handydict;
+package com.handydict.dict;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MerriamWebster extends Dictionary {
 	private static final String resultId = "merriamWebsterDefHdTemp1111Id";
 	private static final String url = "http://www.merriam-webster.com/dictionary/";
@@ -38,7 +41,7 @@ public class MerriamWebster extends Dictionary {
 		dictMap.put("excludeCSS", new String[]{"/styles\\/default\\/interface\\.css/i"});
 	}
 	
-	public MerriamWebster(WebDriver driver) {
+	public MerriamWebster(@Autowired WebDriver driver) {
 		super(driver, resultId, url+searchTxt, dictMap);
 	}
 	
